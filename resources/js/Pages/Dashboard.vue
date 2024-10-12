@@ -1,6 +1,13 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import InputText from 'primevue/inputtext';
+import {ref} from "vue";
+import Button from 'primevue/button';
+const value = ref('');
+
+import Card from 'primevue/card';
+
 </script>
 
 <template>
@@ -20,10 +27,29 @@ import { Head } from '@inertiajs/vue3';
                 <div
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        You're logged in!
+                    <div class="p-6 text-gray-900 dark:text-gray-100 flex gap-3">
+                        <InputText type="text" v-model="value" />
+
+                        <Button label="Primary" />
+                        <Button label="Secondary" severity="secondary" />
+                        <Button label="Success" severity="success" />
+                        <Button label="Info" severity="info" />
+                        <Button label="Warn" severity="warn" />
+                        <Button label="Help" severity="help" />
+                        <Button label="Danger" severity="danger" />
+                        <Button label="Contrast" severity="contrast" />
+
                     </div>
                 </div>
+                <Card>
+                    <template #title>Simple Card</template>
+                    <template #content>
+                        <p class="m-0">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque
+                            quas!
+                        </p>
+                    </template>
+                </Card>
             </div>
         </div>
     </AuthenticatedLayout>

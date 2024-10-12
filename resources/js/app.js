@@ -1,10 +1,13 @@
 import '../css/app.css';
 import './bootstrap';
+import Aura from '../css/presets/aura'
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import PrimeVue from 'primevue/config';
+import { i18nVue } from 'laravel-vue-i18n';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -19,6 +22,17 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(i18nVue, {
+                resolve: async lang => {
+                    const langs = import.meta.glob('../../lang/*.json');
+                    if (typeof langs[`../../lang/${lang}.json`] == "undefined") return; //Temporary workaround
+                    return await langs[`../../lang/${lang}.json`]();
+                }
+            })
+            .use(PrimeVue, {
+                unstyled: true,
+                pt: Aura
+            })
             .mount(el);
     },
     progress: {
