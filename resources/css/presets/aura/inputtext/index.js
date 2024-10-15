@@ -10,7 +10,7 @@ export default {
 
             // Spacing
             'm-0',
-            { 'w-full': props.fluid },
+            'w-full',
 
             // Size
             {
@@ -35,7 +35,7 @@ export default {
             // Invalid State
             'invalid:focus:ring-red-200',
             'invalid:hover:border-red-500',
-            { 'border-red-500 dark:border-red-400': props.invalid },
+            { 'border-error-500 dark:border-error-600': props.invalid },
 
             // States
             {

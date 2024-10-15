@@ -1,22 +1,47 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
+import {isDark, toggleDarkMode} from "@/Composables/index.js";
+import {IconMoon, IconSun} from "@tabler/icons-vue";
+import Button from "primevue/button";
+import ChangeLocale from "@/Components/Navbar/ChangeLocale.vue";
+import dayjs from "dayjs";
 </script>
 
 <template>
-    <div
-        class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0 dark:bg-gray-900"
-    >
-        <div>
-            <Link href="/">
-                <ApplicationLogo class="h-20 w-20 fill-current text-gray-500" />
-            </Link>
+    <div class="flex flex-col min-h-screen bg-surface-0 dark:bg-surface-950">
+        <div class="flex mx-auto w-full max-w-7xl px-3 py-2 sm:px-6 lg:px-5 xl:px-0 justify-between items-center">
+            <div>
+                <Link href="/">
+                    <ApplicationLogo class="h-10 w-10 fill-current text-gray-500" />
+                </Link>
+            </div>
+
+            <div class="flex items-center gap-2 self-stretch">
+                <ChangeLocale />
+
+                <Button
+                    severity="secondary"
+                    outlined
+                    aria-label="Mode"
+                    size="small"
+                    @click="() => { toggleDarkMode() }"
+                >
+                    <template #icon>
+                        <IconSun v-if="!isDark" size="16" />
+                        <IconMoon v-if="isDark" size="16" />
+                    </template>
+                </Button>
+            </div>
         </div>
 
-        <div
-            class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg dark:bg-gray-800"
-        >
-            <slot />
+        <div class="flex flex-col justify-center items-center pb-12 md:px-8 xs:gap-y-[60px]">
+            <div class="w-full flex md:flex-1 justify-center">
+                <div class="w-full max-w-xs md:max-w-none md:w-[360px] flex flex-col justify-center items-center mx-5">
+                    <slot />
+                </div>
+            </div>
+            <div class="text-center text-gray-500 text-xs mt-auto">© {{ dayjs().year() }} Luckyant Mall. All rights reserved.</div>
         </div>
     </div>
 </template>

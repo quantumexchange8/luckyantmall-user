@@ -6,7 +6,7 @@ export default {
 
             //Shape
             'rounded-[12px]',
-            'shadow-md',
+            'shadow-box',
 
             //Color
             'bg-surface-0 dark:bg-surface-900',
@@ -19,7 +19,7 @@ export default {
             'flex flex-col',
             'gap-4',
 
-            'p-6'
+            'p-3 md:p-6'
         ]
     },
     caption: {

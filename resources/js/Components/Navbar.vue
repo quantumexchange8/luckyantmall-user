@@ -60,7 +60,10 @@ const showingNavigationDropdown = ref(false);
                 </div>
 
                 <!-- System operation -->
-                <div class="hidden sm:flex sm:items-center gap-2 pl-6">
+                <div
+                    v-if="$page.props.canLogin"
+                    class="hidden sm:flex sm:items-center gap-2 pl-6"
+                >
                     <ChangeLocale />
 
                     <Button
@@ -77,7 +80,7 @@ const showingNavigationDropdown = ref(false);
                     </Button>
 
                     <SignIn
-                        v-if="$page.props.canLogin"
+                        v-if="!$page.props.auth.user"
                     />
 
                     <div v-else>
@@ -202,9 +205,12 @@ const showingNavigationDropdown = ref(false);
             <IconBellRinging size="28" stroke-width="1" />
             <span class="text-xs">Notification</span>
         </div>
-        <div class="flex flex-col gap-2 items-center self-stretch text-surface-400 dark:text-surface-200 w-16">
+        <Link
+            :href="route('profile')"
+            class="flex flex-col gap-2 items-center self-stretch text-surface-400 dark:text-surface-200 w-16"
+        >
             <IconUser size="28" stroke-width="1" />
             <span class="text-xs">Profile</span>
-        </div>
+        </Link>
     </div>
 </template>
