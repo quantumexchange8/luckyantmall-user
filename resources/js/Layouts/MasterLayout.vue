@@ -10,7 +10,7 @@ defineProps({
 <template>
     <Head :title="title"></Head>
 
-    <div class="min-h-screen bg-gray-100 dark:bg-surface-950">
+    <div class="min-h-screen bg-surface-100 dark:bg-surface-950">
 
         <Navbar />
 

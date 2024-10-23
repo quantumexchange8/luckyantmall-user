@@ -103,6 +103,7 @@ class RegisteredUserController extends Controller
 
         $userData = [
             'name' => $validator['name'],
+            'username' => $validator['username'],
             'email' => $validator['email'],
             'dial_code' => $dial_code['phone_code'],
             'phone' => $validator['phone'],
@@ -112,25 +113,22 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($validator['password']),
         ];
 
-        if ($request->referral_code) {
-            $referral_code = $request->input('referral_code');
+        $referrer = null;
+        $referral_code = $request->input('referral_code');
+
+        if ($referral_code) {
             $referrer = User::where('referral_code', $referral_code)->first();
-
-            if ($referrer) {
-                $referrer_id = $referrer->id;
-                $hierarchyList = empty($referrer['hierarchyList']) ? "-" . $referrer_id . "-" : $referrer['hierarchyList'] . $referrer_id . "-";
-
-                $userData['upline_id'] = $referrer_id;
-                $userData['hierarchyList'] = $hierarchyList;
-            }
-        } else {
-            $referrer = User::find(2);
-            $referrer_id = $referrer->id;
-            $newHierarchyList = empty($referrer['hierarchyList']) ? "-" . $referrer_id . "-" : $referrer['hierarchyList'] . $referrer_id . "-";
-
-            $userData['upline_id'] = $referrer_id;
-            $userData['hierarchyList'] = $newHierarchyList;
         }
+
+        if (!$referrer) {
+            $referrer = User::find(2);
+        }
+
+        $referrer_id = $referrer->id;
+        $hierarchyList = empty($referrer['hierarchyList']) ? "-$referrer_id-" : "{$referrer['hierarchyList']}$referrer_id-";
+
+        $userData['upline_id'] = $referrer_id;
+        $userData['hierarchyList'] = $hierarchyList;
 
         $user = User::create($userData);
 
@@ -152,24 +150,32 @@ class RegisteredUserController extends Controller
             'user_id' => $user->id,
             'type' => 'e_wallet',
             'address' => RunningNumberService::getID('e_wallet'),
+            'currency' => 'CNY',
+            'currency_symbol' => '¥'
         ]);
 
         Wallet::create([
             'user_id' => $user->id,
             'type' => 'bonus_wallet',
             'address' => RunningNumberService::getID('bonus_wallet'),
+            'currency' => 'CNY',
+            'currency_symbol' => '¥'
         ]);
 
         Wallet::create([
             'user_id' => $user->id,
             'type' => 'cash_wallet',
             'address' => RunningNumberService::getID('cash_wallet'),
+            'currency' => 'CNY',
+            'currency_symbol' => '¥'
         ]);
 
         Wallet::create([
             'user_id' => $user->id,
             'type' => 'point_wallet',
             'address' => RunningNumberService::getID('point_wallet'),
+            'currency' => 'point',
+            'currency_symbol' => 'point'
         ]);
 
         event(new Registered($user));

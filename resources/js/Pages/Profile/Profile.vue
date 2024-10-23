@@ -1,6 +1,11 @@
 <script setup>
 import MasterLayout from "@/Layouts/MasterLayout.vue";
 import Card from "primevue/card";
+import Wallet from "@/Pages/Profile/Wallets/Wallet.vue";
+
+const props = defineProps({
+    walletCounts: Number
+})
 </script>
 
 <template>
@@ -19,52 +24,9 @@ import Card from "primevue/card";
             </Card>
 
             <!-- Wallets -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 items-center self-stretch w-full">
-                <Card class="w-full">
-                    <template #content>
-                        <div class="flex gap-3 items-center self-stretch">
-                            <div class="w-8 h-8 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">Wallet</span>
-                                <span class="text-xs dark:text-surface-400">¥ 999,999.99</span>
-                            </div>
-                        </div>
-                    </template>
-                </Card>
-                <Card class="w-full">
-                    <template #content>
-                        <div class="flex gap-3 items-center self-stretch">
-                            <div class="w-8 h-8 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">Wallet</span>
-                                <span class="text-xs dark:text-surface-400">¥ 999,999.99</span>
-                            </div>
-                        </div>
-                    </template>
-                </Card>
-                <Card class="w-full">
-                    <template #content>
-                        <div class="flex gap-3 items-center self-stretch">
-                            <div class="w-8 h-8 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">Wallet</span>
-                                <span class="text-xs dark:text-surface-400">¥ 999,999.99</span>
-                            </div>
-                        </div>
-                    </template>
-                </Card>
-                <Card class="w-full">
-                    <template #content>
-                        <div class="flex gap-3 items-center self-stretch">
-                            <div class="w-8 h-8 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                            <div class="flex flex-col">
-                                <span class="text-sm font-medium">Wallet</span>
-                                <span class="text-xs dark:text-surface-400">¥ 999,999.99</span>
-                            </div>
-                        </div>
-                    </template>
-                </Card>
-            </div>
+            <Wallet
+                :walletCounts="walletCounts"
+            />
 
             <!-- Order Status -->
             <div class="text-sm w-full text-left">Order Listing</div>

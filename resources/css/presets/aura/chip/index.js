@@ -2,21 +2,23 @@ export default {
     root: {
         class: [
             // Flexbox
-            'inline-flex items-center',
+            'inline-flex justify-center items-center',
 
             // Spacing
-            'px-3 py-1 gap-2',
+            'px-3 py-1.5',
 
             // Shape
-            'rounded-[16px]',
+            'rounded-lg',
 
-            // Colors
-            'text-surface-700 dark:text-white',
-            'bg-surface-100 dark:bg-surface-700'
+            // Box shadow
+            'shadow-input',
+
+            // Conditional classes based on state
+            'hover:bg-primary-50 dark:hover:bg-surface-800 select-none cursor-pointer',
         ]
     },
     label: {
-        class: 'leading-6 m-0'
+        class: 'text-center text-xs'
     },
     icon: {
         class: 'leading-6 mr-2'
@@ -26,9 +28,11 @@ export default {
     },
     removeIcon: {
         class: [
-            'inline-block',
             // Shape
             'rounded-md leading-6',
+
+            // Spacing
+            'ml-[0.375rem]',
 
             // Size
             'w-4 h-4',

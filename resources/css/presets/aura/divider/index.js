@@ -16,7 +16,7 @@ export default {
 
             // Spacing
             {
-                'my-5 mx-0 py-0 px-5': props.layout == 'horizontal',
+                'py-0 px-5': props.layout == 'horizontal',
                 'mx-4 md:mx-5 py-5': props.layout == 'vertical'
             },
 

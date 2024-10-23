@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SelectOptionController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -31,6 +32,7 @@ Route::get('/dashboard', function () {
 Route::get('/getCountries', [SelectOptionController::class, 'getCountries'])->name('getCountries');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/getDepositProfiles', [WalletController::class, 'getDepositProfiles'])->name('profile.getDepositProfiles');
     /**
      * ==============================
      *            Profile
@@ -38,6 +40,11 @@ Route::middleware('auth')->group(function () {
      */
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile');
+        Route::get('/getWalletData', [WalletController::class, 'getWalletData'])->name('profile.getWalletData');
+        Route::get('/{wallet_type}', [WalletController::class, 'wallet_detail'])->name('profile.wallet_detail');
+        Route::get('/{wallet_type}/deposit', [WalletController::class, 'wallet_deposit'])->name('profile.wallet_deposit');
+
+        Route::post('submitDeposit', [WalletController::class, 'submitDeposit'])->name('profile.submitDeposit');
     });
 });
 

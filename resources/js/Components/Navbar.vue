@@ -19,12 +19,20 @@ import Button from 'primevue/button';
 import {isDark, toggleDarkMode} from '@/Composables'
 import ChangeLocale from "@/Components/Navbar/ChangeLocale.vue";
 
+defineProps({
+    hidden: {
+        type: Boolean,
+        default: false
+    }
+})
+
 const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
     <nav
         class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-surface-950"
+        :class="{'hidden': hidden}"
     >
         <!-- Primary Navigation Menu -->
         <div class="mx-auto max-w-7xl px-3 sm:px-6 lg:px-5 xl:px-0">
