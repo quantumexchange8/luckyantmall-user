@@ -2,6 +2,7 @@
 import Card from "primevue/card";
 import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
+import Skeleton from "primevue/skeleton";
 
 const props = defineProps({
     walletCounts: Number
@@ -41,9 +42,9 @@ const redirectToWallet = (walletType) => {
         >
             <template #content>
                 <div class="flex gap-3 items-center self-stretch">
-                    <div class="flex flex-col">
-                        <span class="text-sm font-medium">Wallet</span>
-                        <span class="text-xs dark:text-surface-400">¥ 999,999.99</span>
+                    <div class="flex flex-col gap-2.5">
+                        <Skeleton width="3rem"></Skeleton>
+                        <Skeleton width="5rem"></Skeleton>
                     </div>
                 </div>
             </template>

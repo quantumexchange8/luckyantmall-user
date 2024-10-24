@@ -164,10 +164,10 @@ const submitForm = () => {
 
                         <div v-else class="flex flex-col gap-1 items-start self-stretch">
                             <div class="flex justify-between items-start w-full text-xs">
-                                <div class="text-surface-300 w-24">
+                                <div class="text-surface-700 dark:text-surface-300 w-24">
                                     {{ $t('public.account_number') }}
                                 </div>
-                                <div class="text-right w-36 break-words">
+                                <div class="text-right font-semibold w-40 break-words">
                                     {{ selectedDepositProfiles.account_number }}
                                 </div>
                             </div>
@@ -175,32 +175,32 @@ const submitForm = () => {
                             <!-- bank -->
                             <div v-if="selectedDepositProfiles.type === 'bank'" class="flex flex-col gap-1 items-start self-stretch">
                                 <div class="flex justify-between items-center w-full text-xs">
-                                    <div class="text-surface-300 w-24">
+                                    <div class="text-surface-700 dark:text-surface-300 w-24">
                                         {{ $t('public.receiver_name') }}
                                     </div>
-                                    <div class="text-right w-36">{{ selectedDepositProfiles.name }}</div>
+                                    <div class="text-right font-semibold w-40">{{ selectedDepositProfiles.name }}</div>
                                 </div>
                                 <div class="flex justify-between items-start w-full text-xs">
-                                    <div class="text-surface-300 w-24">
+                                    <div class="text-surface-700 dark:text-surface-300 w-24">
                                         {{ $t('public.bank_name') }}
                                     </div>
-                                    <div class="text-right w-36">
+                                    <div class="text-right font-semibold w-40">
                                         {{ selectedDepositProfiles.bank_name }}
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-center w-full text-xs">
-                                    <div class="text-surface-300 w-24">
+                                    <div class="text-surface-700 dark:text-surface-300 w-24">
                                         {{ $t('public.bank_branch') }}
                                     </div>
-                                    <div class="text-right w-36">
+                                    <div class="text-right font-semibold w-40">
                                         {{ selectedDepositProfiles.bank_branch }}
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-center w-full text-xs">
-                                    <div class="text-surface-300 w-24">
+                                    <div class="text-surface-700 dark:text-surface-300 w-24">
                                         {{ $t('public.country') }}
                                     </div>
-                                    <div class="text-right w-36">
+                                    <div class="text-right font-semibold w-40">
                                         {{ locale !== 'en' ? selectedDepositProfiles.country.translations[locale] : selectedDepositProfiles.country.name }} ({{ selectedDepositProfiles.currency }})
                                     </div>
                                 </div>
@@ -209,15 +209,15 @@ const submitForm = () => {
                             <!-- crypto -->
                             <div v-if="selectedDepositProfiles.type === 'crypto'" class="flex flex-col gap-1 items-start self-stretch">
                                 <div class="flex justify-between items-start w-full text-xs">
-                                    <div class="text-surface-300 w-24">
+                                    <div class="text-surface-700 dark:text-surface-300 w-24">
                                         {{ $t('public.tether') }}
                                     </div>
-                                    <div class="text-right w-36 break-words">
+                                    <div class="text-right font-semibold w-40 break-words">
                                         {{ selectedDepositProfiles.crypto_tether }}
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-start w-full text-xs">
-                                    <div class="text-surface-300 w-24">
+                                    <div class="text-surface-700 dark:text-surface-300 w-24">
                                         {{ $t('public.network') }}
                                     </div>
                                     <div class="w-44 flex gap-1 flex-wrap justify-end">
@@ -296,8 +296,8 @@ const submitForm = () => {
                     />
                     <Button
                         type="button"
-                        label="Browse"
-                        severity="secondary"
+                        :label="$t('public.browse')"
+                        severity="contrast"
                         size="small"
                         @click="$refs.paymentSlipInput.click()"
                     />

@@ -43,8 +43,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/getWalletData', [WalletController::class, 'getWalletData'])->name('profile.getWalletData');
         Route::get('/{wallet_type}', [WalletController::class, 'wallet_detail'])->name('profile.wallet_detail');
         Route::get('/{wallet_type}/deposit', [WalletController::class, 'wallet_deposit'])->name('profile.wallet_deposit');
+        Route::get('/{wallet_type}/getWalletHistory', [WalletController::class, 'getWalletHistory'])->name('profile.getWalletHistory');
 
         Route::post('submitDeposit', [WalletController::class, 'submitDeposit'])->name('profile.submitDeposit');
+        Route::patch('updateBalanceVisibility', [WalletController::class, 'updateBalanceVisibility'])->name('profile.updateBalanceVisibility');
     });
 });
 

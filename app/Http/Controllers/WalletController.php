@@ -22,9 +22,27 @@ class WalletController extends Controller
 
     public function wallet_detail($wallet_type)
     {
+        $history_count = Transaction::where('user_id', Auth::id())
+            ->where('category', $wallet_type)
+            ->count();
+
+        $allowedActions = [
+            'e_wallet' => ['deposit', 'transfer'],
+            'bonus_wallet' => ['transfer', 'withdraw'],
+            'cash_wallet' => ['transfer', 'withdraw'],
+        ];
+
+        $actions = $allowedActions[$wallet_type] ?? [];
+
+        if ($wallet_type == 'e_wallet' && Auth::user()->role != 'SA') {
+            $actions = array_filter($actions, fn($action) => $action != 'transfer');
+        }
+
         return Inertia::render('Profile/Wallets/WalletDetail', [
             'walletType' => $wallet_type,
-            'wallet' => Wallet::where('user_id', Auth::id())->where('type', $wallet_type)->first()
+            'wallet' => Wallet::where('user_id', Auth::id())->where('type', $wallet_type)->first(),
+            'transactionCounts' => $history_count,
+            'allowedActions' => $actions,
         ]);
     }
 
@@ -92,5 +110,35 @@ class WalletController extends Controller
             });
 
         return response()->json($depositProfiles);
+    }
+
+    public function updateBalanceVisibility(Request $request): void
+    {
+        $wallet = Wallet::find($request->id);
+
+        $wallet->balance_visibility = !$wallet->balance_visibility;
+        $wallet->save();
+    }
+
+    public function getWalletHistory(Request $request)
+    {
+        $walletHistory = Transaction::with([
+            'from_wallet:id,type,currency_symbol',
+            'to_wallet:id,type,currency_symbol',
+        ])
+            ->where('user_id', Auth::id())
+            ->where(function ($query) use ($request) {
+                $query->where('from_wallet_id', $request->walletId)
+                    ->orWhere('to_wallet_id', $request->walletId);
+            })
+            ->latest()
+            ->get()
+            ->map(function ($transaction) {
+                return $transaction;
+            });
+
+        return response()->json([
+            'walletHistory' => $walletHistory
+        ]);
     }
 }

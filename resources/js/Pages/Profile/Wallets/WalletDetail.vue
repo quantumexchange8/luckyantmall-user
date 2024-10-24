@@ -1,18 +1,35 @@
 <script setup>
 import ContentLayout from "@/Layouts/ContentLayout.vue";
 import Card from "primevue/card";
-import Divider from "primevue/divider";
 import {
     IconEye,
     IconEyeOff
 } from "@tabler/icons-vue";
 import Button from "primevue/button";
 import WalletAction from "@/Pages/Profile/Wallets/WalletAction.vue";
+import {ref} from "vue";
+import WalletHistory from "@/Pages/Profile/Wallets/WalletHistory.vue";
 
 const props = defineProps({
     walletType: String,
-    wallet: Object
+    wallet: Object,
+    transactionCounts: Number,
+    allowedActions: Array,
 })
+
+const balanceVisibility = ref(props.wallet.balance_visibility);
+
+const toggleVisibility = async () => {
+    balanceVisibility.value = !balanceVisibility.value;
+
+    try {
+        await axios.patch(route('profile.updateBalanceVisibility'), {
+            id: props.wallet.id,
+        });
+    } catch (error) {
+        console.error('Failed to update balance visibility:', error);
+    }
+}
 </script>
 
 <template>
@@ -25,55 +42,45 @@ const props = defineProps({
                 class="w-full"
             >
                 <template #content>
-                    <div class="flex flex-col gap-3 items-center self-stretch">
-                        <div class="flex flex-col w-full">
-                            <span class="text-xs dark:text-surface-400">{{ $t('public.balance') }} ({{ wallet.address }})</span>
-                            <div class="flex items-center justify-between">
-                                <div class="text-lg font-semibold">
+                    <div class="flex flex-col gap-3 md:gap-5 items-center self-stretch">
+                        <span class="text-sm text-left w-full dark:text-surface-400">{{ $t('public.balance') }} ({{ wallet.address }})</span>
+                        <div class="flex items-center justify-center gap-1 mb-1">
+                            <div class="text-[32px] font-semibold">
+                                <div v-if="balanceVisibility">
                                     <span v-if="wallet.currency_symbol !== 'point'">{{ wallet.currency_symbol }}{{ wallet.balance }}</span>
                                     <span v-else>{{ wallet.balance }} {{ $t(`public.${wallet.currency_symbol}`) }}</span>
                                 </div>
-                                <Button
-                                    severity="contrast"
-                                    text
-                                    rounded
-                                    aria-label="Back"
-                                    size="small"
-                                >
-                                    <template #icon>
-                                        <IconEye v-if="wallet.balance_visibility" size="16" />
-                                        <IconEyeOff v-else size="16" />
-                                    </template>
-                                </Button>
+                               <div v-else class="h-12 pt-1">
+                                   ****
+                               </div>
                             </div>
+                            <Button
+                                type="button"
+                                severity="contrast"
+                                text
+                                rounded
+                                aria-label="Back"
+                                size="small"
+                                @click="toggleVisibility"
+                            >
+                                <template #icon>
+                                    <IconEye v-if="balanceVisibility" size="16" />
+                                    <IconEyeOff v-else size="16" />
+                                </template>
+                            </Button>
                         </div>
-                        <Divider />
                         <WalletAction
                             :wallet="wallet"
+                            :allowedActions="allowedActions"
                         />
                     </div>
                 </template>
             </Card>
-<!--            <Card-->
-<!--                class="w-full hidden md:block self-stretch"-->
-<!--            >-->
-<!--                <template #content>-->
-<!--                    <div class="flex flex-col gap-3 items-start self-stretch">-->
-<!--                        <span class="text-xl font-semibold">$10000</span>-->
-<!--                        <span class="text-xs">Last month</span>-->
-<!--                    </div>-->
-<!--                </template>-->
-<!--            </Card>-->
         </div>
 
-        <Card
-            class="w-full"
-        >
-            <template #content>
-                <div class="flex flex-col gap-3 items-center self-stretch">
-                    Transaction
-                </div>
-            </template>
-        </Card>
+        <WalletHistory
+            :wallet="wallet"
+            :transactionCounts="transactionCounts"
+        />
     </ContentLayout>
 </template>
