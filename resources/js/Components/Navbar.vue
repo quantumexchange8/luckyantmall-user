@@ -27,6 +27,19 @@ defineProps({
 })
 
 const showingNavigationDropdown = ref(false);
+
+const activeTab = ref('home');
+
+const tabs = ref([
+    { name: 'home', label: 'Home', icon: IconHome, strokeWidth: 2, route: 'home' },
+    { name: 'shop', label: 'Shop', icon: IconCategory2, strokeWidth: 1, route: 'explore' },
+    { name: 'notifications', label: 'Notification', icon: IconBellRinging, strokeWidth: 1, route: 'notifications' },
+    { name: 'profile', label: 'Profile', icon: IconUser, strokeWidth: 1, route: 'profile', isLink: true },
+]);
+
+const setActiveTab = (routeName) => {
+    window.location.href = route(routeName);
+}
 </script>
 
 <template>
@@ -97,6 +110,8 @@ const showingNavigationDropdown = ref(false);
                             outlined
                             size="small"
                             aria-label="Cart"
+                            as="a"
+                            :href="route('cart')"
                         >
                             <template #icon>
                                 <IconShoppingCart size="16" />
@@ -200,25 +215,20 @@ const showingNavigationDropdown = ref(false);
     <!-- Mobile bottom bar -->
     <div
         class="fixed flex items-start justify-between gap-8 md:hidden inset-x-0 z-50 bottom-0 px-6 py-4 transition-transform duration-500 bg-white dark:bg-surface-900"
+        :class="{'hidden': hidden}"
     >
-        <div class="flex flex-col gap-2 items-center self-stretch text-surface-400 dark:text-surface-200 w-16">
-            <IconHome size="28" stroke-width="2" />
-            <span class="text-xs">Home</span>
-        </div>
-        <div class="flex flex-col gap-2 items-center self-stretch text-surface-400 dark:text-surface-200 w-16">
-            <IconCategory2 size="28" stroke-width="1" />
-            <span class="text-xs">Explore</span>
-        </div>
-        <div class="flex flex-col gap-2 items-center self-stretch text-surface-400 dark:text-surface-200 w-16">
-            <IconBellRinging size="28" stroke-width="1" />
-            <span class="text-xs">Notification</span>
-        </div>
-        <Link
-            :href="route('profile')"
-            class="flex flex-col gap-2 items-center self-stretch text-surface-400 dark:text-surface-200 w-16"
+        <div
+            v-for="tab in tabs"
+            :key="tab.name"
+            :class="{
+                'text-primary-500 font-bold': route().current(`${tab.route}*`),
+                'text-surface-400 dark:text-surface-500': !route().current(`${tab.route}*`),
+            }"
+            class="flex flex-col gap-1 items-center self-stretch w-16 cursor-pointer transition-colors duration-200"
+            @click="setActiveTab(tab.route)"
         >
-            <IconUser size="28" stroke-width="1" />
-            <span class="text-xs">Profile</span>
-        </Link>
+            <component :is="tab.icon" :size="28" :stroke-width="route().current(`${tab.route}*`) ? 2 : 1" />
+            <span class="text-xs">{{ tab.label }}</span>
+        </div>
     </div>
 </template>

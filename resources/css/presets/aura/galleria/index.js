@@ -68,12 +68,14 @@ export default {
             'py-4 px-1',
 
             // Colors
-            'bg-black/90',
+            'bg-gray-100 dark:bg-surface-900',
 
             {
                 'flex-row': parent.props.thumbnailsPosition === 'top' || parent.props.thumbnailsPosition === 'bottom',
                 'flex-col grow': parent.props.thumbnailsPosition === 'right' || parent.props.thumbnailsPosition === 'left'
-            }
+            },
+
+            'rounded-b-[12px] border border-surface-200 dark:border-surface-900',
         ]
     }),
     thumbnailPrevButton: {
@@ -88,13 +90,13 @@ export default {
             'm-2',
 
             // Appearance
-            'bg-transparent text-white w-8 h-8 rounded-full transition duration-200 ease-in-out',
+            'bg-transparent text-surface-800 dark:text-white w-8 h-8 rounded-full transition duration-200 ease-in-out',
 
             // Hover Effects
-            'hover:bg-surface-0/10 hover:text-white',
+            'hover:bg-surface-0/10 hover:text-surface-400 dark:hover:text-white',
 
             // Focus Effects
-            'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-400'
+            'focus:outline-none focus:outline-offset-0 focus:ring-0 focus:ring-primary-500 dark:focus:ring-primary-400'
         ]
     },
     thumbnailsViewport: {
@@ -144,13 +146,13 @@ export default {
             'm-2',
 
             // Appearance
-            'bg-transparent text-white w-8 h-8 rounded-full transition duration-200 ease-in-out',
+            'bg-transparent text-surface-800 dark:text-white w-8 h-8 rounded-full transition duration-200 ease-in-out',
 
             // Hover Effects
-            'hover:bg-surface-0/10 hover:text-white',
+            'hover:bg-surface-0/10 hover:text-surface-400 dark:hover:text-white',
 
             // Focus Effects
-            'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-400'
+            'focus:outline-none focus:outline-offset-0 focus:ring-0 focus:ring-primary-500 dark:focus:ring-primary-400'
         ]
     },
     indicatorList: ({ parent }) => ({
@@ -239,7 +241,7 @@ export default {
             'inline-flex justify-center items-center overflow-hidden',
 
             // Appearance
-            'bg-transparent text-white w-16 h-16 transition duration-200 ease-in-out rounded-md',
+            'bg-transparent dark:text-white w-16 h-16 transition duration-200 ease-in-out rounded-full',
             {
                 'opacity-0 group-hover:opacity-100': parent.props.showItemNavigatorsOnHover
             },
@@ -258,7 +260,7 @@ export default {
             'hover:bg-surface-0/10 hover:text-white',
 
             // Focus Effects
-            'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-400'
+            'focus:outline-none focus:outline-offset-0 focus:ring-0 focus:ring-primary-500 dark:focus:ring-primary-400'
         ]
     }),
     nextButton: ({ parent }) => ({
@@ -267,7 +269,7 @@ export default {
             'inline-flex justify-center items-center overflow-hidden',
 
             // Appearance
-            'bg-transparent text-white w-16 h-16 transition duration-200 ease-in-out rounded-md',
+            'bg-transparent text-white w-16 h-16 transition duration-200 ease-in-out rounded-full',
             {
                 'opacity-0 group-hover:opacity-100': parent.props.showItemNavigatorsOnHover
             },
@@ -286,7 +288,7 @@ export default {
             'hover:bg-surface-0/10 hover:text-white',
 
             // Focus Effects
-            'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-400'
+            'focus:outline-none focus:outline-offset-0 focus:ring-0 focus:ring-primary-500 dark:focus:ring-primary-400'
         ]
     }),
     caption: {

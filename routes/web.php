@@ -1,22 +1,16 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SelectOptionController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WalletController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\App;
-
-Route::get('/', function () {
-    return Inertia::render('Home/HomeScreen', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('home_screen');
 
 Route::get('locale/{locale}', function ($locale) {
     App::setLocale($locale);
@@ -31,8 +25,42 @@ Route::get('/dashboard', function () {
 
 Route::get('/getCountries', [SelectOptionController::class, 'getCountries'])->name('getCountries');
 
+/**
+ * ==============================
+ *            Home
+ * ==============================
+ */
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::prefix('home')->group(function () {
+    Route::get('/getPopularProducts', [HomeController::class, 'getPopularProducts'])->name('home.getPopularProducts');
+});
+
+/**
+ * ==============================
+ *            Shop
+ * ==============================
+ */
+Route::prefix('shop')->group(function () {
+//    Route::get('/', [ShopController::class, 'index'])->name('shop.index');
+    Route::get('/product/{slug}/{id}', [ShopController::class, 'product_detail'])->name('shop.product_detail');
+
+    Route::middleware('auth')->group(function () {
+        Route::post('/addToCart', [ShopController::class, 'addToCart'])->name('shop.addToCart');
+    });
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/getDepositProfiles', [WalletController::class, 'getDepositProfiles'])->name('profile.getDepositProfiles');
+    /**
+     * ==============================
+     *            Cart
+     * ==============================
+     */
+    Route::prefix('cart')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('cart');
+        Route::get('/getCartItems', [CartController::class, 'getCartItems'])->name('cart.getCartItems');
+    });
+
     /**
      * ==============================
      *            Profile

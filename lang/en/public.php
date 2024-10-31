@@ -29,4 +29,12 @@ return [
     "amount" => "Amount",
     "payment_slip" => "Payment Slip",
     "browse" => "Browse",
+    "add_to_cart" => "Add To Cart",
+    "buy_now" => "Buy Now",
+    "quantity" => "Quantity",
+    "shopping_cart" => "Shopping Cart",
+    "sub_total" => "Sub Total",
+    "shipping_fee" => "Shipping Fee",
+    "total" => "Total",
+    "proceed_to_checkout" => "Proceed To Checkout",
 ];

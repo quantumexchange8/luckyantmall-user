@@ -15,10 +15,14 @@ defineProps({
         <Navbar />
 
         <!-- Page Content -->
-        <main class="flex flex-1 justify-center items-start px-3 pt-3 pb-12 md:px-5 md:pt-5">
+        <main v-if="!route().current('home')" class="flex flex-1 justify-center items-start px-3 pt-3 pb-32 md:px-5 md:pt-5 md:pb-12">
             <div class="w-full max-w-7xl">
                 <slot />
             </div>
+        </main>
+
+        <main v-else class="flex flex-1 justify-center items-start pb-32 md:pb-12">
+            <slot />
         </main>
     </div>
 </template>

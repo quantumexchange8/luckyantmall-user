@@ -10,7 +10,7 @@ defineProps({
     title: String,
     backRoute: {
         type: String,
-        default: "home_screen"
+        default: "home"
     },
     routeParam: {
         type: String,

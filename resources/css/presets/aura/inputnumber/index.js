@@ -17,7 +17,7 @@ export default {
             { '!w-16': props.showButtons && props.buttonLayout == 'vertical' }
         ]
     }),
-    pcInput: {
+    pcInputText: {
         root: ({ parent, context }) => ({
             class: [
                 // Font
@@ -28,7 +28,7 @@ export default {
                 { 'w-[1%]': parent.props.fluid },
 
                 //Text
-                { 'text-center': parent.props.showButtons && parent.props.buttonLayout == 'vertical' },
+                { 'text-center': parent.props.showButtons && parent.props.buttonLayout === 'vertical' },
 
                 // Spacing
                 'py-2 px-3',
@@ -36,7 +36,7 @@ export default {
 
                 // Shape
                 'rounded-md',
-                { 'rounded-l-none rounded-r-none': parent.props.showButtons && parent.props.buttonLayout === 'horizontal' },
+                { 'rounded-l-none rounded-r-none': parent.props.showButtons || parent.props.buttonLayout === 'horizontal' },
                 { 'rounded-none': parent.props.showButtons && parent.props.buttonLayout === 'vertical' },
 
                 { 'border-0': parent.instance.$parentInstance?.$name === 'InputGroup' && !parent.props.showButtons },
@@ -62,7 +62,7 @@ export default {
                 { filled: parent.instance?.$parentInstance?.$name === 'FloatLabel' && parent.state.d_modelValue !== null },
 
                 //Position
-                { 'order-2': parent.props.buttonLayout == 'horizontal' || parent.props.buttonLayout === 'vertical' }
+                { 'order-2': parent.props.buttonLayout === 'horizontal' || parent.props.buttonLayout === 'vertical' }
             ]
         })
     },
@@ -105,8 +105,8 @@ export default {
             { 'border-b-0': props.showButtons && props.buttonLayout !== 'stacked' && props.buttonLayout === 'vertical' },
 
             // Sizing
-            'w-[3rem]',
-            { 'px-3 py-2': props.showButtons && props.buttonLayout !== 'stacked' },
+            'md:w-[3rem]',
+            { 'px-2 md:px-3 py-2': props.showButtons && props.buttonLayout !== 'stacked' },
             { 'p-0': props.showButtons && props.buttonLayout === 'stacked' },
             { 'w-full': props.showButtons && props.buttonLayout === 'vertical' },
 
@@ -150,8 +150,8 @@ export default {
             { 'border-t-0': props.showButtons && props.buttonLayout !== 'stacked' && props.buttonLayout === 'vertical' },
 
             // Sizing
-            'w-[3rem]',
-            { 'px-3 py-2': props.showButtons && props.buttonLayout !== 'stacked' },
+            'md:w-[3rem]',
+            { 'px-2 md:px-3 py-2': props.showButtons && props.buttonLayout !== 'stacked' },
             { 'p-0': props.showButtons && props.buttonLayout === 'stacked' },
             { 'w-full': props.showButtons && props.buttonLayout === 'vertical' },
 
