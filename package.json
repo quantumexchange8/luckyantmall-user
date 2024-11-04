@@ -18,6 +18,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@inertiajs/inertia": "^0.11.1",
         "@tabler/icons-vue": "^3.19.0",
         "@vueuse/core": "^11.1.0",
         "dayjs": "^1.11.13",

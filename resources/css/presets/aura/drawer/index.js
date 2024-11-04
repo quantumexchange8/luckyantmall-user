@@ -46,7 +46,7 @@ export default {
         ]
     },
     title: {
-        class: ['font-semibold text-xl']
+        class: ['font-semibold text-lg md:text-xl']
     },
     icons: {
         class: ['flex items-center']

@@ -107,14 +107,12 @@ const openDrawer = (data) => {
                                     >
                                         <div class="flex flex-row justify-between items-center flex-1 gap-6">
                                             <div class="flex flex-col justify-between items-start">
-                                                <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ $t(`public.${item.transaction_type}`) }}</span>
-                                                <div v-if="item.to_wallet" class="font-medium mt-1">
-                                                    {{ $t('public.to')}} {{ $t(`public.${item.to_wallet.type}`) }}
-                                                </div>
+                                                <span class="font-medium text-sm">{{ $t(`public.${item.transaction_type}`) }}</span>
                                                 <span class="font-medium text-surface-500 dark:text-surface-400 text-xs">{{ dayjs(item.approval_at).format('YYYY/MM/DD HH:mm:ss') }}</span>
                                             </div>
                                             <div class="flex flex-col items-end gap-1">
-                                                <span class="text-lg md:text-xl font-semibold">{{ item.to_wallet.currency_symbol }}{{ item.amount }}</span>
+                                                <span v-if="item.to_wallet" class="text-lg md:text-xl font-semibold">{{ item.to_wallet.currency_symbol }}{{ item.amount }}</span>
+                                                <span v-else class="text-lg md:text-xl font-semibold">{{ item.from_wallet.currency_symbol }}{{ item.amount }}</span>
                                                 <Tag :value="$t(`public.${item.status}`)" :severity="getSeverity(item.status)"></Tag>
                                             </div>
                                         </div>

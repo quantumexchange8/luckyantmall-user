@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SelectOptionController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WalletController;
 use Illuminate\Foundation\Application;
@@ -46,6 +47,7 @@ Route::prefix('shop')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::post('/addToCart', [ShopController::class, 'addToCart'])->name('shop.addToCart');
+        Route::post('/buyNow', [ShopController::class, 'buyNow'])->name('shop.buyNow');
     });
 });
 
@@ -59,6 +61,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('cart')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('cart');
         Route::get('/getCartItems', [CartController::class, 'getCartItems'])->name('cart.getCartItems');
+        Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
+        Route::post('/proceedCheckout', [CartController::class, 'proceedCheckout'])->name('cart.proceedCheckout');
+        Route::post('/confirmPayment', [CartController::class, 'confirmPayment'])->name('cart.confirmPayment');
     });
 
     /**
@@ -75,6 +81,18 @@ Route::middleware('auth')->group(function () {
 
         Route::post('submitDeposit', [WalletController::class, 'submitDeposit'])->name('profile.submitDeposit');
         Route::patch('updateBalanceVisibility', [WalletController::class, 'updateBalanceVisibility'])->name('profile.updateBalanceVisibility');
+    });
+
+    /**
+     * ==============================
+     *            Setting
+     * ==============================
+     */
+    Route::prefix('setting')->group(function () {
+        Route::get('/delivery_address', [SettingController::class, 'delivery_address'])->name('delivery_address');
+        Route::get('/getDeliveryAddress', [SettingController::class, 'getDeliveryAddress'])->name('getDeliveryAddress');
+
+        Route::post('addDeliveryAddress', [SettingController::class, 'addDeliveryAddress'])->name('setting.addDeliveryAddress');
     });
 });
 

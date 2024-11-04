@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
             'canLogin' => app('router')->has('login'),
             'canRegister' => app('router')->has('register'),
             'locale' => session('locale') ? session('locale') : app()->getLocale(),
+            'toast' => session('toast'),
         ];
     }
 }

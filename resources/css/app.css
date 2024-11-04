@@ -79,7 +79,7 @@
     /* Dialog */
     .dialog-xs {
         width: 90vw;
-        max-height: 96vh;
+        max-height: 80vh;
     }
 
     .dialog-sm {

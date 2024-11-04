@@ -6,6 +6,8 @@ import {
 } from "@tabler/icons-vue";
 import Button from "primevue/button";
 import Navbar from "@/Components/Navbar.vue";
+import SignIn from "@/Components/Navbar/SignIn.vue";
+import ToastList from "@/Components/ToastList.vue";
 
 defineProps({
     title: String,
@@ -47,19 +49,28 @@ defineProps({
                             {{ title }}
                         </div>
                     </div>
-                    <Button
-                        severity="secondary"
-                        outlined
-                        size="small"
-                        aria-label="Cart"
-                        as="a"
-                        :href="route('cart')"
-                    >
-                        <template #icon>
-                            <IconShoppingCart size="16"/>
-                        </template>
-                    </Button>
+                    <SignIn
+                        v-if="!$page.props.auth.user"
+                    />
+
+                    <div v-else>
+                        <Button
+                            severity="secondary"
+                            outlined
+                            size="small"
+                            aria-label="Cart"
+                            as="a"
+                            :href="route('cart')"
+                        >
+                            <template #icon>
+                                <IconShoppingCart size="16" />
+                            </template>
+                        </Button>
+                    </div>
                 </div>
+                <!-- Toast -->
+                <ToastList />
+
                 <slot/>
             </div>
         </main>

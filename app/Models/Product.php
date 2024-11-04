@@ -26,6 +26,7 @@ class Product extends Model implements HasMedia
         'discount_price',
         'final_price_type',
         'final_price',
+        'required_delivery',
     ];
 
     // Relations

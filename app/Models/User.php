@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -62,5 +63,21 @@ class User extends Authenticatable
     public function group(): HasOne
     {
         return $this->hasOne(GroupHasUser::class, 'user_id');
+    }
+
+    public function trading_accounts(): HasMany
+    {
+        return $this->hasMany(TradingAccount::class, 'user_id', 'id');
+    }
+
+    public function trading_users(): HasMany
+    {
+        return $this->hasMany(TradingUser::class, 'user_id', 'id');
+    }
+
+    public function active_trading_subscriptions(): HasMany
+    {
+        return $this->hasMany(TradingSubscription::class, 'user_id', 'id')
+            ->where('status', 'active');
     }
 }
