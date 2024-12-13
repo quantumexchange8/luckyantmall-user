@@ -14,6 +14,8 @@ import {ref, watch} from "vue";
 import {generalFormat} from "@/Composables/format.js";
 import InputNumber from 'primevue/inputnumber';
 import {useForm, usePage} from "@inertiajs/vue3";
+import Chip from 'primevue/chip';
+import InputError from "@/Components/InputError.vue";
 
 const props = defineProps({
     product: Object
@@ -40,6 +42,8 @@ const form = useForm({
     quantity: 1,
     price_per_unit: '',
     total_price: '',
+    action: '',
+    master_id: ''
 })
 
 watch(quantity, (val) => {
@@ -60,18 +64,25 @@ watch(quantity, (val) => {
     finalPrice.value = basePrice.value * val;
 });
 
+const handleChipClick = (master_id) => {
+    form.master_id = master_id
+}
+
 const submitForm = () => {
     form.quantity = quantity.value;
     form.price_per_unit = basePrice.value;
     form.total_price = finalPrice.value;
 
     if (drawerAction.value === 'add_to_cart') {
-        form.post(route('shop.addToCart'), {
-            onSuccess: () => {
-                form.reset();
-            }
-        })
+        form.action = drawerAction.value;
+    } else {
+        form.action = drawerAction.value;
     }
+    form.post(route('shop.addToCart'), {
+        onSuccess: () => {
+            form.reset();
+        }
+    })
 }
 </script>
 
@@ -146,7 +157,7 @@ const submitForm = () => {
         <Drawer
             v-model:visible="visible"
             :header="$t('public.details')"
-            class="w-full md:max-w-7xl pb-24 h-[75vh]"
+            class="w-full md:max-w-7xl pb-24 !h-4/5"
             position="bottom"
         >
             <div class="flex flex-col gap-3 self-stretch">
@@ -172,7 +183,7 @@ const submitForm = () => {
                     </div>
                 </div>
 
-                <!-- Quantity -->
+                <!-- Options -->
                 <div class="flex flex-col gap-3 self-stretch border-t border-surface-200 dark:border-surface-700 pt-3">
                     <div class="flex justify-between items-start w-full">
                         <span class="text-sm text-surface-400 dark:text-surface-500 w-full">{{ $t('public.quantity') }}</span>
@@ -191,6 +202,28 @@ const submitForm = () => {
                                 <IconMinus size="16" stroke-width="1.5" />
                             </template>
                         </InputNumber>
+                    </div>
+                    <div
+                        v-if="product.masters"
+                        class="flex flex-col md:flex-row gap-1 md:justify-between items-start w-full"
+                    >
+                        <span class="text-sm text-surface-400 dark:text-surface-500 w-full">{{ $t('public.investment_plan') }}</span>
+                        <div class="flex flex-col gap-1 w-full">
+                            <div class="flex gap-1 w-full md:justify-end">
+                                <div v-for="(chip, index) in product.masters" :key="index">
+                                    <Chip
+                                        :label="chip.master_name"
+                                        class="border dark:hover:border-surface-800"
+                                        :class="{
+                                    'border-primary-300 dark:border-surface-800 bg-primary-50 dark:bg-surface-800 hover:bg-primary-25 text-primary-500': form.master_id === chip.id,
+                                    'dark:border-surface-800 text-surface-950 dark:text-white': form.master_id !== chip.id,
+                                }"
+                                        @click="handleChipClick(chip.id)"
+                                    />
+                                </div>
+                            </div>
+                            <InputError class="md:text-right" :message="form.errors.master_id" />
+                        </div>
                     </div>
                     <div class="flex justify-between items-center w-full">
                         <span class="text-sm text-surface-400 dark:text-surface-500 w-full">{{ $t('public.total') }}</span>

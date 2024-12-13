@@ -14,11 +14,18 @@ import InputLabel from "@/Components/InputLabel.vue";
 const props = defineProps({
     cartItems: Object,
     default_address: Object,
-    wallet: Object
+    wallet: Object,
+    backRoute: String,
 })
 
+const requiresDelivery = computed(() =>
+    props.cartItems.some(item => item.product.required_delivery)
+);
+
+// Conditionally set `delivery_address_id` based on `requiresDelivery`
+const delivery_address_id = ref(requiresDelivery.value ? props.default_address?.id : null);
+
 const defaultAddress = props.default_address
-const delivery_address_id = ref(props.default_address.id)
 const {formatAmount} = generalFormat();
 
 const form = useForm({
@@ -31,7 +38,7 @@ const form = useForm({
 })
 
 const submitForm = () => {
-    form.delivery_address_id = delivery_address_id.value;
+    form.delivery_address_id = requiresDelivery.value ? delivery_address_id.value : null;
     form.sub_total = subTotalAmount.value;
     form.total_price = subTotalAmount.value;
     form.post(route('cart.confirmPayment'))
@@ -57,7 +64,7 @@ const closeDrawer = () => {
 <template>
     <ContentLayout
         :title="$t('public.checkout')"
-        backRoute="cart"
+        :backRoute="backRoute"
     >
         <div class="flex flex-col gap-3 items-center self-stretch">
             <Card class="w-full">
@@ -100,6 +107,7 @@ const closeDrawer = () => {
                     <div class="flex flex-col gap-3 self-stretch">
                         <span class="text-sm font-semibold">{{ $t('public.payment_details') }}</span>
                         <ChangeAddress
+                            v-if="defaultAddress"
                             :defaultAddress="defaultAddress"
                             @update:address="delivery_address_id = $event"
                         />
@@ -140,7 +148,7 @@ const closeDrawer = () => {
     <Drawer
         v-model:visible="visibility"
         :header="$t('public.confirm_payment')"
-        class="w-full md:max-w-[360px] pb-24 h-4/5"
+        class="w-full md:max-w-[360px] pb-24 !h-4/5"
         position="bottom"
     >
         <form>

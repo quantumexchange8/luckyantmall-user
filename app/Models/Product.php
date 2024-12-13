@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -16,8 +17,6 @@ class Product extends Model implements HasMedia
         'name',
         'item_id',
         'category_id',
-        'master_id',
-        'master_meta_login',
         'descriptions',
         'quantity',
         'base_price',
@@ -33,5 +32,17 @@ class Product extends Model implements HasMedia
     public function price_bundles(): HasMany
     {
         return $this->hasMany(ProductBundlePrice::class, 'product_id', 'id');
+    }
+
+    public function masters(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            TradingMaster::class,
+            ProductHasMaster::class,
+            'product_id',
+            'id',
+            'id',
+            'trading_master_id'
+        );
     }
 }

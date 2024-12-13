@@ -12,6 +12,7 @@ class OrderItem extends Model
     protected $fillable = [
         'order_id',
         'product_id',
+        'trading_master_id',
         'price_per_unit',
         'quantity',
         'delivered_at',

@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Redirect;
 
@@ -22,7 +23,8 @@ class ShopController extends Controller
     {
         $product = Product::with([
             'media',
-            'price_bundles'
+            'price_bundles',
+            'masters'
         ])->find($id);
 
         return Inertia::render('Product/ProductDetail', [
@@ -38,6 +40,11 @@ class ShopController extends Controller
             'quantity' => trans('public.quantity'),
         ])->validate();
 
+        $product = Product::find($request->product_id);
+        if (!empty($product->masters) && !$request->master_id) {
+            throw ValidationException::withMessages(['master_id' => trans('validation.required', ['attribute' => trans('public.investment_plan')])]);
+        }
+
         $cart = Cart::where('user_id', Auth::id())->first();
         if (!$cart) {
             $cart = Cart::create([
@@ -45,14 +52,22 @@ class ShopController extends Controller
             ]);
         }
 
-        CartItem::create([
+        $action = $request->action;
+
+        $cart_item  = CartItem::create([
             'cart_id' => $cart->id,
             'product_id' => $request->product_id,
+            'trading_master_id' => $request->master_id,
             'quantity' => $request->quantity,
             'price_per_unit' => $request->price_per_unit,
             'total_price' => $request->total_price,
         ]);
+        $cart_item->update(['type' => $action]);
 
-        return Redirect::route('cart');
+        if ($action == 'add_to_cart') {
+            return Redirect::route('cart');
+        } else {
+            return Redirect::route('cart.checkout');
+        }
     }
 }

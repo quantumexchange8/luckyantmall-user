@@ -9,6 +9,7 @@ use App\Models\CurrencyConversionRate;
 use App\Models\DeliveryAddress;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\TradingAccount;
 use App\Models\TradingMaster;
 use App\Models\TradingSubscription;
@@ -40,6 +41,7 @@ class CartController extends Controller
     public function getCartItems(Request $request)
     {
         $cartItems = CartItem::where('cart_id', $request->cartId)
+            ->where('type', 'add_to_cart')
             ->with([
                 'product:id,name,base_price',
                 'product.media',
@@ -77,6 +79,7 @@ class CartController extends Controller
             'cartItems' => $cartItems,
             'default_address' => $default_address,
             'wallet' => $wallet,
+            'backRoute' => $cartItems[0]->type == 'add_to_cart' ? 'cart' : 'home',
         ]);
     }
 
@@ -125,6 +128,7 @@ class CartController extends Controller
         // Create order
         $order = Order::create([
             'user_id' => Auth::id(),
+            'order_number' => RunningNumberService::getID('order'),
             'sub_total' => $request->sub_total,
             'delivery_fee' => 0,
             'discount_price' => 0,
@@ -139,10 +143,10 @@ class CartController extends Controller
         $all_items_no_delivery = true;
 
         $cart_items->each(function ($cart_item) use ($order, &$all_items_no_delivery) {
-            $product_item = CartItem::with('product:id,master_meta_login,required_delivery')
+            $product_item = CartItem::with('product:id,required_delivery')
                 ->find($cart_item['id']);
 
-            OrderItem::create([
+            $order_item = OrderItem::create([
                 'order_id' => $order->id,
                 'product_id' => $product_item->product_id,
                 'price_per_unit' => $product_item->price_per_unit,
@@ -151,9 +155,15 @@ class CartController extends Controller
                 'delivered_at' => $product_item->product->required_delivery ? null : now(),
             ]);
 
+            if ($order_item->status == 'delivered') {
+                $product = Product::find($product_item->product_id);
+                $product->decrement('quantity', $order_item->quantity);
+            }
+
             $all_items_no_delivery = $all_items_no_delivery && !$product_item->product->required_delivery;
 
-            if ($product_item->product->master_meta_login) {
+            if ($product_item->trading_master_id) {
+                $order_item->update(['trading_master_id' => $product_item->trading_master_id]);
                 $this->checkTradingAccount($product_item);
             }
 
@@ -165,7 +175,8 @@ class CartController extends Controller
             $order->update(['completed_at' => now(), 'status' => 'completed']);
         }
 
-        $this->recordTransaction(Auth::user(), $wallet, $total_price);
+        $transaction = $this->recordTransaction(Auth::user(), $wallet, $total_price);
+        $order->update(['transaction_id' => $transaction->id]);
 
         return Redirect::route('profile')->with('toast', [
             'title' => trans('public.success'),
@@ -179,9 +190,10 @@ class CartController extends Controller
         $user = Auth::user();
         $metaService = new MetaFiveService();
         $e_wallet = Wallet::firstWhere(['user_id' => $user->id, 'type' => 'e_wallet']);
+        $master = TradingMaster::find($item->trading_master_id);
         $subscription = TradingSubscription::where([
             'user_id' => $user->id,
-            'master_meta_login' => $item->product->master_meta_login,
+            'master_meta_login' => $master->meta_login,
             'status' => 'active'
         ])->first();
 
@@ -196,14 +208,14 @@ class CartController extends Controller
 
         $this->createTradingDeal($metaService, $trading_account, $subscription_amount, $original_price, $currency_rate, $item->product->id);
 
-        $this->createTradingSubscription($metaService, $user, $trading_account, $item->product->master_meta_login, $subscription_amount);
+        $this->createTradingSubscription($metaService, $user, $trading_account, $master->meta_login, $subscription_amount);
     }
 
     private function recordTransaction($user, $wallet, $amount)
     {
         $new_wallet_balance = $wallet->balance - $amount;
 
-        Transaction::create([
+        $transaction = Transaction::create([
             'user_id' => $user->id,
             'category' => 'e_wallet',
             'transaction_type' => 'payment',
@@ -220,7 +232,9 @@ class CartController extends Controller
             'approval_at' => now(),
         ]);
 
-        $wallet->update(['balance' => $new_wallet_balance]);;
+        $wallet->update(['balance' => $new_wallet_balance]);
+
+        return $transaction;
     }
 
     private function createTradingSubscription($metaService, $user, $trading_account, $master_meta_login, $subscription_amount)
@@ -247,6 +261,8 @@ class CartController extends Controller
             'real_fund' => $user->role == 'user' ? $subscription_amount : null,
             'demo_fund' => $user->role != 'user' ? $subscription_amount : null,
         ]);
+
+        $metaService->disableTrade($trading_account->meta_login);
 
         $metaService->createDeal($master_meta_login, $subscription_amount, 'Deposit #' . $trading_account->meta_login, MetaService::DEPOSIT);
 

@@ -52,4 +52,5 @@ return [
     "discard" => "Discard",
     "confirm" => "Confirm",
     "payment" => "Payment",
+    "investment_plan" => "Investment Plan",
 ];
