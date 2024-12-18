@@ -16,6 +16,7 @@ import InputNumber from 'primevue/inputnumber';
 import {useForm, usePage} from "@inertiajs/vue3";
 import Chip from 'primevue/chip';
 import InputError from "@/Components/InputError.vue";
+import {useLangObserver} from "@/Composables/localeObserver.js";
 
 const props = defineProps({
     product: Object
@@ -27,6 +28,7 @@ const basePrice = ref(props.product.base_price)
 const finalPrice = ref(props.product.base_price)
 const quantity = ref(1)
 const {formatAmount} = generalFormat();
+const { locale } = useLangObserver();
 
 const openDrawer = (action) => {
     if (!usePage().props.auth.user) {
@@ -101,7 +103,15 @@ const submitForm = () => {
                     :transitionInterval="2000"
                 >
                     <template #item="slotProps">
-                        <img :src="slotProps.item.original_url" :alt="slotProps.item.alt" class="rounded-t-[12px] h-[240px] object-cover" style="width: 100%; display: block" />
+                        <div class="flex justify-center bg-white dark:bg-surface-900 w-full rounded-t-[12px] pt-4 px-4">
+                            <Image
+                                :src="slotProps.item.original_url"
+                                :alt="slotProps.item.alt"
+                                imageClass="h-[300px] object-cover"
+                                preview
+                            />
+                        </div>
+
                     </template>
                     <template #thumbnail="slotProps">
                         <img :src="slotProps.item.original_url" :alt="slotProps.item.alt" class="w-16 sm:w-40 md:w-44 lg:w-[100px] xl:w-[130px] h-16 object-cover" style="display: block" />
@@ -112,13 +122,13 @@ const submitForm = () => {
                     <template #content>
                         <div class="flex flex-col gap-5 self-stretch w-full">
                             <div class="flex flex-col gap-1 self-stretch">
-                                <div class="text-xs">
-                                    rating
+                                <div class="text-xs text-surface-500">
+                                    {{ product.category.name[locale] }}
                                 </div>
                                 <div class="text-lg font-bold">
                                     {{ product.name }}
                                 </div>
-                                <div class="font-medium text-surface-400">
+                                <div class="font-semibold text-primary">
                                     ¥{{ formatAmount(product.base_price) }}
                                 </div>
                             </div>
@@ -204,7 +214,7 @@ const submitForm = () => {
                         </InputNumber>
                     </div>
                     <div
-                        v-if="product.masters"
+                        v-if="product.masters.length > 0"
                         class="flex flex-col md:flex-row gap-1 md:justify-between items-start w-full"
                     >
                         <span class="text-sm text-surface-400 dark:text-surface-500 w-full">{{ $t('public.investment_plan') }}</span>

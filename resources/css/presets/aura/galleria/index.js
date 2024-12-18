@@ -2,6 +2,7 @@ export default {
     content: ({ parent, props }) => ({
         class: [
             'flex',
+            'shadow-box',
             {
                 'flex-col': props.fullScreen
             },
@@ -68,14 +69,14 @@ export default {
             'py-4 px-1',
 
             // Colors
-            'bg-gray-100 dark:bg-surface-900',
+            'bg-white dark:bg-surface-900',
 
             {
                 'flex-row': parent.props.thumbnailsPosition === 'top' || parent.props.thumbnailsPosition === 'bottom',
                 'flex-col grow': parent.props.thumbnailsPosition === 'right' || parent.props.thumbnailsPosition === 'left'
             },
 
-            'rounded-b-[12px] border border-surface-200 dark:border-surface-900',
+            'rounded-b-[12px]',
         ]
     }),
     thumbnailPrevButton: {

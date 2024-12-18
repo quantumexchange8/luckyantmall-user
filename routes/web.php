@@ -25,6 +25,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/getCountries', [SelectOptionController::class, 'getCountries'])->name('getCountries');
+Route::get('/getCategories', [SelectOptionController::class, 'getCategories'])->name('getCategories');
 
 /**
  * ==============================
@@ -42,7 +43,8 @@ Route::prefix('home')->group(function () {
  * ==============================
  */
 Route::prefix('shop')->group(function () {
-//    Route::get('/', [ShopController::class, 'index'])->name('shop.index');
+    Route::get('/', [ShopController::class, 'index'])->name('shop');
+    Route::get('/getProducts', [ShopController::class, 'getProducts'])->name('shop.getProducts');
     Route::get('/product/{slug}/{id}', [ShopController::class, 'product_detail'])->name('shop.product_detail');
 
     Route::middleware('auth')->group(function () {

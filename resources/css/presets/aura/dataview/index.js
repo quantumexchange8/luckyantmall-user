@@ -1,4 +1,9 @@
 export default {
+    root: {
+        class: [
+            'flex flex-col gap-3 md:gap-5'
+        ]
+    },
     content: {
         class: [
             // Spacing
@@ -9,7 +14,6 @@ export default {
 
             // Color
             'text-surface-700 dark:text-white/80',
-            'bg-surface-0 dark:bg-surface-900'
         ]
     },
     header: {
@@ -21,8 +25,9 @@ export default {
 
             // Color
             'text-surface-800 dark:text-white/80',
-            'bg-surface-00 dark:bg-surface-900',
-            'border-b border-surface-200 dark:border-surface-700'
+            'bg-surface-0 dark:bg-surface-900',
+
+            'rounded-[12px]'
         ]
     }
 };

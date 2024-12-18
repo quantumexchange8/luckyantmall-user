@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -26,12 +27,18 @@ class Product extends Model implements HasMedia
         'final_price_type',
         'final_price',
         'required_delivery',
+        'is_auth_visible',
     ];
 
     // Relations
     public function price_bundles(): HasMany
     {
         return $this->hasMany(ProductBundlePrice::class, 'product_id', 'id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function masters(): HasManyThrough

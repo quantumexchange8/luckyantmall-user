@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Country;
 
 class SelectOptionController extends Controller
@@ -12,5 +13,18 @@ class SelectOptionController extends Controller
             ->get();
 
         return response()->json($countries);
+    }
+
+    public function getCategories()
+    {
+        $query = Category::query();
+
+        if (!auth()->check()) {
+            $query->where('is_auth_visible', 1);
+        }
+
+        $categories = $query->get();
+
+        return response()->json($categories);
     }
 }

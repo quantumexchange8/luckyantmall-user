@@ -8,6 +8,7 @@ import Carousel from 'primevue/carousel';
 import Tag from 'primevue/tag';
 import Button from 'primevue/button';
 import {Link} from "@inertiajs/vue3"
+import {generalFormat} from "@/Composables/format.js";
 
 onMounted(() => {
     PhotoService.getImages().then((data) => (images.value = data));
@@ -36,6 +37,7 @@ onMounted(() => {
 const products = ref();
 const numVisible = ref(1);
 const isLoading = ref(false);
+const {formatAmount} = generalFormat();
 
 function updateNumVisible() {
     const width = window.innerWidth;
@@ -142,17 +144,22 @@ const getSeverity = (status) => {
                                 <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
                                     <div class="mb-4">
                                         <div class="relative mx-auto">
-                                            <img :src="slotProps.data.media[0].original_url" :alt="slotProps.data.name" class="w-full md:w-[300px] rounded" />
-                                            <Tag :value="slotProps.data.inventoryStatus" :severity="getSeverity(slotProps.data.inventoryStatus)" class="absolute" style="left:5px; top: 5px"/>
+                                            <img
+                                                :src="slotProps.data.media[0].original_url"
+                                                :alt="slotProps.data.name"
+                                                class="w-full md:w-[300px] h-[240px] object-cover rounded"
+                                            />
+                                            <Tag
+                                                :value="slotProps.data.inventoryStatus"
+                                                :severity="getSeverity(slotProps.data.inventoryStatus)"
+                                                class="absolute"
+                                                style="left:5px; top: 5px"
+                                            />
                                         </div>
                                     </div>
-                                    <div class="mb-4 font-medium">{{ slotProps.data.name }}</div>
-                                    <div class="flex justify-between items-center">
-                                        <div class="mt-0 font-semibold text-xl">¥{{ slotProps.data.base_price }}</div>
-                                        <span>
-                    <Button type="button" @click.prevent icon="pi pi-heart" severity="secondary" outlined />
-                    <Button icon="pi pi-shopping-cart" class="ml-2"/>
-                </span>
+                                    <div class="mb-4 font-medium truncate max-w-52 dark:text-white">{{ slotProps.data.name }}</div>
+                                    <div class="flex justify-between items-center dark:text-surface-300">
+                                        <div class="mt-0 font-semibold text-xl">¥{{ formatAmount(slotProps.data.base_price) }}</div>
                                     </div>
                                 </div>
                             </Link>

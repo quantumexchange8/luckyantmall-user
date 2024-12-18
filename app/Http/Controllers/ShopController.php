@@ -16,7 +16,60 @@ class ShopController extends Controller
 {
     public function index()
     {
+        $categoriesData = app(SelectOptionController::class)
+            ->getCategories()
+            ->getData();
 
+        return Inertia::render('Product/ProductListing', [
+            'productsCount' => Product::count(),
+            'categories' => $categoriesData
+        ]);
+    }
+
+    public function getProducts(Request $request)
+    {
+        $limit = $request->input('limit', 12);
+
+        $search = $request->input('search', '');
+        $sortType = $request->input('sortType');
+        $categories = $request->input('categories');
+
+        $query = Product::query()
+            ->with([
+                'category',
+                'media'
+            ]);
+
+        if (!empty($search)) {
+            $keyword = '%' . $search . '%';
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', $keyword)
+                    ->orWhere('descriptions', 'like', $keyword);
+            });
+        }
+
+        if ($categories) {
+            $categoryIds = explode(',', $categories);;
+            $query->whereIn('category_id', $categoryIds);
+        }
+
+        if (!auth()->check()) {
+            $query->where('is_auth_visible', 1);
+        }
+
+        $sortType = json_decode($request->get('sortType'), true);
+        if (!empty($sortType)) {
+            $field = $sortType['field'] ?? 'created_at';
+            $direction = $sortType['direction'] ?? 'desc';
+
+            $query->orderBy($field, $direction);
+        }
+
+        $products = $query->paginate($limit);
+
+        return response()->json([
+            'products' => $products,
+        ]);
     }
 
     public function product_detail($slug, $id)
@@ -24,7 +77,8 @@ class ShopController extends Controller
         $product = Product::with([
             'media',
             'price_bundles',
-            'masters'
+            'masters',
+            'category'
         ])->find($id);
 
         return Inertia::render('Product/ProductDetail', [

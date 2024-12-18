@@ -32,7 +32,7 @@ const activeTab = ref('home');
 
 const tabs = ref([
     { name: 'home', label: 'Home', icon: IconHome, strokeWidth: 2, route: 'home' },
-    { name: 'shop', label: 'Shop', icon: IconCategory2, strokeWidth: 1, route: 'explore' },
+    { name: 'shop', label: 'Shop', icon: IconCategory2, strokeWidth: 1, route: 'shop' },
     { name: 'notifications', label: 'Notification', icon: IconBellRinging, strokeWidth: 1, route: 'notifications' },
     { name: 'profile', label: 'Profile', icon: IconUser, strokeWidth: 1, route: 'profile', isLink: true },
 ]);
@@ -53,7 +53,7 @@ const setActiveTab = (routeName) => {
                 <div class="flex w-full">
                     <!-- Logo -->
                     <div class="flex shrink-0 items-center">
-                        <Link :href="route('dashboard')">
+                        <Link :href="route('home')">
                             <ApplicationLogo
                                 class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
                             />
@@ -65,17 +65,24 @@ const setActiveTab = (routeName) => {
                         class="hidden sm:flex items-center justify-end w-full gap-5"
                     >
                         <NavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
+                            :href="route('shop')"
+                            :active="route().current('shop')"
                         >
-                            {{ $t('public.dashboard') }}
+                            {{ $t('public.shop') }}
                         </NavLink>
 
                         <NavLink
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-                            Dashboard
+                            {{ $t('public.report') }}
+                        </NavLink>
+
+                        <NavLink
+                            :href="route('profile')"
+                            :active="route().current('profile')"
+                        >
+                            {{ $t('public.profile') }}
                         </NavLink>
                     </div>
                 </div>
