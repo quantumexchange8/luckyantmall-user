@@ -1,11 +1,13 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
+import Checkbox from 'primevue/checkbox';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import InputText from 'primevue/inputtext';
+import Password from 'primevue/password';
+import {Link, useForm} from '@inertiajs/vue3';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import Button from 'primevue/button';
 
 defineProps({
     canResetPassword: {
@@ -30,71 +32,93 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Log in" />
-
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+    <GuestLayout :title="$t('public.login')">
+        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <div class="w-full flex flex-col justify-center items-center gap-8">
+            <div class="w-full flex flex-col items-center gap-6 self-stretch">
+                <div class="rounded-lg bg-logo w-16 h-16 p-2 flex items-center justify-center">
+                    <ApplicationLogo class="w-12 h-12 fill-white" />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
+                </div>
+                <div class="w-full flex flex-col items-start gap-3 self-stretch">
+                    <div class="self-stretch text-center text-gray-950 text-xl font-semibold">{{ $t('public.login_header') }}</div>
+                    <div class="self-stretch text-center text-gray-500">{{ $t('public.login_header_caption') }}</div>
+                </div>
             </div>
+            <form @submit.prevent="submit" class="flex flex-col items-center gap-6 self-stretch">
+                <div class="flex flex-col items-start gap-5 self-stretch">
+                    <div class="flex flex-col items-start gap-1 self-stretch">
+                        <InputLabel for="email" :value="$t('public.email')" :invalid="!!form.errors.email" />
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                        <InputText
+                            id="email"
+                            type="email"
+                            class="block w-full"
+                            v-model="form.email"
+                            autofocus
+                            :placeholder="$t('public.enter_your_email')"
+                            :invalid="!!form.errors.email"
+                            autocomplete="username"
+                        />
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
+                        <InputError :message="form.errors.email" />
+                    </div>
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+                    <div class="flex flex-col items-start gap-1 self-stretch">
+                        <InputLabel
+                            for="password"
+                            :value="$t('public.password')"
+                            :invalid="!!form.errors.password"
+                        />
 
-            <div class="mt-4 block">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400"
-                        >Remember me</span
+                        <Password
+                            v-model="form.password"
+                            toggleMask
+                            placeholder="••••••••"
+                            :invalid="!!form.errors.password"
+                            :feedback="false"
+                        />
+
+                        <InputError :message="form.errors.password" />
+                    </div>
+                </div>
+                <div class="flex justify-between items-center self-stretch">
+                    <label class="flex items-center cursor-pointer gap-2">
+                        <Checkbox
+                            v-model="form.remember"
+                            inputId="remember"
+                        />
+                        <span class="text-sm text-gray-600 font-medium">{{ $t('public.remember_me') }}</span>
+                    </label>
+
+                    <Link
+                        v-if="canResetPassword"
+                        :href="route('password.request')"
+                        class="text-right text-sm text-primary-500 font-semibold"
                     >
-                </label>
-            </div>
+                        {{ $t('public.forgot_your_password') }}
+                    </Link>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
+                </div>
+                <Button
+                    type="submit"
+                    :label="$t('public.sign_in')"
+                    class="w-full"
                     :disabled="form.processing"
-                >
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
+                />
+                <div class="text-sm text-gray-700">
+                    {{ $t('public.dont_have_an_account') }}
+                    <Link
+                        :href="route('register')"
+                        class="text-right text-sm text-primary-500 font-semibold"
+                    >
+                        {{ $t('public.register') }}
+                    </Link>
+                </div>
+            </form>
+        </div>
     </GuestLayout>
 </template>

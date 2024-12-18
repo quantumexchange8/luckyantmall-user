@@ -1,14 +1,20 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { Link } from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import {isDark, toggleDarkMode} from "@/Composables/index.js";
 import {IconMoon, IconSun} from "@tabler/icons-vue";
 import Button from "primevue/button";
 import ChangeLocale from "@/Components/Navbar/ChangeLocale.vue";
 import dayjs from "dayjs";
+
+defineProps({
+    title: String
+})
 </script>
 
 <template>
+    <Head :title="title"></Head>
+
     <div class="flex flex-col min-h-screen bg-surface-0 dark:bg-surface-950">
         <div class="flex mx-auto w-full max-w-7xl px-3 py-2 sm:px-6 lg:px-5 xl:px-0 justify-between items-center">
             <div>

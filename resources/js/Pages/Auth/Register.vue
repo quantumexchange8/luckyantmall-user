@@ -124,7 +124,7 @@ const handleBack = () => {
     >
         <div class="w-full flex p-3">
             <!-- Col -->
-            <div class="hidden md:flex flex-col items-start gap-20 px-5 bg-primary-100 dark:bg-surface-900 shadow-box rounded-lg min-w-80">
+            <div class="hidden md:flex flex-col items-start gap-20 px-5 bg-white border-2 border-surface-200 dark:bg-surface-900 shadow-box rounded-lg min-w-80">
                 <Link href="/" class="w-full flex items-center py-[18px]">
                     <div class="flex items-center self-stretch gap-2">
                         <div class="px-2">
@@ -133,7 +133,7 @@ const handleBack = () => {
                         <div
                             class="text-lg font-bold text-gray-800 w-full"
                         >
-                            Luckyant Mall
+                            {{ $t('public.luckyant_mall') }}
                         </div>
                     </div>
                 </Link>
@@ -208,7 +208,7 @@ const handleBack = () => {
                     <form class="flex flex-col items-center gap-6 self-stretch">
                         <!-- Basic information -->
                         <template v-if="selectedStep.step === 1">
-                            <div class="flex flex-col items-center gap-5 self-stretch pb-6">
+                            <div class="flex flex-col items-center gap-3 self-stretch pb-6">
                                 <!-- name -->
                                 <div class="flex flex-col gap-1 items-start self-stretch">
                                     <InputLabel
@@ -358,7 +358,7 @@ const handleBack = () => {
 
                         <!-- Credentials -->
                         <template v-if="selectedStep.step === 2">
-                            <div class="flex flex-col items-center gap-5 self-stretch pb-6">
+                            <div class="flex flex-col items-center gap-3 self-stretch pb-6">
 
                                 <!-- password -->
                                 <div class="flex flex-col gap-1 items-start self-stretch">
@@ -369,6 +369,7 @@ const handleBack = () => {
                                     <Password
                                         v-model="form.password"
                                         toggleMask
+                                        placeholder="••••••••"
                                         :invalid="!!form.errors.password"
                                     />
                                     <InputError :message="form.errors.password" />
@@ -384,6 +385,7 @@ const handleBack = () => {
                                     <Password
                                         v-model="form.password_confirmation"
                                         toggleMask
+                                        placeholder="••••••••"
                                         :invalid="!!form.errors.password"
                                     />
                                 </div>
@@ -392,7 +394,7 @@ const handleBack = () => {
 
                         <!-- Referral Program -->
                         <template v-if="selectedStep.step === 3">
-                            <div class="flex flex-col items-center gap-5 self-stretch pb-6">
+                            <div class="flex flex-col items-center gap-3 self-stretch pb-6">
                                 <!-- referral code -->
                                 <div class="flex flex-col gap-1 items-start self-stretch">
                                     <InputLabel
@@ -422,7 +424,7 @@ const handleBack = () => {
                                             inputId="terms"
                                             value="terms"
                                         />
-                                        <label for="terms" class="text-xs text-surface-500 dark:text-surface-400">I ajndajdn asdasdiuandsajd nadu dniuadasndsa uida</label>
+                                        <label for="terms" class="text-xs text-surface-500 dark:text-surface-400">{{ $t('public.terms_and_conditions') }}</label>
                                     </div>
                                     <InputError :message="form.errors.terms" />
                                 </div>
