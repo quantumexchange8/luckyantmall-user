@@ -3,6 +3,7 @@ import Card from "primevue/card";
 import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import Skeleton from "primevue/skeleton";
+import {generalFormat} from "@/Composables/format.js";
 
 const props = defineProps({
     walletCounts: Number
@@ -10,6 +11,7 @@ const props = defineProps({
 
 const wallets = ref([]);
 const isLoading = ref(false);
+const {formatAmount} = generalFormat();
 
 const getResults = async () => {
     isLoading.value = true;
@@ -66,7 +68,7 @@ const redirectToWallet = (walletType) => {
                     <div class="flex flex-col">
                         <span class="text-xs md:text-sm dark:text-surface-400">{{ $t(`public.${wallet.type}`) }}</span>
                         <div class="md:text-lg text-primary-500 font-semibold">
-                            <span v-if="wallet.currency_symbol !== 'point'">{{ wallet.currency_symbol }}{{ wallet.balance }}</span>
+                            <span v-if="wallet.currency_symbol !== 'point'">{{ wallet.currency_symbol }}{{ formatAmount(wallet.balance) }}</span>
                             <span v-else>{{ wallet.balance }} {{ $t(`public.${wallet.currency_symbol}`) }}</span>
                         </div>
                     </div>

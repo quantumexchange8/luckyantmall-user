@@ -10,6 +10,7 @@ import Drawer from "primevue/drawer";
 import ChangeAddress from "@/Pages/Cart/Checkout/ChangeAddress.vue";
 import InputOtp from 'primevue/inputotp';
 import InputLabel from "@/Components/InputLabel.vue";
+import AddAddress from "@/Pages/Setting/DeliveryAddress/AddAddress.vue";
 
 const props = defineProps({
     cartItems: Object,
@@ -74,7 +75,7 @@ const closeDrawer = () => {
                         <!-- Checkout Items -->
                         <div v-for="(item, index) in cartItems" :key="index">
                             <div class="flex flex-col items-center gap-4" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
-                                <img class="block xl:block mx-auto rounded w-full h-32 object-cover" :src="item.product.media[0].original_url" :alt="item.name" />
+                                <img class="block xl:block mx-auto rounded h-[300px] object-cover" :src="item.product.media[0].original_url" :alt="item.name" />
                                 <div class="flex justify-between md:items-center gap-6 w-full">
                                     <div class="flex w-full justify-between items-start gap-3">
                                         <div class="flex flex-col">
@@ -106,11 +107,17 @@ const closeDrawer = () => {
                 <template #content>
                     <div class="flex flex-col gap-3 self-stretch">
                         <span class="text-sm font-semibold">{{ $t('public.payment_details') }}</span>
-                        <ChangeAddress
+                        <div
                             v-if="defaultAddress"
-                            :defaultAddress="defaultAddress"
-                            @update:address="delivery_address_id = $event"
-                        />
+                        >
+                            <ChangeAddress
+                                :defaultAddress="defaultAddress"
+                                @update:address="delivery_address_id = $event"
+                            />
+                        </div>
+                        <div v-else>
+                            <AddAddress />
+                        </div>
                         <div class="flex flex-col gap-3 md:gap-5 items-center self-stretch">
                             <div class="flex flex-col gap-1 items-center self-stretch">
                                 <div class="flex justify-between gap-1 md:items-center self-stretch">

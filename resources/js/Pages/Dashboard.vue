@@ -24,23 +24,6 @@ import Card from 'primevue/card';
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
-                >
-                    <div class="p-6 text-gray-900 dark:text-gray-100 flex gap-3">
-                        <InputText type="text" v-model="value" />
-
-                        <Button label="Primary" />
-                        <Button label="Secondary" severity="secondary" />
-                        <Button label="Success" severity="success" />
-                        <Button label="Info" severity="info" />
-                        <Button label="Warn" severity="warn" />
-                        <Button label="Help" severity="help" />
-                        <Button label="Danger" severity="danger" />
-                        <Button label="Contrast" severity="contrast" />
-
-                    </div>
-                </div>
                 <Card>
                     <template #title>Simple Card</template>
                     <template #content>

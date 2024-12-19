@@ -95,7 +95,7 @@ class ShopController extends Controller
         ])->validate();
 
         $product = Product::find($request->product_id);
-        if (!empty($product->masters) && !$request->master_id) {
+        if (($product->masters)->isNotEmpty() && !$request->master_id) {
             throw ValidationException::withMessages(['master_id' => trans('validation.required', ['attribute' => trans('public.investment_plan')])]);
         }
 

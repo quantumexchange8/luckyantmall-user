@@ -67,6 +67,10 @@ class CartController extends Controller
             ->latest()
             ->get();
 
+        if ($cartItems->isEmpty()) {
+            return to_route('home');
+        }
+
         $default_address = DeliveryAddress::where('user_id', Auth::id())
             ->where('default_address', 1)
             ->first();
@@ -151,7 +155,7 @@ class CartController extends Controller
                 'product_id' => $product_item->product_id,
                 'price_per_unit' => $product_item->price_per_unit,
                 'quantity' => $product_item->quantity,
-                'status' => $product_item->product->required_delivery ? 'pending' : 'delivered',
+                'status' => $product_item->product->required_delivery ? 'processing' : 'delivered',
                 'delivered_at' => $product_item->product->required_delivery ? null : now(),
             ]);
 

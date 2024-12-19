@@ -2,6 +2,7 @@
 import MasterLayout from "@/Layouts/MasterLayout.vue";
 import Card from "primevue/card";
 import Wallet from "@/Pages/Profile/Wallets/Wallet.vue";
+import ReferralCode from "@/Pages/Profile/Partials/ReferralCode.vue";
 
 const props = defineProps({
     walletCounts: Number
@@ -52,7 +53,7 @@ const props = defineProps({
             <!-- Referral -->
             <Card class="w-full">
                 <template #content>
-                    <div class="text-xs w-full text-left">Invite your friends</div>
+                    <ReferralCode />
                 </template>
             </Card>
 
