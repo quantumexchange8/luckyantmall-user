@@ -103,7 +103,7 @@ return [
     "forgot_your_password" => "Forgot your password",
     "dont_have_an_account" => "Dont have an account?",
     "sign_in" => "Sign in",
-    "my_referral_code" => "My Referral Code",
+    "share_referral_code" => "Share Referral Code",
     "add_address" => "Add Address",
     "new_address" => "New Address",
     "contact_information" => "Contact Information",

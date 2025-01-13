@@ -3,13 +3,21 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex, nofollow">
+        @if (App::environment('production') || App::environment('staging'))
+            <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+        @endif
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'Luckyant Mall') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+        <!-- Icon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico')}}">
+        <link rel="apple-touch-icon" href="{{ asset('favicon.ico')}}">
 
         <!-- Scripts -->
         @routes

@@ -50,7 +50,7 @@ const setActiveTab = (routeName) => {
         <!-- Primary Navigation Menu -->
         <div class="mx-auto max-w-7xl px-3 sm:px-6 lg:px-5 xl:px-0">
             <div class="flex h-16 justify-between">
-                <div class="flex w-full">
+                <div class="flex gap-8 w-full">
                     <!-- Logo -->
                     <div class="flex shrink-0 items-center">
                         <Link :href="route('home')">
@@ -62,7 +62,7 @@ const setActiveTab = (routeName) => {
 
                     <!-- Items Link -->
                     <div
-                        class="hidden sm:flex items-center justify-end w-full gap-5"
+                        class="hidden sm:flex items-center w-full gap-5"
                     >
                         <NavLink
                             :href="route('shop')"

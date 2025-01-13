@@ -8,6 +8,7 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import PrimeVue from 'primevue/config';
 import { i18nVue } from 'laravel-vue-i18n';
+import iosZoomFix from '../js/Composables/ios-zoom-fix.js';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -19,7 +20,7 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
             .use(i18nVue, {
@@ -33,9 +34,13 @@ createInertiaApp({
                 unstyled: true,
                 pt: Aura
             })
-            .mount(el);
+
+        app.mount(el);
+
+        // Run the iOS zoom fix
+        iosZoomFix();
     },
     progress: {
-        color: '#4B5563',
+        color: '#3b82f6',
     },
 });

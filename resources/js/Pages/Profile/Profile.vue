@@ -3,10 +3,13 @@ import MasterLayout from "@/Layouts/MasterLayout.vue";
 import Card from "primevue/card";
 import Wallet from "@/Pages/Profile/Wallets/Wallet.vue";
 import ReferralCode from "@/Pages/Profile/Partials/ReferralCode.vue";
+import {usePage} from "@inertiajs/vue3";
 
 const props = defineProps({
     walletCounts: Number
-})
+});
+
+const user = usePage().props.auth.user;
 </script>
 
 <template>
@@ -17,8 +20,8 @@ const props = defineProps({
                     <div class="flex gap-3 items-center self-stretch">
                         <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
                         <div class="flex flex-col">
-                            <span class="text-sm font-medium">name</span>
-                            <span class="text-xs dark:text-surface-400">email@email.com</span>
+                            <span class="text-sm font-medium">{{ user.username }}</span>
+                            <span class="text-xs dark:text-surface-400">{{ user.email }}</span>
                         </div>
                     </div>
                 </template>
@@ -34,35 +37,37 @@ const props = defineProps({
             <div class="flex justify-evenly items-center self-stretch w-full">
                 <div class="flex flex-col">
                     <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs">Orders</span>
+                    <span class="text-xs">Proccesing</span>
                 </div>
                 <div class="flex flex-col">
                     <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs">Orders</span>
+                    <span class="text-xs">Shipping</span>
                 </div>
                 <div class="flex flex-col">
                     <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs">Orders</span>
+                    <span class="text-xs">Completed</span>
                 </div>
                 <div class="flex flex-col">
                     <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs">Orders</span>
+                    <span class="text-xs">Cancelled</span>
                 </div>
             </div>
 
-            <!-- Referral -->
-            <Card class="w-full">
-                <template #content>
-                    <ReferralCode />
-                </template>
-            </Card>
+            <div class="flex flex-col md:flex-row gap-3 md:gap-5 self-stretch w-full">
+                <!-- Referral -->
+                <Card class="w-full">
+                    <template #content>
+                        <ReferralCode />
+                    </template>
+                </Card>
 
-            <!-- Settings -->
-            <Card class="w-full">
-                <template #content>
-                    <div class="text-xs w-full text-left">Settings</div>
-                </template>
-            </Card>
+                <!-- Settings -->
+                <Card class="w-full">
+                    <template #content>
+                        <div class="text-xs w-full text-left">Settings</div>
+                    </template>
+                </Card>
+            </div>
         </div>
     </MasterLayout>
 </template>

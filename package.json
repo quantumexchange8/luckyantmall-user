@@ -25,6 +25,7 @@
         "laravel-vue-i18n": "^2.7.7",
         "lodash": "^4.17.21",
         "primevue": "^4.1.0",
+        "qrcode.vue": "^3.6.0",
         "tailwindcss-primeui": "^0.3.4"
     }
 }

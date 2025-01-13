@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Auth;
 use Inertia\Inertia;
@@ -10,7 +11,13 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Home/HomeScreen');
+        $categoriesData = app(SelectOptionController::class)
+            ->getCategories()
+            ->getData();
+
+        return Inertia::render('Home/HomeScreen', [
+            'categories' => $categoriesData,
+        ]);
     }
 
     public function getPopularProducts()

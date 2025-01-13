@@ -9,6 +9,11 @@ import Tag from 'primevue/tag';
 import Button from 'primevue/button';
 import {Link} from "@inertiajs/vue3"
 import {generalFormat} from "@/Composables/format.js";
+import {useLangObserver} from "@/Composables/localeObserver.js";
+
+defineProps({
+    categories: Object,
+})
 
 onMounted(() => {
     PhotoService.getImages().then((data) => (images.value = data));
@@ -26,9 +31,6 @@ const responsiveOptions = ref([
     }
 ]);
 
-const categories = ref();
-
-
 onMounted(() => {
     updateNumVisible();
     window.addEventListener('resize', updateNumVisible);
@@ -38,6 +40,7 @@ const products = ref();
 const numVisible = ref(1);
 const isLoading = ref(false);
 const {formatAmount} = generalFormat();
+const {locale} = useLangObserver();
 
 function updateNumVisible() {
     const width = window.innerWidth;
@@ -85,11 +88,15 @@ const getSeverity = (status) => {
             return null;
     }
 };
+
+const redirectToCategory = (category) => {
+    window.location.href = route('shop', {category: category});
+}
 </script>
 
 <template>
     <MasterLayout title="Home">
-        <div class="flex flex-col gap-3 md:gap-5 justify-center items-center w-full">
+        <div class="flex flex-col gap-5 md:gap-8 justify-center items-center w-full">
             <Galleria
                 :value="images"
                 :responsiveOptions="responsiveOptions"
@@ -109,20 +116,26 @@ const getSeverity = (status) => {
                 </template>
             </Galleria>
 
-            <div class="w-full max-w-7xl flex flex-col justify-center items-start gap-3 md:gap-5 px-3 pb-12 md:px-5">
+            <div class="w-full max-w-7xl flex flex-col justify-center items-start gap-5 md:gap-8 px-3 pb-12 md:px-5">
                 <!-- Category -->
                 <div class="flex flex-col gap-3 self-stretch">
                     <div class="flex justify-between items-center">
                         <span class="text-surface-950 dark:text-white font-medium">Shop by category</span>
-                        <span class="text-sm text-surface-500">See more</span>
                     </div>
-                    <div class="flex gap-5 items-center self-stretch overflow-x-auto">
-                        <div class="flex flex-col gap-1 items-center self-stretch">
-                            <div class="rounded-full w-16 h-16 grow-0 shrink-0 bg-surface-200 dark:bg-surface-800">
+                    <div class="flex gap-3 md:gap-5 items-center self-stretch overflow-x-auto no-scrollbar">
+                        <div
+                            v-for="category in categories"
+                        >
+                            <div
+                                class="flex flex-col gap-1 items-center self-stretch select-none cursor-pointer group"
+                                @click="redirectToCategory(category.slug)"
+                            >
+                                <div class="rounded-md w-40 h-20 grow-0 shrink-0 bg-surface-200 dark:bg-surface-800">
 
-                            </div>
-                            <div class="text-sm font-semibold text-surface-950 dark:text-white">
-                                name
+                                </div>
+                                <div class="text-sm font-semibold text-surface-950 dark:text-white group-hover:text-surface-600 dark:group-hover:text-surface-400 transition-colors duration-200">
+                                    {{ category.name[locale] }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -132,7 +145,7 @@ const getSeverity = (status) => {
                 <div class="flex flex-col gap-3 self-stretch">
                     <div class="flex justify-between items-center">
                         <span class="text-surface-950 dark:text-white font-medium">Popular</span>
-                        <span class="text-sm text-surface-500">See all</span>
+                        <Link :href="route('shop')" class="text-sm text-surface-500 hover:font-medium">See all</Link>
                     </div>
                     <Carousel
                         :value="products"

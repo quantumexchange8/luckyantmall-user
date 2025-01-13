@@ -11,7 +11,8 @@ import {
 } from "@tabler/icons-vue";
 
 const props = defineProps({
-    categories: Object
+    categories: Object,
+    passInCategories: String,
 })
 
 const emit = defineEmits(['update:search', 'update:selectedCategories']);
@@ -23,6 +24,10 @@ watch(search, debounce((val) => {
     emit('update:search', val);
 }, 300));
 
+watch(() => props.passInCategories, (val) => {
+    selectedCategories.value = [val];
+})
+
 watch(selectedCategories, (val) => {
     emit('update:selectedCategories', val);
 })
@@ -31,7 +36,7 @@ watch(selectedCategories, (val) => {
 <template>
     <div class="flex flex-col gap-5">
         <div class="flex flex-col items-start gap-1 self-stretch">
-            <span class="font-semibold text-sm">{{ $t('public.keyword') }}</span>
+            <span class="font-semibold text-sm text-surface-700 dark:text-surface-300">{{ $t('public.keyword') }}</span>
             <IconField class="w-full">
                 <InputIcon>
                     <IconSearch size="16" stroke-width="1.5" />
@@ -47,7 +52,7 @@ watch(selectedCategories, (val) => {
         </div>
 
         <div class="flex flex-col items-start gap-1 self-stretch">
-            <span class="font-semibold text-sm">{{ $t('public.category') }}</span>
+            <span class="font-semibold text-sm text-surface-700 dark:text-surface-300">{{ $t('public.category') }}</span>
             <div
                 v-for="category in categories"
                 :key="category.id"
@@ -55,10 +60,10 @@ watch(selectedCategories, (val) => {
             >
                 <Checkbox
                     v-model="selectedCategories"
-                    :inputId="category.name[locale]"
-                    :value="category.id"
+                    :inputId="category.slug"
+                    :value="category.slug"
                 />
-                <label :for="category.name[locale]" class="ml-2 text-sm">{{ category.name[locale] }}</label>
+                <label :for="category.slug" class="ml-2 text-sm text-surface-600 dark:text-surface-400">{{ category.name[locale] }}</label>
             </div>
         </div>
     </div>

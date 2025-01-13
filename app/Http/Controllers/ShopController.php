@@ -49,8 +49,10 @@ class ShopController extends Controller
         }
 
         if ($categories) {
-            $categoryIds = explode(',', $categories);;
-            $query->whereIn('category_id', $categoryIds);
+            $slugs = explode(',', $categories);
+            $query->whereHas('category', function ($q) use ($slugs) {
+                $q->whereIn('slug', $slugs);
+            });
         }
 
         if (!auth()->check()) {

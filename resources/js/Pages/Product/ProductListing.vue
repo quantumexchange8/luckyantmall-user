@@ -3,16 +3,14 @@ import MasterLayout from "@/Layouts/MasterLayout.vue";
 import DataView from 'primevue/dataview';
 import Button from "primevue/button";
 import SelectButton from "primevue/selectbutton";
-import Tag from "primevue/tag";
 import {
     IconMenu2,
     IconLayoutGrid,
 } from "@tabler/icons-vue";
 import {ref, onMounted, watch} from "vue";
-import { ProductService } from '@/service/ProductService';
 import {generalFormat} from "@/Composables/format.js";
 import {useLangObserver} from "@/Composables/localeObserver.js";
-import {Link, usePage} from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 import ProductFilters from "@/Pages/Product/Partials/ProductFilters.vue";
 import Drawer from "primevue/drawer";
 import Select from "primevue/select";
@@ -64,8 +62,18 @@ const getResults = async (page = 1, rowsPerPage = 12) => {
     }
 };
 
+const passInCategories = ref('');
+
 onMounted(() => {
-    getResults(currentPage.value, rowsPerPage.value);
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+
+    if (params.category) {
+        passInCategories.value = params.category;
+    } else {
+        getResults(currentPage.value, rowsPerPage.value);
+    }
 });
 
 const sortOptions = ref([
@@ -111,7 +119,7 @@ watch([selectedCategories, selectedSort], () => {
         <div class="flex gap-5 w-full">
             <div class="hidden lg:block flex-col w-full max-w-64 bg-white dark:bg-surface-900 p-4 rounded-[12px]">
                 <div class="flex justify-between items-center pb-5">
-                    <span class="font-semibold">{{ $t('public.filter') }}</span>
+                    <span class="font-semibold dark:text-white">{{ $t('public.filter') }}</span>
                     <Button
                         type="button"
                         severity="danger"
@@ -125,6 +133,7 @@ watch([selectedCategories, selectedSort], () => {
                 <!-- Filter conditions -->
                 <ProductFilters
                     :categories="categories"
+                    :passInCategories="passInCategories"
                     @update:search="search = $event"
                     @update:selectedCategories="selectedCategories = $event"
                 />
@@ -243,6 +252,7 @@ watch([selectedCategories, selectedSort], () => {
         >
             <ProductFilters
                 :categories="categories"
+                :passInCategories="passInCategories"
                 @update:search="search = $event"
                 @update:selectedCategories="selectedCategories = $event"
             />
