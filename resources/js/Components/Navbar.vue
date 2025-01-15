@@ -44,7 +44,7 @@ const setActiveTab = (routeName) => {
 
 <template>
     <nav
-        class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-surface-950"
+        class="border-b border-gray-100 bg-white dark:border-surface-700 dark:bg-surface-950"
         :class="{'hidden': hidden}"
     >
         <!-- Primary Navigation Menu -->
@@ -202,7 +202,7 @@ const setActiveTab = (routeName) => {
 
     <!-- Mobile bottom bar -->
     <div
-        class="fixed flex items-start justify-between gap-8 md:hidden inset-x-0 z-50 bottom-0 px-6 py-4 transition-transform duration-500 bg-white dark:bg-surface-900"
+        class="fixed flex items-start justify-between gap-8 md:hidden inset-x-0 z-50 bottom-0 px-4 py-2 transition-transform duration-500 bg-white dark:bg-surface-900"
         :class="{'hidden': hidden}"
     >
         <div

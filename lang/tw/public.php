@@ -103,7 +103,7 @@ return [
     "forgot_your_password" => "忘記密碼？",
     "dont_have_an_account" => "還沒有賬戶？",
     "sign_in" => "登錄",
-    "my_referral_code" => "我的推薦碼",
+    "share_referral_code" => "分享推薦碼",
     "add_address" => "添加地址",
     "new_address" => "新地址",
     "contact_information" => "聯繫信息",

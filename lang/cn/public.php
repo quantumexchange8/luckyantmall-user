@@ -103,7 +103,7 @@ return [
     "forgot_your_password" => "忘记密码？",
     "dont_have_an_account" => "还没有账户？",
     "sign_in" => "登录",
-    "my_referral_code" => "我的推荐码",
+    "share_referral_code" => "分享推荐码",
     "add_address" => "添加地址",
     "new_address" => "新地址",
     "contact_information" => "联系信息",

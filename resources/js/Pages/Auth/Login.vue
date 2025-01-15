@@ -38,15 +38,9 @@ const submit = () => {
         </div>
 
         <div class="w-full flex flex-col justify-center items-center gap-8">
-            <div class="w-full flex flex-col items-center gap-6 self-stretch">
-                <div class="rounded-lg bg-logo w-16 h-16 p-2 flex items-center justify-center">
-                    <ApplicationLogo class="w-12 h-12 fill-white" />
-
-                </div>
-                <div class="w-full flex flex-col items-start gap-3 self-stretch">
-                    <div class="self-stretch text-center text-gray-950 text-xl font-semibold">{{ $t('public.login_header') }}</div>
-                    <div class="self-stretch text-center text-gray-500">{{ $t('public.login_header_caption') }}</div>
-                </div>
+            <div class="w-full flex flex-col items-start gap-3 self-stretch pt-10">
+                <div class="self-stretch text-center text-gray-950 dark:text-white text-xl font-semibold">{{ $t('public.login_header') }}</div>
+                <div class="self-stretch text-center text-gray-500">{{ $t('public.login_header_caption') }}</div>
             </div>
             <form @submit.prevent="submit" class="flex flex-col items-center gap-6 self-stretch">
                 <div class="flex flex-col items-start gap-5 self-stretch">
