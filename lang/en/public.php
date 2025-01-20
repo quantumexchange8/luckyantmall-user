@@ -128,4 +128,7 @@ return [
     "reveal_qr_code" => "Reveal QR code",
     "referral_qr_code" => "Referral QR code",
     "scan_to_register" => "Scan to register",
+    "dob" => "Date of Birth",
+    "select_dob" => "Select Date of Birth",
+    "user_not_reach_eighteen_years" => "The person is not yet 18 years old.",
 ];

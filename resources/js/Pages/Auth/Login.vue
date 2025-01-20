@@ -97,20 +97,23 @@ const submit = () => {
                     </Link>
 
                 </div>
-                <Button
-                    type="submit"
-                    :label="$t('public.sign_in')"
-                    class="w-full"
-                    :disabled="form.processing"
-                />
-                <div class="text-sm text-gray-700">
-                    {{ $t('public.dont_have_an_account') }}
-                    <Link
-                        :href="route('register')"
-                        class="text-right text-sm text-primary-500 font-semibold"
-                    >
-                        {{ $t('public.register') }}
-                    </Link>
+
+                <div class="flex flex-col gap-1 items-center self-stretch">
+                    <Button
+                        type="submit"
+                        :label="$t('public.sign_in')"
+                        class="w-full"
+                        :disabled="form.processing"
+                    />
+                    <div class="text-sm text-gray-700">
+                        {{ $t('public.dont_have_an_account') }}
+                        <Link
+                            :href="route('register')"
+                            class="text-right text-sm text-primary-500 font-semibold"
+                        >
+                            {{ $t('public.register') }}
+                        </Link>
+                    </div>
                 </div>
             </form>
         </div>

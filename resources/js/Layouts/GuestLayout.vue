@@ -16,10 +16,10 @@ defineProps({
     <Head :title="title"></Head>
 
     <div class="flex flex-col min-h-screen bg-surface-0 dark:bg-surface-950">
-        <div class="flex mx-auto w-full max-w-7xl px-3 py-2 sm:px-6 lg:px-5 xl:px-0 justify-between items-center">
+        <div class="flex mx-auto w-full h-16 max-w-7xl px-3 sm:px-6 lg:px-5 xl:px-0 justify-between items-center">
             <div>
                 <Link href="/">
-                    <ApplicationLogo class="h-10 w-10 fill-current text-gray-500" />
+                    <ApplicationLogo class="h-9 w-auto fill-current text-gray-500" />
                 </Link>
             </div>
 

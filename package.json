@@ -26,6 +26,7 @@
         "lodash": "^4.17.21",
         "primevue": "^4.1.0",
         "qrcode.vue": "^3.6.0",
-        "tailwindcss-primeui": "^0.3.4"
+        "tailwindcss-primeui": "^0.3.4",
+        "vue-scroll-picker": "^1.2.3"
     }
 }

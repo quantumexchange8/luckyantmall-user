@@ -1,6 +1,7 @@
 import '../css/app.css';
 import './bootstrap';
 import Aura from '../css/presets/aura'
+import "vue-scroll-picker/lib/style.css";
 
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
@@ -9,6 +10,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import PrimeVue from 'primevue/config';
 import { i18nVue } from 'laravel-vue-i18n';
 import iosZoomFix from '../js/Composables/ios-zoom-fix.js';
+import VueScrollPicker from "vue-scroll-picker";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -34,6 +36,7 @@ createInertiaApp({
                 unstyled: true,
                 pt: Aura
             })
+            .use(VueScrollPicker);
 
         app.mount(el);
 

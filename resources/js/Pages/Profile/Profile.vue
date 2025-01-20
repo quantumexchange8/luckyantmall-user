@@ -4,6 +4,7 @@ import Card from "primevue/card";
 import Wallet from "@/Pages/Profile/Wallets/Wallet.vue";
 import ReferralCode from "@/Pages/Profile/Partials/ReferralCode.vue";
 import {usePage} from "@inertiajs/vue3";
+import Setting from "@/Pages/Setting/Setting.vue";
 
 const props = defineProps({
     walletCounts: Number
@@ -64,7 +65,7 @@ const user = usePage().props.auth.user;
                 <!-- Settings -->
                 <Card class="w-full">
                     <template #content>
-                        <div class="text-xs w-full text-left">Settings</div>
+                        <Setting />
                     </template>
                 </Card>
             </div>

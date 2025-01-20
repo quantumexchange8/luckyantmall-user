@@ -9,6 +9,10 @@ use App\Models\User;
 use App\Models\Wallet;
 use App\Services\GroupService;
 use App\Services\RunningNumberService;
+use DateInterval;
+use DateInvalidOperationException;
+use DateMalformedStringException;
+use DateTime;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,15 +40,16 @@ class RegisteredUserController extends Controller
      * Handle an incoming registration request.
      *
      * @throws ValidationException
+     * @throws DateMalformedStringException|DateInvalidOperationException
      */
     public function store(Request $request): RedirectResponse
     {
         $form_step = $request->step;
-
         $rules = [
             'name' => ['required', 'regex:/^[a-zA-Z0-9\p{Han}. ]+$/u', 'max:255'],
             'username' => ['required', 'regex:/^[a-zA-Z0-9\p{Han}. ]+$/u', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:' . User::class],
+            'dob' => ['required'],
             'country' => ['required'],
             'dial_code' => ['required'],
             'phone' => ['required'],
@@ -56,6 +61,7 @@ class RegisteredUserController extends Controller
             'username' => trans('public.username'),
             'email' => trans('public.email'),
             'country' => trans('public.country'),
+            'dob' => trans('public.dob'),
             'phone' => trans('public.phone_number'),
             'phone_number' => trans('public.phone_number'),
             'password' => trans('public.password'),
@@ -64,20 +70,30 @@ class RegisteredUserController extends Controller
 
         switch ($form_step) {
             case 1:
-                Validator::make($request->all(), $rules)
+                $validator = Validator::make($request->all(), $rules)
                     ->setAttributeNames($attributeNames)
                     ->validate();
-                return back();
+
+                $dobDate = new DateTime($request->dob);
+                $today = new DateTime();
+                $todayMinus18Years = $today->sub(new DateInterval('P18Y'));
+
+                if ($dobDate > $todayMinus18Years) {
+                    throw ValidationException::withMessages(['dob' => trans('public.user_not_reach_eighteen_years')]);
+                }
+
+                break;
 
             case 2:
                 $passwordRules = [
                     'password' => ['required', 'confirmed', Password::min(8)->letters()->symbols()->numbers()->mixedCase()],
                 ];
 
-                Validator::make($request->all(), $passwordRules)
+                $validator = Validator::make($request->all(), $passwordRules)
                     ->setAttributeNames($attributeNames)
                     ->validate();
-                return back();
+
+                break;
 
             case 3:
                 $rules['password'] = ['required', 'confirmed', Password::min(8)->letters()->symbols()->numbers()->mixedCase()];
@@ -87,6 +103,7 @@ class RegisteredUserController extends Controller
                 $validator = Validator::make($request->all(), $rules)
                     ->setAttributeNames($attributeNames)
                     ->validate();
+
                 break;
 
             default:
@@ -108,6 +125,7 @@ class RegisteredUserController extends Controller
             'dial_code' => $dial_code['phone_code'],
             'phone' => $validator['phone'],
             'phone_number' => $validator['phone_number'],
+            'dob' => $validator['dob'],
             'country_id' => $country->id,
             'nationality' => $country->nationality,
             'password' => Hash::make($validator['password']),

@@ -16,6 +16,8 @@ import InputText from "primevue/inputtext";
 import Select from 'primevue/select';
 import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
+import {VueScrollPicker} from "vue-scroll-picker";
+import DatePicker from "@/Components/DatePicker.vue";
 
 const props = defineProps({
     referral_code: String
@@ -66,6 +68,7 @@ const form = useForm({
     name: '',
     username: '',
     email: '',
+    dob: '',
     country: '',
     dial_code: '',
     phone: '',
@@ -122,16 +125,16 @@ const handleBack = () => {
     <div
         class="flex justify-center min-h-screen bg-white dark:bg-surface-950"
     >
-        <div class="w-full flex p-3">
+        <div class="w-full flex">
             <!-- Col -->
-            <div class="hidden md:flex flex-col items-start gap-20 px-5 bg-white border-2 border-surface-200 dark:bg-surface-900 shadow-box rounded-lg min-w-80">
-                <Link href="/" class="w-full flex items-center py-[18px]">
-                    <div class="flex items-center self-stretch gap-2">
-                        <div class="px-2">
-                            <ApplicationLogo aria-hidden="true" class="w-7 h-7 fill-logo" />
+            <div class="hidden md:flex flex-col items-start gap-20 px-5 bg-white border-r-2 border-surface-200 dark:bg-surface-950 dark:border-surface-700 min-w-80">
+                <Link href="/" class="w-full flex items-center h-16">
+                    <div class="flex items-center self-stretch gap-3">
+                        <div class="flex shrink-0 items-center">
+                            <ApplicationLogo aria-hidden="true" class="w-auto h-9 fill-logo" />
                         </div>
                         <div
-                            class="text-lg font-bold text-gray-800 w-full"
+                            class="text-lg font-bold text-logo dark:text-white w-full"
                         >
                             {{ $t('public.luckyant_mall') }}
                         </div>
@@ -146,7 +149,7 @@ const handleBack = () => {
                         class="flex items-start gap-4 self-stretch"
                     >
                         <div
-                            :class="step.step < selectedStep.step && step.state === 'active' ? 'text-primary' : 'text-surface-400 dark:text-surface-600'"
+                            :class="step.step === selectedStep.step && step.state === 'active' ? 'text-primary' : 'text-surface-400 dark:text-surface-600'"
                         >
                             <IconCircleCheck size="28" stroke-width="1.5" />
                         </div>
@@ -170,31 +173,39 @@ const handleBack = () => {
 
             <!-- Col -->
             <div class="w-full flex flex-col items-center">
-                <div class="flex justify-end items-center gap-2 w-full">
-                    <ChangeLocale />
+                <div class="flex h-16 justify-between items-center gap-2 w-full mx-auto px-3 sm:px-6 lg:px-5 xl:px-0">
+                    <Link :href="route('home')">
+                        <ApplicationLogo
+                            class="block h-9 w-auto md:hidden"
+                        />
+                    </Link>
 
-                    <Button
-                        severity="secondary"
-                        outlined
-                        aria-label="Mode"
-                        size="small"
-                        @click="() => { toggleDarkMode() }"
-                    >
-                        <template #icon>
-                            <IconSun v-if="!isDark" size="16" />
-                            <IconMoon v-if="isDark" size="16" />
-                        </template>
-                    </Button>
+                    <div class="flex gap-2 items-center justify-end">
+                        <ChangeLocale />
+
+                        <Button
+                            severity="secondary"
+                            outlined
+                            aria-label="Mode"
+                            size="small"
+                            @click="() => { toggleDarkMode() }"
+                        >
+                            <template #icon>
+                                <IconSun v-if="!isDark" size="16" />
+                                <IconMoon v-if="isDark" size="16" />
+                            </template>
+                        </Button>
+                    </div>
                 </div>
 
                 <!-- Register form -->
-                <div class="py-20 px-3 flex flex-col items-center gap-8 w-[300px] md:w-[360px]">
+                <div class="py-5 px-3 flex flex-col items-center gap-8 w-full md:max-w-md">
                     <div
                         class="flex flex-col justify-center items-center gap-8"
                     >
                         <!-- caption -->
                         <div
-                            class="flex flex-col gap-3 text-center items-center self-stretch"
+                            class="flex flex-col gap-1 text-center items-center self-stretch"
                         >
                             <div class="font-bold text-surface-950 dark:text-white w-full text-lg md:text-xl">
                                 {{ $t(`public.${selectedStep.title}`) }}
@@ -273,6 +284,20 @@ const handleBack = () => {
                                     <InputError :message="form.errors.email" />
                                 </div>
 
+                                <!-- dob -->
+                                <div class="flex flex-col gap-1 items-start self-stretch">
+                                    <InputLabel
+                                        for="dob"
+                                        :value="$t('public.dob')"
+                                        :invalid="!!form.errors.dob"
+                                    />
+                                    <DatePicker
+                                        :invalid="!!form.errors.dob"
+                                        @update:date="form.dob = $event"
+                                    />
+                                    <InputError :message="form.errors.dob" />
+                                </div>
+
                                 <!-- country -->
                                 <div class="flex flex-col gap-1 items-start self-stretch">
                                     <InputLabel
@@ -298,10 +323,7 @@ const handleBack = () => {
                                             <span v-else>{{ slotProps.placeholder }}</span>
                                         </template>
                                         <template #option="slotProps">
-                                            <div class="flex items-center gap-1">
-                                                <div>{{ slotProps.option.emoji }}</div>
-                                                <div class="max-w-[200px] truncate">{{ slotProps.option.name }}</div>
-                                            </div>
+                                            <div class="max-w-[200px] truncate">{{ slotProps.option.name }}</div>
                                         </template>
                                     </Select>
 
@@ -335,7 +357,6 @@ const handleBack = () => {
                                             </template>
                                             <template #option="slotProps">
                                                 <div class="flex items-center gap-1">
-                                                    <div>{{ slotProps.option.emoji }}</div>
                                                     <div class="font-medium">{{ slotProps.option.iso2 }}</div>
                                                     <div class="max-w-[200px] truncate text-surface-500">({{ slotProps.option.phone_code }})</div>
                                                 </div>
@@ -431,39 +452,42 @@ const handleBack = () => {
                             </div>
                         </template>
 
-                        <Button
-                            type="submit"
-                            :label="selectedStep.step === 3 ? $t('public.create_an_account') : $t('public.continue')"
-                            class="w-full"
-                            @click="handleContinue"
-                            :disabled="form.processing"
-                        />
-
-                        <div
-                            v-if="selectedStep.step === 1"
-                            class="flex items-center gap-3"
-                        >
-                            <span class="text-sm text-gray-700">{{ $t('public.already_have_an_account') }}</span>
-                            <Link
-                                :href="route('login')"
-                                class="text-sm text-primary-500 font-semibold"
-                            >
-                                {{ $t('public.login') }}
-                            </Link>
-                        </div>
-                        <div
-                            v-else
-                            class="w-full"
-                        >
+                        <div class="flex flex-col gap-1 items-center self-stretch">
                             <Button
-                                type="button"
+                                type="submit"
+                                :label="selectedStep.step === 3 ? $t('public.create_an_account') : $t('public.continue')"
                                 class="w-full"
-                                severity="secondary"
-                                @click="handleBack"
+                                @click="handleContinue"
                                 :disabled="form.processing"
+                            />
+
+                            <div
+                                v-if="selectedStep.step === 1"
+                                class="flex items-center gap-3"
                             >
-                                {{ $t('public.back_to_previous_page')}}
-                            </Button>
+                                <span class="text-sm text-gray-700">{{ $t('public.already_have_an_account') }}</span>
+                                <Link
+                                    :href="route('login')"
+                                    class="text-sm text-primary-500 font-semibold"
+                                >
+                                    {{ $t('public.login') }}
+                                </Link>
+                            </div>
+
+                            <div
+                                v-else
+                                class="w-full"
+                            >
+                                <Button
+                                    type="button"
+                                    class="w-full"
+                                    severity="secondary"
+                                    @click="handleBack"
+                                    :disabled="form.processing"
+                                >
+                                    {{ $t('public.back_to_previous_page')}}
+                                </Button>
+                            </div>
                         </div>
                     </form>
                 </div>
