@@ -110,15 +110,15 @@ class ShopController extends Controller
 
         $action = $request->action;
 
-        $cart_item  = CartItem::create([
+        CartItem::create([
             'cart_id' => $cart->id,
+            'type' => $action,
             'product_id' => $request->product_id,
             'trading_master_id' => $request->master_id,
             'quantity' => $request->quantity,
             'price_per_unit' => $request->price_per_unit,
             'total_price' => $request->total_price,
         ]);
-        $cart_item->update(['type' => $action]);
 
         if ($action == 'add_to_cart') {
             return Redirect::route('cart');

@@ -248,6 +248,7 @@ const submitForm = () => {
                         size="small"
                         class="w-full md:w-40"
                         @click="submitForm"
+                        :disabled="form.processing"
                     >
                         {{ $t(`public.${drawerAction}`) }}
                     </Button>

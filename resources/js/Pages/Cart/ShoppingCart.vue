@@ -262,7 +262,7 @@ const proceedCheckout = () => {
                                     size="small"
                                     class="w-full"
                                     @click="proceedCheckout"
-                                    :disabled="cart.cart_items_count === 0"
+                                    :disabled="cart.cart_items_count === 0 || form.processing"
                                 >
                                     {{ $t('public.proceed_to_checkout') }}
                                 </Button>
