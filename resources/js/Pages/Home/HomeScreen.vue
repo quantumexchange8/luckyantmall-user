@@ -170,7 +170,7 @@ const redirectToCategory = (category) => {
                                             />
                                         </div>
                                     </div>
-                                    <div class="mb-4 font-medium truncate max-w-52 dark:text-white">{{ slotProps.data.name }}</div>
+                                    <div class="mb-4 font-medium truncate max-w-52 dark:text-white hover:text-primary">{{ slotProps.data.name }}</div>
                                     <div class="flex justify-between items-center dark:text-surface-300">
                                         <div class="mt-0 font-semibold text-xl">¥{{ formatAmount(slotProps.data.base_price) }}</div>
                                     </div>

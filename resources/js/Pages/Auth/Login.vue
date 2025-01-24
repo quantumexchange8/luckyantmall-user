@@ -1,12 +1,10 @@
 <script setup>
-import Checkbox from 'primevue/checkbox';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import {Link, useForm} from '@inertiajs/vue3';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Button from 'primevue/button';
 
 defineProps({
@@ -38,11 +36,11 @@ const submit = () => {
         </div>
 
         <div class="w-full flex flex-col justify-center items-center gap-8">
-            <div class="w-full flex flex-col items-start gap-3 self-stretch pt-10">
+            <div class="w-full flex flex-col items-start gap-1 self-stretch pt-10">
                 <div class="self-stretch text-center text-gray-950 dark:text-white text-xl font-semibold">{{ $t('public.login_header') }}</div>
-                <div class="self-stretch text-center text-gray-500">{{ $t('public.login_header_caption') }}</div>
+                <div class="self-stretch text-center text-surface-500">{{ $t('public.login_header_caption') }}</div>
             </div>
-            <form @submit.prevent="submit" class="flex flex-col items-center gap-6 self-stretch">
+            <form @submit.prevent="submit" class="flex flex-col items-center gap-3 self-stretch">
                 <div class="flex flex-col items-start gap-5 self-stretch">
                     <div class="flex flex-col items-start gap-1 self-stretch">
                         <InputLabel for="email" :value="$t('public.email')" :invalid="!!form.errors.email" />
@@ -79,19 +77,11 @@ const submit = () => {
                         <InputError :message="form.errors.password" />
                     </div>
                 </div>
-                <div class="flex justify-between items-center self-stretch">
-                    <label class="flex items-center cursor-pointer gap-2">
-                        <Checkbox
-                            v-model="form.remember"
-                            inputId="remember"
-                        />
-                        <span class="text-sm text-gray-600 font-medium">{{ $t('public.remember_me') }}</span>
-                    </label>
-
+                <div class="flex justify-end items-center self-stretch">
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="text-right text-sm text-primary-500 font-semibold"
+                        class="text-right text-sm text-primary-500 hover:text-primary-600 font-semibold"
                     >
                         {{ $t('public.forgot_your_password') }}
                     </Link>
@@ -105,11 +95,11 @@ const submit = () => {
                         class="w-full"
                         :disabled="form.processing"
                     />
-                    <div class="text-sm text-gray-700">
+                    <div class="text-sm text-surface-600 dark:text-surface-400">
                         {{ $t('public.dont_have_an_account') }}
                         <Link
                             :href="route('register')"
-                            class="text-right text-sm text-primary-500 font-semibold"
+                            class="text-right text-sm text-primary-500 font-semibold hover:text-primary-600"
                         >
                             {{ $t('public.register') }}
                         </Link>

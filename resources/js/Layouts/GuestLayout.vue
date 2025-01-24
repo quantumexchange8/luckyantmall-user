@@ -15,7 +15,7 @@ defineProps({
 <template>
     <Head :title="title"></Head>
 
-    <div class="flex flex-col min-h-screen bg-surface-0 dark:bg-surface-950">
+    <div class="flex flex-col min-h-screen bg-surface-0 dark:bg-surface-950 transition-all duration-200">
         <div class="flex mx-auto w-full h-16 max-w-7xl px-3 sm:px-6 lg:px-5 xl:px-0 justify-between items-center">
             <div>
                 <Link href="/">

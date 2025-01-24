@@ -70,7 +70,7 @@ class RegisteredUserController extends Controller
 
         switch ($form_step) {
             case 1:
-                $validator = Validator::make($request->all(), $rules)
+                Validator::make($request->all(), $rules)
                     ->setAttributeNames($attributeNames)
                     ->validate();
 
@@ -82,18 +82,18 @@ class RegisteredUserController extends Controller
                     throw ValidationException::withMessages(['dob' => trans('public.user_not_reach_eighteen_years')]);
                 }
 
-                break;
+                return back();
 
             case 2:
                 $passwordRules = [
                     'password' => ['required', 'confirmed', Password::min(8)->letters()->symbols()->numbers()->mixedCase()],
                 ];
 
-                $validator = Validator::make($request->all(), $passwordRules)
+                Validator::make($request->all(), $passwordRules)
                     ->setAttributeNames($attributeNames)
                     ->validate();
 
-                break;
+                return back();
 
             case 3:
                 $rules['password'] = ['required', 'confirmed', Password::min(8)->letters()->symbols()->numbers()->mixedCase()];

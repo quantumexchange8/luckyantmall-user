@@ -26,7 +26,7 @@ defineProps({
 <template>
     <Head :title="title"></Head>
     <Navbar hidden />
-    <div class="min-h-screen bg-gray-100 dark:bg-surface-950">
+    <div class="min-h-screen bg-gray-100 dark:bg-surface-950 transition-all duration-200">
         <!-- Page Content -->
         <main class="flex flex-1 justify-center items-start px-3 pt-3 pb-12 md:px-5 md:pt-5">
             <div class="w-full max-w-7xl flex flex-col gap-3 md:gap-5">

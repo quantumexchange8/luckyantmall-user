@@ -7,7 +7,7 @@ import {ref} from "vue";
 import {
     IconHome,
     IconCategory2,
-    IconBellRinging,
+    IconFileAnalytics,
     IconUser,
     IconMoon,
     IconSun,
@@ -28,13 +28,11 @@ defineProps({
 
 const showingNavigationDropdown = ref(false);
 
-const activeTab = ref('home');
-
 const tabs = ref([
-    { name: 'home', label: 'Home', icon: IconHome, strokeWidth: 2, route: 'home' },
-    { name: 'shop', label: 'Shop', icon: IconCategory2, strokeWidth: 1, route: 'shop' },
-    { name: 'notifications', label: 'Notification', icon: IconBellRinging, strokeWidth: 1, route: 'notifications' },
-    { name: 'profile', label: 'Profile', icon: IconUser, strokeWidth: 1, route: 'profile', isLink: true },
+    { name: 'home', icon: IconHome, strokeWidth: 2, route: 'home' },
+    { name: 'shop', icon: IconCategory2, strokeWidth: 1, route: 'shop' },
+    { name: 'report', icon: IconFileAnalytics, strokeWidth: 1, route: 'dashboard' },
+    { name: 'profile', icon: IconUser, strokeWidth: 1, route: 'profile', isLink: true },
 ]);
 
 const setActiveTab = (routeName) => {
@@ -44,7 +42,7 @@ const setActiveTab = (routeName) => {
 
 <template>
     <nav
-        class="border-b border-gray-100 bg-white dark:border-surface-700 dark:bg-surface-950"
+        class="border-b border-gray-100 bg-white dark:border-surface-700 dark:bg-surface-950 transition-all duration-200"
         :class="{'hidden': hidden}"
     >
         <!-- Primary Navigation Menu -->
@@ -202,7 +200,7 @@ const setActiveTab = (routeName) => {
 
     <!-- Mobile bottom bar -->
     <div
-        class="fixed flex items-start justify-between gap-8 md:hidden inset-x-0 z-50 bottom-0 px-4 py-2 transition-transform duration-500 bg-white dark:bg-surface-900"
+        class="fixed flex items-start justify-between gap-8 md:hidden inset-x-0 z-50 bottom-0 px-4 py-2 transition-transform duration-500 bg-white dark:bg-surface-900 border-t border-surface-300 dark:border-surface-700"
         :class="{'hidden': hidden}"
     >
         <div
@@ -216,7 +214,7 @@ const setActiveTab = (routeName) => {
             @click="setActiveTab(tab.route)"
         >
             <component :is="tab.icon" :size="28" :stroke-width="route().current(`${tab.route}*`) ? 2 : 1" />
-            <span class="text-xs">{{ tab.label }}</span>
+            <span class="text-xs">{{ $t(`public.${tab.name}`) }}</span>
         </div>
     </div>
 </template>

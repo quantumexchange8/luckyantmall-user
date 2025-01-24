@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SelectOptionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ShopController;
@@ -55,6 +56,15 @@ Route::prefix('shop')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/getDepositProfiles', [WalletController::class, 'getDepositProfiles'])->name('profile.getDepositProfiles');
+    /**
+     * ==============================
+     *            Report
+     * ==============================
+     */
+    Route::prefix('report')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('report');
+    });
+
     /**
      * ==============================
      *            Cart
