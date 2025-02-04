@@ -110,9 +110,13 @@ const openDrawer = (data) => {
                                                 <span class="font-medium text-sm">{{ $t(`public.${item.transaction_type}`) }}</span>
                                                 <span class="font-medium text-surface-500 dark:text-surface-400 text-xs">{{ dayjs(item.approval_at).format('YYYY/MM/DD HH:mm:ss') }}</span>
                                             </div>
-                                            <div class="flex flex-col items-end gap-1">
+                                            <div v-if="item.transaction_type !== 'payment'" class="flex flex-col items-end gap-1">
                                                 <span v-if="item.to_wallet" class="text-lg md:text-xl font-semibold">{{ item.to_wallet.currency_symbol }}{{ item.amount }}</span>
                                                 <span v-else class="text-lg md:text-xl font-semibold">{{ item.from_wallet.currency_symbol }}{{ item.amount }}</span>
+                                                <Tag :value="$t(`public.${item.status}`)" :severity="getSeverity(item.status)"></Tag>
+                                            </div>
+                                            <div v-else class="flex flex-col items-end gap-1">
+                                                <span class="text-lg md:text-xl font-semibold">- ¥{{ item.amount }}</span>
                                                 <Tag :value="$t(`public.${item.status}`)" :severity="getSeverity(item.status)"></Tag>
                                             </div>
                                         </div>
@@ -134,7 +138,7 @@ const openDrawer = (data) => {
     >
         <div class="flex flex-col gap-3 self-stretch">
             <div class="flex justify-between items-center">
-                <span class="text-xl font-semibold">{{ drawerData.to_wallet.currency_symbol }}{{ drawerData.amount }}</span>
+                <span class="text-xl font-semibold">{{ drawerData.to_currency === 'CNY' ? '¥' : '$' }}{{ drawerData.amount }}</span>
                 <Tag :value="$t(`public.${drawerData.status}`)" :severity="getSeverity(drawerData.status)"></Tag>
             </div>
             <div class="flex flex-col gap-3 pt-3 items-start self-stretch border-t dark:border-surface-700">
@@ -150,38 +154,6 @@ const openDrawer = (data) => {
                     </div>
                     <div class="text-right font-bold w-36">
                         {{ drawerData.transaction_number }}
-                    </div>
-                </div>
-                <div class="flex justify-between items-start w-full text-sm">
-                    <div class="text-surface-700 dark:text-surface-300 w-28">
-                        {{ $t('public.date') }}
-                    </div>
-                    <div class="text-right font-bold w-36">
-                        {{ dayjs(drawerData.status === 'processing' ? drawerData.created_at : drawerData.approval_at).format('YYYY/MM/DD HH:mm:ss') }}
-                    </div>
-                </div>
-                <div class="flex justify-between items-start w-full text-sm">
-                    <div class="text-surface-700 dark:text-surface-300 w-28">
-                        {{ $t('public.remarks') }}
-                    </div>
-                    <div class="text-right font-bold w-36">
-                        {{ drawerData.remarks ?? '-' }}
-                    </div>
-                </div>
-                <div class="flex justify-between items-start w-full text-sm">
-                    <div class="text-surface-700 dark:text-surface-300 w-28">
-                        {{ $t('public.date') }}
-                    </div>
-                    <div class="text-right font-bold w-36">
-                        {{ dayjs(drawerData.status === 'processing' ? drawerData.created_at : drawerData.approval_at).format('YYYY/MM/DD HH:mm:ss') }}
-                    </div>
-                </div>
-                <div class="flex justify-between items-start w-full text-sm">
-                    <div class="text-surface-700 dark:text-surface-300 w-28">
-                        {{ $t('public.remarks') }}
-                    </div>
-                    <div class="text-right font-bold w-36">
-                        {{ drawerData.remarks ?? '-' }}
                     </div>
                 </div>
                 <div class="flex justify-between items-start w-full text-sm">

@@ -22,7 +22,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'walletCounts' => Wallet::where('user_id', Auth::id())->count()
+            'wallets' => Auth::user()->wallets,
         ]);
     }
 

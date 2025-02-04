@@ -43,7 +43,9 @@ const toggleVisibility = async () => {
             >
                 <template #content>
                     <div class="flex flex-col gap-3 md:gap-5 items-center self-stretch">
-                        <span class="text-sm text-left w-full dark:text-surface-400">{{ $t('public.balance') }} ({{ wallet.address }})</span>
+                        <div class="text-sm text-left w-full dark:text-surface-400">
+                            {{ $t('public.balance') }} (<span class="font-semibold dark:text-surface-300">{{ wallet.address }}</span>)
+                        </div>
                         <div class="flex items-center justify-center gap-1 mb-1">
                             <div class="text-[32px] font-semibold">
                                 <div v-if="balanceVisibility">

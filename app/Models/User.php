@@ -80,4 +80,9 @@ class User extends Authenticatable
         return $this->hasMany(TradingSubscription::class, 'user_id', 'id')
             ->where('status', 'active');
     }
+
+    public function wallets(): HasMany
+    {
+        return $this->hasMany(Wallet::class, 'user_id', 'id');
+    }
 }
