@@ -117,9 +117,9 @@ export default {
 
             // Danger Button
             {
-                'text-white dark:text-surface-900': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
-                'bg-red-500 dark:bg-red-400': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
-                'border border-red-500 dark:border-red-400': props.severity === 'danger' && !props.text && !props.outlined && !props.plain
+                'text-white': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
+                'bg-red-500 dark:bg-red-600': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,
+                'border border-red-500 dark:border-red-600': props.severity === 'danger' && !props.text && !props.outlined && !props.plain
             },
             // Danger Text Button
             { 'text-red-500 dark:text-red-400': props.text && props.severity === 'danger' && !props.plain },
@@ -185,7 +185,7 @@ export default {
             { 'hover:bg-purple-300/10': (props.text || props.outlined) && props.severity === 'help' && !props.plain },
 
             // Danger
-            { 'hover:bg-red-600 dark:hover:bg-red-300 hover:border-red-600 dark:hover:border-red-300': props.severity === 'danger' && !props.text && !props.outlined && !props.plain },
+            { 'hover:bg-red-600 dark:hover:bg-red-500 hover:border-red-600 dark:hover:border-red-600': props.severity === 'danger' && !props.text && !props.outlined && !props.plain },
             { 'focus:ring-red-500 dark:focus:ring-red-400': props.severity === 'danger' },
             // Text & Outlined Button
             { 'hover:bg-red-300/10': (props.text || props.outlined) && props.severity === 'danger' && !props.plain },

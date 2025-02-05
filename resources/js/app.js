@@ -11,6 +11,7 @@ import PrimeVue from 'primevue/config';
 import { i18nVue } from 'laravel-vue-i18n';
 import iosZoomFix from '../js/Composables/ios-zoom-fix.js';
 import VueScrollPicker from "vue-scroll-picker";
+import ConfirmationService from 'primevue/confirmationservice';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -36,6 +37,7 @@ createInertiaApp({
                 unstyled: true,
                 pt: Aura
             })
+            .use(ConfirmationService)
             .use(VueScrollPicker);
 
         app.mount(el);

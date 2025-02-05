@@ -70,4 +70,11 @@ class SettingController extends Controller
             'type' => 'success',
         ]);
     }
+
+    public function system_setting()
+    {
+        return Inertia::render('Setting/SystemSetting/SystemSetting', [
+            'backRoute' => 'profile',
+        ]);
+    }
 }

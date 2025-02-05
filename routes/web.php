@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/proceedCheckout', [CartController::class, 'proceedCheckout'])->name('cart.proceedCheckout');
         Route::post('/confirmPayment', [CartController::class, 'confirmPayment'])->name('cart.confirmPayment');
+
+        Route::delete('/deleteItem', [CartController::class, 'deleteItem'])->name('cart.deleteItem');
     });
 
     /**
@@ -101,10 +103,14 @@ Route::middleware('auth')->group(function () {
      * ==============================
      */
     Route::prefix('setting')->group(function () {
+        // Delivery Address
         Route::get('/delivery_address', [SettingController::class, 'delivery_address'])->name('delivery_address');
         Route::get('/getDeliveryAddress', [SettingController::class, 'getDeliveryAddress'])->name('getDeliveryAddress');
 
         Route::post('addDeliveryAddress', [SettingController::class, 'addDeliveryAddress'])->name('setting.addDeliveryAddress');
+
+        // System
+        Route::get('/system_setting', [SettingController::class, 'system_setting'])->name('setting.system_setting');
     });
 });
 

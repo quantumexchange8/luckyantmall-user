@@ -107,17 +107,20 @@ const closeDrawer = () => {
                 <template #content>
                     <div class="flex flex-col gap-3 self-stretch">
                         <span class="text-sm font-semibold">{{ $t('public.payment_details') }}</span>
-                        <div
-                            v-if="defaultAddress"
-                        >
-                            <ChangeAddress
-                                :defaultAddress="defaultAddress"
-                                @update:address="delivery_address_id = $event"
-                            />
+                        <div v-if="requiresDelivery">
+                            <div
+                                v-if="defaultAddress"
+                            >
+                                <ChangeAddress
+                                    :defaultAddress="defaultAddress"
+                                    @update:address="delivery_address_id = $event"
+                                />
+                            </div>
+                            <div v-else>
+                                <AddAddress />
+                            </div>
                         </div>
-                        <div v-else>
-                            <AddAddress />
-                        </div>
+
                         <div class="flex flex-col gap-3 md:gap-5 items-center self-stretch">
                             <div class="flex flex-col gap-1 items-center self-stretch">
                                 <div class="flex justify-between gap-1 md:items-center self-stretch">

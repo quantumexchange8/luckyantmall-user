@@ -1,9 +1,7 @@
 <script setup>
-import {toggleDarkMode} from "@/Composables/index.js";
 import Button from "primevue/button";
 import {IconLanguage} from "@tabler/icons-vue";
 import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
 import Menu from 'primevue/menu';
 import {loadLanguageAsync} from "laravel-vue-i18n";
 

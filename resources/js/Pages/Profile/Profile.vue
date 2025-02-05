@@ -8,7 +8,8 @@ import Setting from "@/Pages/Setting/Setting.vue";
 import Tag from "primevue/tag";
 import Button from "primevue/button";
 import {
-    IconEdit
+    IconEdit,
+    IconProgressCheck
 } from "@tabler/icons-vue";
 
 const props = defineProps({
@@ -64,23 +65,24 @@ const user = usePage().props.auth.user;
 
 
             <!-- Order Status -->
-            <div class="text-sm w-full text-left">Order Listing</div>
             <div class="flex justify-evenly items-center self-stretch w-full">
-                <div class="flex flex-col">
-                    <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs">Proccesing</span>
+                <div class="flex flex-col items-center">
+                    <div class="flex justify-center items-center w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800 text-logo dark:text-white">
+                        <IconProgressCheck size="40" stroke-width="1.5" />
+                    </div>
+                    <span class="text-xs dark:text-white">Proccesing</span>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col items-center">
                     <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs">Shipping</span>
+                    <span class="text-xs dark:text-white">Shipping</span>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col items-center">
                     <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs">Completed</span>
+                    <span class="text-xs dark:text-white">Completed</span>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col items-center">
                     <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs">Cancelled</span>
+                    <span class="text-xs dark:text-white">Cancelled</span>
                 </div>
             </div>
 

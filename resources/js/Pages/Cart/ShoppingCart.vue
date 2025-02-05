@@ -8,10 +8,16 @@ import InputNumber from 'primevue/inputnumber';
 import {computed, onMounted, ref, watch} from "vue";
 import {ProductService} from "@/service/ProductService.js";
 import {generalFormat} from "@/Composables/format.js";
-import {IconMinus, IconPlus} from "@tabler/icons-vue";
+import {
+    IconMinus,
+    IconPlus,
+    IconTrash
+} from "@tabler/icons-vue";
 import {useForm} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import Skeleton from "primevue/skeleton";
+import {trans} from "laravel-vue-i18n";
+import {useConfirm} from "primevue/useconfirm";
 
 const props = defineProps({
     cart: Object
@@ -119,6 +125,57 @@ const toggleItemSelection = (item) => {
 const proceedCheckout = () => {
     form.post(route('cart.proceedCheckout'));
 }
+
+const confirm = useConfirm();
+
+const requireConfirmation = (action_type, itemId) => {
+    const messages = {
+        delete_item: {
+            group: 'headless-error',
+            header: trans('public.delete_item'),
+            text: trans('public.delete_item_caption'),
+            cancelButton: trans('public.cancel'),
+            acceptButton: trans('public.confirm'),
+            action: () => {
+                deleteItem(itemId);
+            }
+        },
+    };
+
+    const { group, header, text, dynamicText, suffix, actionType, cancelButton, acceptButton, action } = messages[action_type];
+
+    confirm.require({
+        group,
+        header,
+        actionType,
+        text,
+        dynamicText,
+        suffix,
+        cancelButton,
+        acceptButton,
+        accept: action
+    });
+};
+
+const handleDeleteItem = (itemId) => {
+    requireConfirmation('delete_item', itemId);
+}
+
+// Delete cart
+const deleteItem = async (itemId) => {
+    try {
+        await axios.delete('/cart/deleteItem', {
+            params: {
+                item_id: itemId
+            }
+        });
+
+        // Remove item from local state if backend delete is successful
+        cartItems.value = cartItems.value.filter(item => item.id !== itemId);
+    } catch (error) {
+        console.error("Failed to delete item:", error);
+    }
+};
 </script>
 
 <template>
@@ -139,7 +196,7 @@ const proceedCheckout = () => {
                             <template #list>
                                 <div class="flex flex-col">
                                     <div v-for="(i, index) in cart.cart_items_count" :key="index">
-                                        <div class="flex flex-col sm:flex-row sm:items-center gap-4" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-4 py-3" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
                                             <div class="flex justify-start items-start self-stretch">
                                                 <Checkbox
                                                     :binary="true"
@@ -173,7 +230,7 @@ const proceedCheckout = () => {
                             <template #list="slotProps">
                                 <div class="flex flex-col">
                                     <div v-for="(item, index) in slotProps.items" :key="index">
-                                        <div class="flex flex-col sm:flex-row sm:items-center gap-4" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
+                                        <div class="flex flex-col sm:flex-row sm:items-center gap-4 py-3" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
                                             <div class="flex justify-start items-start self-stretch">
                                                 <Checkbox
                                                     v-model="item.isSelected"
@@ -221,8 +278,15 @@ const proceedCheckout = () => {
                                                         ¥{{ formatAmount(item.finalPrice) }}
                                                     </div>
                                                     <div class="flex flex-row-reverse md:flex-row gap-2">
-<!--                                                        <Button icon="pi pi-heart" outlined></Button>-->
-                                                        <Button icon="pi pi-shopping-cart" label="Buy Now" :disabled="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto md:flex-initial whitespace-nowrap"></Button>
+                                                        <Button
+                                                            type="button"
+                                                            severity="danger"
+                                                            outlined
+                                                            size="small"
+                                                            @click="handleDeleteItem(item.id)"
+                                                        >
+                                                            <IconTrash size="16" stroke-width="1.5" />
+                                                        </Button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -242,19 +306,19 @@ const proceedCheckout = () => {
                         <span class="font-semibold text-left w-full text-surface-950 dark:text-white">{{ $t('public.details') }}</span>
                         <div class="flex flex-col gap-3 md:gap-5 items-center self-stretch">
                             <div class="flex flex-col gap-1 items-center self-stretch">
-                                <div class="flex flex-col md:flex-row justify-between gap-1 md:items-center self-stretch">
+                                <div class="flex justify-between gap-1 items-center self-stretch">
                                     <span class="text-sm font-semibold text-left w-full text-surface-600 dark:text-surface-400">{{ $t('public.sub_total') }}</span>
                                     <div class="text-sm font-semibold">¥{{ formatAmount(totalSelectedPrice) }}</div>
                                 </div>
-                                <div class="flex flex-col md:flex-row justify-between gap-1 md:items-center self-stretch">
+                                <div class="flex justify-between gap-1 items-center self-stretch">
                                     <span class="text-xs text-left w-full text-surface-600 dark:text-surface-400">{{ $t('public.shipping_fee') }}</span>
                                     <div class="text-xs">¥{{ formatAmount(0) }}</div>
                                 </div>
                             </div>
 
-                            <div class="flex flex-col md:flex-row justify-between gap-1 md:items-center border-t border-surface-200 dark:border-surface-700 pt-5 self-stretch text-surface-950 dark:text-white">
+                            <div class="flex justify-between gap-1 items-center border-t border-surface-200 dark:border-surface-700 pt-5 self-stretch text-surface-950 dark:text-white">
                                 <span class="text-left w-full font-semibold">{{ $t('public.total') }}</span>
-                                <div class="font-semibold">¥{{ formatAmount(totalSelectedPrice) }}</div>
+                                <div class="font-semibold text-lg">¥{{ formatAmount(totalSelectedPrice) }}</div>
                             </div>
 
                             <div class="flex flex-col gap-1 text-center items-center w-full">

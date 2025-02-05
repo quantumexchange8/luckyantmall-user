@@ -33,6 +33,10 @@ class CartController extends Controller
             ->where('user_id', Auth::id())
             ->first();
 
+        CartItem::where('cart_id', $cart->id)
+            ->where('type', 'buy_now')
+            ->delete();
+
         return Inertia::render('Cart/ShoppingCart', [
             'cart' => $cart,
         ]);
@@ -55,17 +59,25 @@ class CartController extends Controller
         ]);
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
-        $cart = Cart::where('user_id', Auth::id())->first();
-        $cartItems = CartItem::where('cart_id', $cart->id)
-            ->with([
-                'product:id,name,base_price',
-                'product.media',
-                'product.price_bundles'
-            ])
-            ->latest()
-            ->get();
+        $action = $request->action;
+        $cart = Cart::firstWhere('user_id', Auth::id());
+        $query = CartItem::with([
+            'product:id,name,base_price',
+            'product.media',
+            'product.price_bundles'
+        ])
+            ->where('cart_id', $cart->id)
+            ->orderByDesc('created_at');
+
+        if ($action == 'buy_now') {
+            $cartItems = $query->where('type', 'buy_now')
+                ->limit(1)
+                ->get();
+        } else {
+            $cartItems = $query->get();
+        }
 
         if ($cartItems->isEmpty()) {
             return to_route('home');
@@ -311,5 +323,10 @@ class CartController extends Controller
             'year' => Carbon::now()->addYears($period),
             default => null,
         };
+    }
+
+    public function deleteItem(Request $request)
+    {
+        CartItem::find($request->item_id)->delete();
     }
 }

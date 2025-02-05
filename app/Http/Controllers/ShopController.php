@@ -101,12 +101,16 @@ class ShopController extends Controller
             throw ValidationException::withMessages(['master_id' => trans('validation.required', ['attribute' => trans('public.investment_plan')])]);
         }
 
-        $cart = Cart::where('user_id', Auth::id())->first();
+        $cart = Cart::firstWhere('user_id', Auth::id());
         if (!$cart) {
             $cart = Cart::create([
                 'user_id' => Auth::id(),
             ]);
         }
+
+        CartItem::where('cart_id', $cart->id)
+            ->where('type', 'buy_now')
+            ->delete();
 
         $action = $request->action;
 
@@ -123,7 +127,9 @@ class ShopController extends Controller
         if ($action == 'add_to_cart') {
             return Redirect::route('cart');
         } else {
-            return Redirect::route('cart.checkout');
+            return Redirect::route('cart.checkout', [
+                'action' => $action,
+            ]);
         }
     }
 }
