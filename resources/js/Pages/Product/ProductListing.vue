@@ -217,11 +217,11 @@ watch([selectedCategories, selectedSort], () => {
                             <div v-for="(item, index) in slotProps.items" :key="index" class="col-span-12 sm:col-span-6 xl:col-span-4">
                                 <Link :href="route('shop.product_detail', [item.slug, item.id])">
                                     <div class="p-4 bg-surface-0 dark:bg-surface-900 rounded-[12px] flex flex-col">
-                                        <div class="flex justify-center rounded overflow-hidden">
+                                        <div class="flex justify-center rounded-md overflow-hidden bg-surface-100 dark:bg-surface-950 p-4">
                                             <img
                                                 :src="item.media[0].original_url"
                                                 :alt="item.name"
-                                                class="w-full h-[300px] rounded hover:scale-110 transition-transform duration-300"
+                                                class="w-full h-[300px] rounded hover:scale-110 transition-transform duration-300 object-contain"
                                             />
                                         </div>
                                         <div class="pt-6">

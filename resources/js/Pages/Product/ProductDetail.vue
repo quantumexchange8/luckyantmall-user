@@ -104,14 +104,15 @@ const submitForm = () => {
                 >
                     <template #item="slotProps">
                         <div class="flex justify-center bg-white dark:bg-surface-900 w-full rounded-t-[12px] pt-4 px-4">
-                            <Image
-                                :src="slotProps.item.original_url"
-                                :alt="slotProps.item.alt"
-                                imageClass="h-[300px] object-cover"
-                                preview
-                            />
+                            <div class="flex justify-center items-center p-4 rounded-md bg-surface-100 dark:bg-surface-950 w-full">
+                                <Image
+                                    :src="slotProps.item.original_url"
+                                    :alt="slotProps.item.alt"
+                                    imageClass="h-[300px] object-cover"
+                                    preview
+                                />
+                            </div>
                         </div>
-
                     </template>
                     <template #thumbnail="slotProps">
                         <img :src="slotProps.item.original_url" :alt="slotProps.item.alt" class="w-16 sm:w-40 md:w-44 lg:w-[100px] xl:w-[130px] h-16 object-cover" style="display: block" />

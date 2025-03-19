@@ -154,19 +154,13 @@ const redirectToCategory = (category) => {
                     >
                         <template #item="slotProps">
                             <Link :href="route('shop.product_detail', [slotProps.data.slug, slotProps.data.id])">
-                                <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
+                                <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4 bg-white dark:bg-surface-900">
                                     <div class="mb-4">
-                                        <div class="relative mx-auto">
+                                        <div class="flex justify-center rounded-md overflow-hidden bg-surface-100 dark:bg-surface-950 p-4">
                                             <img
                                                 :src="slotProps.data.media[0].original_url"
                                                 :alt="slotProps.data.name"
-                                                class="w-full md:w-[300px] h-[240px] object-cover rounded"
-                                            />
-                                            <Tag
-                                                :value="slotProps.data.inventoryStatus"
-                                                :severity="getSeverity(slotProps.data.inventoryStatus)"
-                                                class="absolute"
-                                                style="left:5px; top: 5px"
+                                                class="w-full md:w-[300px] h-[240px] object-contain rounded"
                                             />
                                         </div>
                                     </div>

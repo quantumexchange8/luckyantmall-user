@@ -141,4 +141,12 @@ return [
     "system_setting" => "System Setting",
     "dark_mode" => "Dark Mode",
     "language" => "Language",
+    "dashboard" => "Dashboard",
+    "market" => "Market",
+    "referral" => "Referral",
+    "network" => "Network",
+    "analytic" => "Analytic",
+    "trade_history" => "Trade History",
+    "rebate_history" => "Rebate History",
+    "back_to_shop" => "Back to shop",
 ];

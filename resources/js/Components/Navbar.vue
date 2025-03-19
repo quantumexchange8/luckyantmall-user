@@ -70,6 +70,7 @@ const setActiveTab = (routeName) => {
                         </NavLink>
 
                         <NavLink
+                            v-if="$page.props.auth.user"
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >

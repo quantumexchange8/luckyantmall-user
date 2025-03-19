@@ -77,4 +77,9 @@ class SettingController extends Controller
             'backRoute' => 'profile',
         ]);
     }
+
+    public function payment_account()
+    {
+        return back();
+    }
 }

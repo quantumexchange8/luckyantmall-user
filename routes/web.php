@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
@@ -20,10 +21,6 @@ Route::get('locale/{locale}', function ($locale) {
 
     return redirect()->back();
 });
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/getCountries', [SelectOptionController::class, 'getCountries'])->name('getCountries');
 Route::get('/getCategories', [SelectOptionController::class, 'getCategories'])->name('getCategories');
@@ -56,14 +53,6 @@ Route::prefix('shop')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/getDepositProfiles', [WalletController::class, 'getDepositProfiles'])->name('profile.getDepositProfiles');
-    /**
-     * ==============================
-     *            Report
-     * ==============================
-     */
-    Route::prefix('report')->group(function () {
-        Route::get('/', [ReportController::class, 'index'])->name('report');
-    });
 
     /**
      * ==============================
@@ -109,8 +98,30 @@ Route::middleware('auth')->group(function () {
 
         Route::post('addDeliveryAddress', [SettingController::class, 'addDeliveryAddress'])->name('setting.addDeliveryAddress');
 
+        // Payment Account
+        Route::get('/payment_account', [SettingController::class, 'payment_account'])->name('setting.payment_account');
+
         // System
         Route::get('/system_setting', [SettingController::class, 'system_setting'])->name('setting.system_setting');
+    });
+
+    // Portal
+    Route::prefix('portal')->group(function () {
+        /**
+         * ==============================
+         *            Dashboard
+         * ==============================
+         */
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        /**
+         * ==============================
+         *            Report
+         * ==============================
+         */
+        Route::prefix('report')->group(function () {
+            Route::get('/', [ReportController::class, 'index'])->name('report');
+        });
     });
 });
 

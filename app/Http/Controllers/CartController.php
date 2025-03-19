@@ -167,11 +167,11 @@ class CartController extends Controller
                 'product_id' => $product_item->product_id,
                 'price_per_unit' => $product_item->price_per_unit,
                 'quantity' => $product_item->quantity,
-                'status' => $product_item->product->required_delivery ? 'processing' : 'delivered',
+                'status' => $product_item->product->required_delivery ? 'processing' : 'completed',
                 'delivered_at' => $product_item->product->required_delivery ? null : now(),
             ]);
 
-            if ($order_item->status == 'delivered') {
+            if ($order_item->status == 'completed') {
                 $product = Product::find($product_item->product_id);
                 $product->decrement('quantity', $order_item->quantity);
             }

@@ -14,6 +14,11 @@ const settingOptions = ref([
         mobileOnly: false,
     },
     {
+        label: 'payment_account',
+        route: 'setting.payment_account',
+        mobileOnly: false,
+    },
+    {
         label: 'system_setting',
         route: 'setting.system_setting',
         mobileOnly: true // Custom flag for filtering
