@@ -67,6 +67,8 @@ import ScrollPanel from "primevue/scrollpanel";
         <!-- Referrals -->
         <SidebarLink
             :title="$t('public.referral')"
+            :href="route('referral')"
+            :active="route().current('referral')"
         >
             <template #icon>
                 <IconUsers :size="20" stroke-width="1.5" />

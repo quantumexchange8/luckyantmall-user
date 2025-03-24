@@ -4,6 +4,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SelectOptionController;
 use App\Http\Controllers\SettingController;
@@ -113,6 +114,17 @@ Route::middleware('auth')->group(function () {
          * ==============================
          */
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        /**
+         * ==============================
+         *           Referral
+         * ==============================
+         */
+        Route::prefix('referral')->group(function () {
+            Route::get('/', [ReferralController::class, 'index'])->name('referral');
+            Route::get('/getStructureData', [ReferralController::class, 'getStructureData'])->name('referral.getStructureData');
+            Route::get('/getReferralListingData', [ReferralController::class, 'getReferralListingData'])->name('referral.getReferralListingData');
+        });
 
         /**
          * ==============================

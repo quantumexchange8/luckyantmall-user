@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,7 +12,6 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -59,6 +59,13 @@ class User extends Authenticatable
         $this->save();
     }
 
+    public function getChildrenIds(): array
+    {
+        return User::query()->where('hierarchyList', 'like', '%-' . $this->id . '-%')
+            ->pluck('id')
+            ->toArray();
+    }
+
     // Relations
     public function group(): HasOne
     {
@@ -84,5 +91,15 @@ class User extends Authenticatable
     public function wallets(): HasMany
     {
         return $this->hasMany(Wallet::class, 'user_id', 'id');
+    }
+
+    public function directs(): HasMany
+    {
+        return $this->hasMany(User::class, 'upline_id', 'id');
+    }
+
+    public function upline(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'upline_id', 'id');
     }
 }

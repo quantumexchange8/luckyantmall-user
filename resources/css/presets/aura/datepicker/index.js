@@ -230,7 +230,8 @@ export default {
     dayCell: {
         class: [
             // Spacing
-            'p-1'
+            'p-1',
+            'text-sm'
         ]
     },
     weekLabelContainer: {
@@ -264,7 +265,7 @@ export default {
 
             // Colors
             {
-                'bg-surface-100 dark:bg-surface-800 text-surface-600 dark:text-white/70': context.date.today && !context.selected && !context.disabled,
+                'bg-primary-100 dark:bg-primary-800 text-surface-600 dark:text-white/70': context.date.today && !context.selected && !context.disabled,
                 'bg-transparent text-surface-600 dark:text-white/70': !context.selected && !context.disabled && !context.date.today,
                 'bg-highlight': context.selected && !context.disabled
             },
@@ -275,7 +276,7 @@ export default {
                 'hover:bg-surface-50 dark:hover:bg-surface-500/10': !context.selected && !context.disabled
             },
             {
-                'opacity-60 cursor-default': context.disabled,
+                'opacity-60 cursor-default text-surface-400 dark:text-surface-600': context.disabled,
                 'cursor-pointer': !context.disabled
             }
         ]
