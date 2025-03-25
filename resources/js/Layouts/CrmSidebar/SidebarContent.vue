@@ -8,10 +8,9 @@ import {usePage} from "@inertiajs/vue3";
 import {
     IconLayoutDashboard,
     IconUsers,
-    IconUserCircle,
     IconUsersGroup,
-    IconTemplate,
-    IconCategory,
+    IconReportAnalytics,
+    IconChartInfographic,
     IconCoinMonero,
     IconHistory,
     IconClockDollar,
@@ -91,9 +90,11 @@ import ScrollPanel from "primevue/scrollpanel";
         <!-- Trade History -->
         <SidebarLink
             :title="$t('public.trade_history')"
+            :href="route('trade_history')"
+            :active="route().current('trade_history')"
         >
             <template #icon>
-                <IconUsersGroup :size="20" stroke-width="1.5" />
+                <IconReportAnalytics :size="20" stroke-width="1.5" />
             </template>
         </SidebarLink>
 
@@ -102,7 +103,7 @@ import ScrollPanel from "primevue/scrollpanel";
             :title="$t('public.rebate_history')"
         >
             <template #icon>
-                <IconUsersGroup :size="20" stroke-width="1.5" />
+                <IconChartInfographic :size="20" stroke-width="1.5" />
             </template>
         </SidebarLink>
     </ScrollPanel>

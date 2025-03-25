@@ -128,11 +128,11 @@ Route::middleware('auth')->group(function () {
 
         /**
          * ==============================
-         *            Report
+         *         Trade History
          * ==============================
          */
-        Route::prefix('report')->group(function () {
-            Route::get('/', [ReportController::class, 'index'])->name('report');
+        Route::prefix('trade_history')->group(function () {
+            Route::get('/', [ReportController::class, 'trade_history'])->name('trade_history');
         });
     });
 });
