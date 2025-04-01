@@ -33,6 +33,11 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
         ->name('password.store');
+
+    Route::get('sign_up_with_group', [AuthenticatedSessionController::class, 'sign_up_with_group'])->name('sign_up_with_group');
+    Route::post('proceedGroupSignIn', [AuthenticatedSessionController::class, 'proceedGroupSignIn'])->name('proceedGroupSignIn');
+
+    Route::get('authorize_login', [AuthenticatedSessionController::class, 'authorize_login'])->name('authorize_login');
 });
 
 Route::middleware('auth')->group(function () {

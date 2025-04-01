@@ -65,7 +65,7 @@ export default {
             // Secondary Text Button
             { 'text-surface-500 dark:text-surface-300': props.text && props.severity === 'secondary' && !props.plain },
             // Secondary Outlined Button
-            { 'text-surface-500 dark:text-surface-300 border border-surface-500 hover:bg-surface-300/10': props.outlined && props.severity === 'secondary' && !props.plain },
+            { 'text-surface-500 dark:text-surface-300 border border-surface-300 dark:border-surface-700 shadow-toast hover:bg-surface-300/10': props.outlined && props.severity === 'secondary' && !props.plain },
 
             // Success Button
             {

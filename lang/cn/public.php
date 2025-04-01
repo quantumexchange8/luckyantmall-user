@@ -165,4 +165,12 @@ return [
     "filter_by_date" => "按日期筛选",
     "filter_by_level" => "按级别筛选",
     "select_level" => "选择级别",
+    "enter_your_username" => "输入您的用户名",
+    "or" => "或",
+    "sign_up_with_group" => "使用Luckyant帐号登入",
+    "sign_up_with_group_caption" => "您即将使用您的 Luckyant 帐号加入 Luckyant 商城。",
+    "back_to_login" => "返回登录",
+    "proceed" => "继续",
+    "success_authorized" => "授权成功",
+    "toast_signed_in_success" => "欢迎来到 Luckyant 商城",
 ];

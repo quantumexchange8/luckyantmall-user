@@ -165,4 +165,12 @@ return [
     "filter_by_date" => "Filter by Date",
     "filter_by_level" => "Filter by Level",
     "select_level" => "Select Level",
+    "enter_your_username" => "Enter Your Username",
+    "or" => "or",
+    "sign_up_with_group" => "Sign Up with Group",
+    "sign_up_with_group_caption" => "You are about to use your Luckyant Group account to join Luckyant Mall.",
+    "back_to_login" => "Back to Login",
+    "proceed" => "Proceed",
+    "success_authorized" => "Successful Authorized",
+    "toast_signed_in_success" => "Welcome to Luckyant Mall",
 ];

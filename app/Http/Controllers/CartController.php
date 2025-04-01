@@ -15,6 +15,7 @@ use App\Models\TradingMaster;
 use App\Models\TradingSubscription;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\MainApiService;
 use App\Services\MetaFiveService;
 use App\Services\RunningNumberService;
 use Carbon\Carbon;
@@ -257,7 +258,7 @@ class CartController extends Controller
     {
         $master = TradingMaster::firstWhere('meta_login', $master_meta_login);
 
-        TradingSubscription::create([
+        $subscription = TradingSubscription::create([
             'user_id' => $user->id,
             'meta_login' => $trading_account->meta_login,
             'master_meta_login' => $master_meta_login,
@@ -277,6 +278,8 @@ class CartController extends Controller
             'real_fund' => $user->role == 'user' ? $subscription_amount : null,
             'demo_fund' => $user->role != 'user' ? $subscription_amount : null,
         ]);
+
+        (new MainApiService)->sync_trading_subscription($user, $subscription);
 
         $metaService->disableTrade($trading_account->meta_login);
 
@@ -312,6 +315,7 @@ class CartController extends Controller
     private function createNewTradingAccount($metaService, $user)
     {
         $meta_account = $metaService->createUser($user, 'JS', 500, $user->email);
+        (new MainApiService())->sync_trading_account($user, $meta_account);
         return TradingAccount::where('meta_login', $meta_account['login'])->first();
     }
 

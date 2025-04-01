@@ -6,6 +6,7 @@ import {IconMoon, IconSun} from "@tabler/icons-vue";
 import Button from "primevue/button";
 import ChangeLocale from "@/Components/Navbar/ChangeLocale.vue";
 import dayjs from "dayjs";
+import ToastList from "@/Components/ToastList.vue";
 
 defineProps({
     title: String
@@ -44,6 +45,7 @@ defineProps({
         <div class="flex flex-col justify-center items-center pb-12 md:px-8 xs:gap-y-[60px]">
             <div class="w-full flex md:flex-1 justify-center">
                 <div class="w-full max-w-xs md:max-w-none md:w-[360px] flex flex-col justify-center items-center mx-5">
+                    <ToastList />
                     <slot />
                 </div>
             </div>

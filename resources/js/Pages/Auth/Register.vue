@@ -18,6 +18,7 @@ import Password from 'primevue/password';
 import Checkbox from 'primevue/checkbox';
 import {VueScrollPicker} from "vue-scroll-picker";
 import DatePicker from "@/Components/DatePicker.vue";
+import ToastList from "@/Components/ToastList.vue";
 
 const props = defineProps({
     referral_code: String
@@ -125,6 +126,7 @@ const handleBack = () => {
     <div
         class="flex justify-center min-h-screen bg-white dark:bg-surface-950"
     >
+        <ToastList />
         <div class="w-full flex">
             <!-- Col -->
             <div class="hidden md:flex flex-col items-start gap-20 px-5 bg-white border-r-2 border-surface-200 dark:bg-surface-950 dark:border-surface-700 min-w-80">

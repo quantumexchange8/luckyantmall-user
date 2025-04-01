@@ -19,6 +19,7 @@ class TradingSubscription extends Model
         'real_fund',
         'demo_fund',
         'subscription_number',
+        'group_subscription_number',
         'subscription_period_type',
         'subscription_period',
         'expired_at',

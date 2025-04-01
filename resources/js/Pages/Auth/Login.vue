@@ -6,6 +6,7 @@ import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
 import {Link, useForm} from '@inertiajs/vue3';
 import Button from 'primevue/button';
+import Divider from "primevue/divider";
 
 defineProps({
     canResetPassword: {
@@ -17,7 +18,7 @@ defineProps({
 });
 
 const form = useForm({
-    email: '',
+    username: '',
     password: '',
     remember: false,
 });
@@ -35,28 +36,28 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <div class="w-full flex flex-col justify-center items-center gap-8">
+        <div class="w-full flex flex-col justify-center items-center gap-6 md:gap-8">
             <div class="w-full flex flex-col items-start gap-1 self-stretch pt-10">
                 <div class="self-stretch text-center text-gray-950 dark:text-white text-xl font-semibold">{{ $t('public.login_header') }}</div>
-                <div class="self-stretch text-center text-surface-500">{{ $t('public.login_header_caption') }}</div>
+                <div class="text-sm md:text-base self-stretch text-center text-surface-500">{{ $t('public.login_header_caption') }}</div>
             </div>
             <form @submit.prevent="submit" class="flex flex-col items-center gap-3 self-stretch">
                 <div class="flex flex-col items-start gap-5 self-stretch">
                     <div class="flex flex-col items-start gap-1 self-stretch">
-                        <InputLabel for="email" :value="$t('public.email')" :invalid="!!form.errors.email" />
+                        <InputLabel for="username" :value="$t('public.username')" :invalid="!!form.errors.username" />
 
                         <InputText
-                            id="email"
-                            type="email"
+                            id="username"
+                            type="text"
                             class="block w-full"
-                            v-model="form.email"
+                            v-model="form.username"
                             autofocus
-                            :placeholder="$t('public.enter_your_email')"
-                            :invalid="!!form.errors.email"
+                            :placeholder="$t('public.enter_your_username')"
+                            :invalid="!!form.errors.username"
                             autocomplete="username"
                         />
 
-                        <InputError :message="form.errors.email" />
+                        <InputError :message="form.errors.username" />
                     </div>
 
                     <div class="flex flex-col items-start gap-1 self-stretch">
@@ -81,11 +82,10 @@ const submit = () => {
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="text-right text-sm text-primary-500 hover:text-primary-600 font-semibold"
+                        class="text-right text-sm text-primary-500 hover:text-primary-600 font-medium"
                     >
-                        {{ $t('public.forgot_your_password') }}
+                        {{ $t('public.forgot_your_password') }}?
                     </Link>
-
                 </div>
 
                 <div class="flex flex-col gap-1 items-center self-stretch">
@@ -93,6 +93,7 @@ const submit = () => {
                         type="submit"
                         :label="$t('public.sign_in')"
                         class="w-full"
+                        size="small"
                         :disabled="form.processing"
                     />
                     <div class="text-sm text-surface-600 dark:text-surface-400">
@@ -106,6 +107,24 @@ const submit = () => {
                     </div>
                 </div>
             </form>
+
+            <Divider align="center">
+                <span class="text-sm text-surface-400">{{ $t('public.or') }}</span>
+            </Divider>
+            <Button
+                type="button"
+                as="a"
+                :href="route('sign_up_with_group')"
+                severity="secondary"
+                outlined
+                class="w-full flex gap-2"
+                size="small"
+                :disabled="form.processing"
+            >
+                <img src="/img/luckyant-group-logo-mark.svg" alt="logo" width="16" />
+                <span class="font-medium text-surface-950
+ dark:text-white">{{ $t('public.sign_up_with_group') }}</span>
+            </Button>
         </div>
     </GuestLayout>
 </template>
