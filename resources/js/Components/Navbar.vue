@@ -12,12 +12,12 @@ import {
     IconMoon,
     IconSun,
     IconShoppingCart,
-    IconLanguage
 } from "@tabler/icons-vue"
 import SignIn from "@/Components/Navbar/SignIn.vue";
 import Button from 'primevue/button';
 import {isDark, toggleDarkMode} from '@/Composables'
 import ChangeLocale from "@/Components/Navbar/ChangeLocale.vue";
+import OverlayBadge from "primevue/overlaybadge";
 
 defineProps({
     hidden: {
@@ -111,18 +111,23 @@ const setActiveTab = (routeName) => {
                     />
 
                     <div v-else>
-                        <Button
-                            severity="secondary"
-                            outlined
+                        <OverlayBadge
                             size="small"
-                            aria-label="Cart"
-                            as="a"
-                            :href="route('cart')"
+                            :value="$page.props.auth.cartItemsCount"
                         >
-                            <template #icon>
-                                <IconShoppingCart size="16" />
-                            </template>
-                        </Button>
+                            <Button
+                                severity="secondary"
+                                outlined
+                                size="small"
+                                aria-label="Cart"
+                                as="a"
+                                :href="route('cart')"
+                            >
+                                <template #icon>
+                                    <IconShoppingCart size="16" />
+                                </template>
+                            </Button>
+                        </OverlayBadge>
                     </div>
                 </div>
 

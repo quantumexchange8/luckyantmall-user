@@ -83,6 +83,7 @@ const submitForm = () => {
     form.post(route('shop.addToCart'), {
         onSuccess: () => {
             form.reset();
+            visible.value = false;
         }
     })
 }
@@ -134,7 +135,10 @@ const submitForm = () => {
                                 </div>
                             </div>
 
-                            <div v-html="product.descriptions"></div>
+                            <div
+                                class="prose dark:prose-invert w-full text-left"
+                                v-html="product.descriptions"
+                            ></div>
 
                             <div class="flex gap-3 items-center self-stretch">
                                 <Button

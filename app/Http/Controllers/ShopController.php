@@ -114,18 +114,32 @@ class ShopController extends Controller
 
         $action = $request->action;
 
-        CartItem::create([
+        $exist_item = CartItem::where([
             'cart_id' => $cart->id,
-            'type' => $action,
             'product_id' => $request->product_id,
-            'trading_master_id' => $request->master_id,
-            'quantity' => $request->quantity,
-            'price_per_unit' => $request->price_per_unit,
-            'total_price' => $request->total_price,
-        ]);
+        ])
+            ->first();
+
+        if ($action == 'add_to_cart' && $exist_item) {
+            $exist_item->increment('quantity', $request->quantity);
+        } else {
+            CartItem::create([
+                'cart_id' => $cart->id,
+                'type' => $action,
+                'product_id' => $request->product_id,
+                'trading_master_id' => $request->master_id,
+                'quantity' => $request->quantity,
+                'price_per_unit' => $request->price_per_unit,
+                'total_price' => $request->total_price,
+            ]);
+        }
 
         if ($action == 'add_to_cart') {
-            return Redirect::route('cart');
+            return to_route('shop')->with('toast', [
+                'title' => 'success',
+                'message' => trans('public.toast_added_item_success'),
+                'type' => 'success',
+            ]);
         } else {
             return Redirect::route('cart.checkout', [
                 'action' => $action,

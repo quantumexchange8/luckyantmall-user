@@ -91,15 +91,4 @@ class MainApiService
             ]);
         }
     }
-
-    public function sign_in_authorization($username)
-    {
-        return Http::acceptJson()
-            ->withHeaders([
-                'X-API-KEY' => $this->token,
-            ])
-            ->post($this->base_url . "/sign_in_authorization", [
-                'username' => $username,
-            ])->json();
-    }
 }

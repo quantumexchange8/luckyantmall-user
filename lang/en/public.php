@@ -173,4 +173,5 @@ return [
     "proceed" => "Proceed",
     "success_authorized" => "Successful Authorized",
     "toast_signed_in_success" => "Welcome to Luckyant Mall",
+    "toast_added_item_success" => "Item added to cart",
 ];

@@ -173,4 +173,5 @@ return [
     "proceed" => "繼續",
     "success_authorized" => "授權成功",
     "toast_signed_in_success" => "歡迎來到幸運商城",
+    "toast_added_item_success" => "已將商品添加至購物車",
 ];

@@ -1,5 +1,5 @@
 <script setup>
-import {Head, router} from "@inertiajs/vue3";
+import {Head} from "@inertiajs/vue3";
 import {
     IconArrowLeft,
     IconShoppingCart,
@@ -8,6 +8,7 @@ import Button from "primevue/button";
 import Navbar from "@/Components/Navbar.vue";
 import SignIn from "@/Components/Navbar/SignIn.vue";
 import ToastList from "@/Components/ToastList.vue";
+import OverlayBadge from 'primevue/overlaybadge';
 
 defineProps({
     title: String,
@@ -20,7 +21,6 @@ defineProps({
         default: null
     },
 })
-
 </script>
 
 <template>
@@ -54,18 +54,23 @@ defineProps({
                     />
 
                     <div v-else>
-                        <Button
-                            severity="secondary"
-                            outlined
+                        <OverlayBadge
                             size="small"
-                            aria-label="Cart"
-                            as="a"
-                            :href="route('cart')"
+                            :value="$page.props.auth.cartItemsCount"
                         >
-                            <template #icon>
-                                <IconShoppingCart size="16" />
-                            </template>
-                        </Button>
+                            <Button
+                                severity="secondary"
+                                outlined
+                                size="small"
+                                aria-label="Cart"
+                                as="a"
+                                :href="route('cart')"
+                            >
+                                <template #icon>
+                                    <IconShoppingCart size="16" />
+                                </template>
+                            </Button>
+                        </OverlayBadge>
                     </div>
                 </div>
                 <!-- Toast -->

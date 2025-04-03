@@ -21,6 +21,7 @@
         "@inertiajs/inertia": "^0.11.1",
         "@primevue/core": "^4.3.2",
         "@tabler/icons-vue": "^3.19.0",
+        "@tailwindcss/typography": "^0.5.16",
         "@vueuse/core": "^11.1.0",
         "dayjs": "^1.11.13",
         "laravel-vue-i18n": "^2.7.7",

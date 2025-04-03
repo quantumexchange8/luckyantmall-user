@@ -173,4 +173,5 @@ return [
     "proceed" => "继续",
     "success_authorized" => "授权成功",
     "toast_signed_in_success" => "欢迎来到 Luckyant 商城",
+    "toast_added_item_success" => "已将商品添加至购物车",
 ];

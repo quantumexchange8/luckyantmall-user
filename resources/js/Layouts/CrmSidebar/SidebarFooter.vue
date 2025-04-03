@@ -7,9 +7,10 @@ import {IconShoppingBag} from "@tabler/icons-vue";
 </script>
 
 <template>
-    <div class="py-2">
+    <div class="p-2">
         <SidebarLink
             :title="$t('public.back_to_shop')"
+            :href="route('home')"
         >
             <template #icon>
                 <IconShoppingBag :size="20" stroke-width="1.5" />

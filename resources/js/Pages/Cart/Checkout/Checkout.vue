@@ -48,12 +48,12 @@ const submitForm = () => {
 const visibility = ref(false);
 
 const subTotalAmount = computed(() => {
-    return props.cartItems.reduce((acc, item) => acc + item.total_price, 0);
+    return props.cartItems.reduce((acc, item) => acc + Number(item.total_price), 0);
 });
 
 // add totalAmount for sum of delivery fee
 const afterPaymentBalance = computed(() => {
-    return Math.max(0, props.wallet.balance - subTotalAmount.value);
+    return Math.max(0, Number(props.wallet.balance) - subTotalAmount.value);
 });
 
 const closeDrawer = () => {
