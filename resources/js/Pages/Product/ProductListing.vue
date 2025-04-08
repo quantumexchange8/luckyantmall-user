@@ -14,6 +14,8 @@ import {Link} from "@inertiajs/vue3";
 import ProductFilters from "@/Pages/Product/Partials/ProductFilters.vue";
 import Drawer from "primevue/drawer";
 import Select from "primevue/select";
+import Skeleton from "primevue/skeleton";
+import EmptyData from "@/Components/EmptyData.vue";
 
 defineProps({
     productsCount: Number,
@@ -183,8 +185,56 @@ watch([selectedCategories, selectedSort], () => {
                             </Select>
                         </div>
                     </template>
+
+                    <!-- Empty State -->
+                    <template #empty>
+                        <div
+                            v-if="isLoading && layout === 'grid'"
+                            class="grid grid-cols-12 gap-5"
+                        >
+                            <div v-for="i in 6" :key="i" class="col-span-12 sm:col-span-6 xl:col-span-4">
+                                <div class="p-4 bg-surface-0 dark:bg-surface-900 rounded-[12px] flex flex-col">
+                                    <Skeleton height="20.75rem"></Skeleton>
+                                    <div class="pt-5">
+                                        <Skeleton width="8rem" height="1rem" class="mb-1" />
+                                        <Skeleton width="6rem" height="2rem" class="mt-3 mb-1" />
+                                        <div class="flex flex-col gap-6 mt-6">
+                                            <Skeleton width="8rem" height="2rem" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="flex justify-center items-center">
+                            <EmptyData
+                                :title="$t('public.no_product_found')"
+                            />
+                        </div>
+                    </template>
+
                     <template #list="slotProps">
-                        <div class="flex flex-col">
+                        <div
+                            v-if="isLoading"
+                            class="flex flex-col"
+                        >
+                            <div v-for="i in 6" :key="i">
+                                <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4 bg-white dark:bg-surface-900 rounded-[12px]" :class="{ 'mt-5': i !== 0 }">
+                                    <div class="md:w-40 h-[300px] md:h-40">
+                                        <Skeleton height="10rem"></Skeleton>
+                                    </div>
+                                    <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
+                                        <div class="flex flex-row md:flex-col justify-between items-start gap-2">
+                                            <Skeleton width="8rem" height="1rem" class="mb-1" />
+                                            <Skeleton width="6rem" height="2rem" class="mt-3 mb-1" />
+                                        </div>
+                                        <div class="flex flex-col md:items-end gap-8">
+                                            <Skeleton width="8rem" height="2rem" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="flex flex-col">
                             <div v-for="(item, index) in slotProps.items" :key="index">
                                 <Link :href="route('shop.product_detail', [item.slug, item.id])">
                                     <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4 bg-white dark:bg-surface-900 rounded-[12px]" :class="{ 'mt-5': index !== 0 }">
@@ -213,6 +263,24 @@ watch([selectedCategories, selectedSort], () => {
                     </template>
 
                     <template #grid="slotProps">
+                        <div
+                            v-if="isLoading"
+                            class="grid grid-cols-12 gap-5"
+                        >
+                            <div v-for="i in 6" :key="i" class="col-span-12 sm:col-span-6 xl:col-span-4">
+                                <div class="p-4 bg-surface-0 dark:bg-surface-900 rounded-[12px] flex flex-col">
+                                    <Skeleton height="20.75rem"></Skeleton>
+                                    <div class="pt-5">
+                                        <Skeleton width="8rem" height="1rem" class="mb-1" />
+                                        <Skeleton width="6rem" height="2rem" class="mt-3 mb-1" />
+                                        <div class="flex flex-col gap-6 mt-6">
+                                            <Skeleton width="8rem" height="2rem" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-12 gap-5">
                             <div v-for="(item, index) in slotProps.items" :key="index" class="col-span-12 sm:col-span-6 xl:col-span-4">
                                 <Link :href="route('shop.product_detail', [item.slug, item.id])">

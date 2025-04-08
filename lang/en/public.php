@@ -174,4 +174,7 @@ return [
     "success_authorized" => "Successful Authorized",
     "toast_signed_in_success" => "Welcome to Luckyant Mall",
     "toast_added_item_success" => "Item added to cart",
+    "no_product_found" => "No product found",
+    "shopping_cart_empty" => "Shopping cart is empty",
+    "payment_account" => "Payment Account",
 ];

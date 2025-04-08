@@ -19,7 +19,8 @@ import InputError from "@/Components/InputError.vue";
 import {useLangObserver} from "@/Composables/localeObserver.js";
 
 const props = defineProps({
-    product: Object
+    product: Object,
+    masters: Object,
 })
 
 const visible = ref(false);
@@ -219,13 +220,13 @@ const submitForm = () => {
                         </InputNumber>
                     </div>
                     <div
-                        v-if="product.masters.length > 0"
+                        v-if="masters"
                         class="flex flex-col md:flex-row gap-1 md:justify-between items-start w-full"
                     >
                         <span class="text-sm text-surface-400 dark:text-surface-500 w-full">{{ $t('public.investment_plan') }}</span>
                         <div class="flex flex-col gap-1 w-full">
                             <div class="flex gap-1 w-full md:justify-end">
-                                <div v-for="(chip, index) in product.masters" :key="index">
+                                <div v-for="(chip, index) in masters" :key="index">
                                     <Chip
                                         :label="chip.master_name"
                                         class="border dark:hover:border-surface-800"

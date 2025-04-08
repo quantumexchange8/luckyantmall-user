@@ -41,4 +41,6 @@ class TradingMaster extends Model
     {
         return $this->hasMany(TradingSubscription::class, 'master_meta_login', 'meta_login')->where('status','ongoing');
     }
+
+
 }

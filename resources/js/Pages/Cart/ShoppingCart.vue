@@ -6,7 +6,6 @@ import Button from 'primevue/button';
 import Checkbox from 'primevue/checkbox';
 import InputNumber from 'primevue/inputnumber';
 import {computed, onMounted, ref, watch} from "vue";
-import {ProductService} from "@/service/ProductService.js";
 import {generalFormat} from "@/Composables/format.js";
 import {
     IconMinus,
@@ -18,14 +17,12 @@ import InputError from "@/Components/InputError.vue";
 import Skeleton from "primevue/skeleton";
 import {trans} from "laravel-vue-i18n";
 import {useConfirm} from "primevue/useconfirm";
+import EmptyData from "@/Components/EmptyData.vue";
 
 const props = defineProps({
-    cart: Object
+    cart: Object,
+    cartItemsCount: Number,
 })
-
-onMounted(() => {
-    ProductService.getProductsSmall().then((data) => (products.value = data.slice(0, 5)));
-});
 
 const products = ref();
 const cartItems = ref();
@@ -188,14 +185,16 @@ const deleteItem = async (itemId) => {
                         <span class="font-semibold text-left w-full text-surface-950 dark:text-white">{{ $t('public.shopping_cart') }}</span>
 
                         <DataView
-                            v-if="isLoading"
-                            :value="products"
-                            layout="list"
+                            :value="cartItems"
                             class="w-full"
                         >
-                            <template #list>
-                                <div class="flex flex-col">
-                                    <div v-for="(i, index) in cart.cart_items_count" :key="index">
+                            <!-- Empty State -->
+                            <template #empty>
+                                <div
+                                    v-if="isLoading && cartItemsCount !== 0"
+                                    class="flex flex-col"
+                                >
+                                    <div v-for="(i, index) in cartItemsCount" :key="index">
                                         <div class="flex flex-col sm:flex-row sm:items-center gap-4 py-3" :class="{ 'border-t border-surface-200 dark:border-surface-700': index !== 0 }">
                                             <div class="flex justify-start items-start self-stretch">
                                                 <Checkbox
@@ -208,7 +207,7 @@ const deleteItem = async (itemId) => {
                                                 <div class="flex flex-col justify-between items-start gap-3">
                                                     <div class="flex flex-col gap-2">
                                                         <Skeleton width="8rem" height="2rem" />
-                                                        <Skeleton width="8rem" height="2rem" />
+                                                        <Skeleton width="8rem" height="1.5rem" />
                                                     </div>
                                                     <Skeleton width="8rem" height="2rem" />
                                                 </div>
@@ -219,14 +218,12 @@ const deleteItem = async (itemId) => {
                                         </div>
                                     </div>
                                 </div>
+                                <EmptyData
+                                    v-else
+                                    :title="$t('public.shopping_cart_empty')"
+                                />
                             </template>
-                        </DataView>
 
-                        <DataView
-                            v-else
-                            :value="cartItems"
-                            class="w-full"
-                        >
                             <template #list="slotProps">
                                 <div class="flex flex-col">
                                     <div v-for="(item, index) in slotProps.items" :key="index">
@@ -248,12 +245,12 @@ const deleteItem = async (itemId) => {
                                                         <div
                                                             class="font-semibold"
                                                             :class="{
-                                                                'text-surface-400 dark:text-surface-500 line-through': basePrice !== item.product.base_price,
+                                                                'text-surface-400 dark:text-surface-500 line-through text-sm': basePrice !== item.product.base_price,
                                                             }"
                                                         >
                                                             ¥{{ formatAmount(item.product.base_price) }}
                                                         </div>
-                                                        <div v-if="basePrice !== item.product.base_price" class="text-surface-400 dark:text-surface-500 font-semibold">
+                                                        <div v-if="basePrice !== item.product.base_price" class="text-primary-400 font-semibold">
                                                             ¥{{ formatAmount(item.basePrice) }}
                                                         </div>
                                                     </div>

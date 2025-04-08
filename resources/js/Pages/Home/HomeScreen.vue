@@ -2,7 +2,6 @@
 import MasterLayout from "@/Layouts/MasterLayout.vue";
 import Card from 'primevue/card';
 import {ref, onMounted, onBeforeUnmount} from "vue";
-import { PhotoService } from '@/service/PhotoService';
 import Galleria from 'primevue/galleria';
 import Carousel from 'primevue/carousel';
 import Tag from 'primevue/tag';
@@ -13,13 +12,9 @@ import {useLangObserver} from "@/Composables/localeObserver.js";
 
 defineProps({
     categories: Object,
+    settingBanners: Array
 })
 
-onMounted(() => {
-    PhotoService.getImages().then((data) => (images.value = data));
-});
-
-const images = ref();
 const responsiveOptions = ref([
     {
         breakpoint: '1300px',
@@ -92,13 +87,17 @@ const getSeverity = (status) => {
 const redirectToCategory = (category) => {
     window.location.href = route('shop', {category: category});
 }
+
+const redirectToPage = (url) => {
+    window.location.href = url;
+}
 </script>
 
 <template>
     <MasterLayout title="Home">
         <div class="flex flex-col gap-5 md:gap-8 justify-center items-center w-full">
             <Galleria
-                :value="images"
+                :value="settingBanners"
                 :responsiveOptions="responsiveOptions"
                 :numVisible="9"
                 containerStyle="width: 100%"
@@ -109,10 +108,29 @@ const redirectToCategory = (category) => {
                 :transitionInterval="4000"
             >
                 <template #item="slotProps">
-                    <img :src="slotProps.item.itemImageSrc" class="h-40 md:h-80 object-cover" :alt="slotProps.item.alt" style="width: 100%; display: block" />
-                </template>
-                <template #thumbnail="slotProps">
-                    <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" style="display: block" />
+                    <a
+                        v-if="slotProps.item.banner_url"
+                        :href="slotProps.item.banner_url"
+                        class="w-full text-xs text-surface-500 hover:text-blue-500 truncate"
+                    >
+                        <img
+                            :src="slotProps.item.image_url"
+                            class="h-40 md:h-80 object-cover"
+                            :alt="slotProps.item.alt"
+                            style="width: 100%; display: block"
+                        />
+                    </a>
+                    <div
+                        v-else
+                        class="w-full"
+                    >
+                        <img
+                            :src="slotProps.item.image_url"
+                            class="h-40 md:h-80 object-cover"
+                            :alt="slotProps.item.alt"
+                            style="width: 100%; display: block"
+                        />
+                    </div>
                 </template>
             </Galleria>
 

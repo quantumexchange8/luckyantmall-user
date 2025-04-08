@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\TradingMasterToGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -83,8 +84,20 @@ class ShopController extends Controller
             'category'
         ])->find($id);
 
+        if (!$product->is_auth_visible && !auth()->check()) {
+            return to_route('login');
+        }
+
+        $user = Auth::user();
+
+        $masterIds = TradingMasterToGroup::where('group_id', $user?->group->group_id)
+            ->pluck('trading_master_id');
+
+        $masters = $product->masters->whereIn('id', $masterIds)->toArray();
+
         return Inertia::render('Product/ProductDetail', [
-            'product' => $product
+            'product' => $product,
+            'masters' => $masters
         ]);
     }
 

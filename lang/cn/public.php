@@ -174,4 +174,6 @@ return [
     "success_authorized" => "授权成功",
     "toast_signed_in_success" => "欢迎来到 Luckyant 商城",
     "toast_added_item_success" => "已将商品添加至购物车",
+    "no_product_found" => "未找到产品",
+    "shopping_cart_empty" => "购物车为空",
 ];

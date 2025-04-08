@@ -32,16 +32,18 @@ const user = usePage().props.auth.user;
                                     <span class="text-sm font-medium">{{ user.username }}</span>
                                     <span class="text-xs dark:text-surface-400">{{ user.email }}</span>
                                 </div>
-                                <Button
-                                    severity="secondary"
-                                    size="small"
-                                    rounded
-                                    as="a"
-                                    :href="route('profile')"
-                                    class="!px-2.5"
-                                >
-                                    <IconEdit size="20" stroke-width="1.5" />
-                                </Button>
+                                <div class="max-w-10">
+                                    <Button
+                                        severity="secondary"
+                                        size="small"
+                                        rounded
+                                        as="a"
+                                        :href="route('profile')"
+                                        class="!p-2"
+                                    >
+                                        <IconEdit size="20" stroke-width="1.5" />
+                                    </Button>
+                                </div>
                             </div>
                             <div class="flex gap-3 items-center self-stretch w-full">
                                 <div class="flex flex-col gap-1 items-start w-full">

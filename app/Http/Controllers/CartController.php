@@ -40,6 +40,7 @@ class CartController extends Controller
 
         return Inertia::render('Cart/ShoppingCart', [
             'cart' => $cart,
+            'cartItemsCount' => $cart->cart_items()->count(),
         ]);
     }
 

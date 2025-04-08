@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\SettingBanner;
 use Auth;
 use Inertia\Inertia;
 
@@ -15,8 +16,22 @@ class HomeController extends Controller
             ->getCategories()
             ->getData();
 
+        $settingBanners = SettingBanner::with('media')
+            ->orderBy('position')
+            ->get()
+            ->map(function ($banner) {
+                return [
+                    'image_url' => $banner->getFirstMediaUrl('banner_image'),
+                    'banner_url' => $banner->banner_url,
+                ];
+            })->filter(function ($item) {
+                return $item['image_url'];
+            })->values();
+
+
         return Inertia::render('Home/HomeScreen', [
             'categories' => $categoriesData,
+            'settingBanners' => $settingBanners,
         ]);
     }
 
