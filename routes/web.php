@@ -53,6 +53,9 @@ Route::prefix('shop')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // Get Options
+    Route::get('/getTradeSymbols', [SelectOptionController::class, 'getTradeSymbols'])->name('getTradeSymbols');
+
     Route::get('/getDepositProfiles', [WalletController::class, 'getDepositProfiles'])->name('profile.getDepositProfiles');
 
     /**
@@ -133,6 +136,7 @@ Route::middleware('auth')->group(function () {
          */
         Route::prefix('trade_history')->group(function () {
             Route::get('/', [ReportController::class, 'trade_history'])->name('trade_history');
+            Route::get('/getTradeHistoriesData', [ReportController::class, 'getTradeHistoriesData'])->name('trade_history.getTradeHistoriesData');
         });
     });
 });

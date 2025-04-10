@@ -115,7 +115,7 @@ const redirectToPage = (url) => {
                     >
                         <img
                             :src="slotProps.item.image_url"
-                            class="h-40 md:h-80 object-cover"
+                            class="h-40 md:h-[400px] object-cover"
                             :alt="slotProps.item.alt"
                             style="width: 100%; display: block"
                         />

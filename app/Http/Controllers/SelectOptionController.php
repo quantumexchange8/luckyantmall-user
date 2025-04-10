@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Country;
+use App\Models\TradeHistory;
+use Auth;
 
 class SelectOptionController extends Controller
 {
@@ -26,5 +28,18 @@ class SelectOptionController extends Controller
         $categories = $query->get();
 
         return response()->json($categories);
+    }
+
+    public function getTradeSymbols()
+    {
+        $symbols = TradeHistory::query()
+            ->where('user_id', Auth::id())
+            ->select('symbol')
+            ->distinct()
+            ->get()
+            ->pluck('symbol')
+            ->toArray();
+
+        return response()->json($symbols);
     }
 }

@@ -96,7 +96,6 @@ export default {
                 turquoise: '#41EAD4',
                 green: '#22c55e',
                 jonquil: '#ECC30B',
-                orange: '#F26419',
                 pink: '#f43f5e',
                 purple: '#7A5AF8',
             },

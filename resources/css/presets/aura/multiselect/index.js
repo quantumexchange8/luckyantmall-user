@@ -129,6 +129,7 @@ export default {
 
             // Font
             'leading-none',
+            'text-sm',
 
             // Spacing
             'm-0 px-3 py-2 gap-2',
@@ -142,7 +143,7 @@ export default {
                 'text-surface-700 dark:text-white/80': !context.focused && !context.selected,
                 'bg-surface-200 dark:bg-surface-600/60': context.focused && !context.selected,
                 'text-surface-700 dark:text-white/80': context.focused && !context.selected,
-                'bg-highlight': context.selected
+                'bg-primary-100 dark:bg-surface-600/40': context.selected
             },
 
             //States
@@ -175,6 +176,7 @@ export default {
         class: [
             // Font
             'leading-none',
+            'text-sm',
 
             // Spacing
             'py-2 px-3',
