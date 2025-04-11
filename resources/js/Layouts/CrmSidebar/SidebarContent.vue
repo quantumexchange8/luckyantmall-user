@@ -101,6 +101,8 @@ import ScrollPanel from "primevue/scrollpanel";
         <!-- Rebate History -->
         <SidebarLink
             :title="$t('public.rebate_history')"
+            :href="route('rebate_history')"
+            :active="route().current('rebate_history')"
         >
             <template #icon>
                 <IconChartInfographic :size="20" stroke-width="1.5" />

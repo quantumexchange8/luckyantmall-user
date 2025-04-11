@@ -199,4 +199,7 @@ return [
     "total_profit" => "Total Profit",
     "trade_lot" => "Trade Lot",
     "calculating" => "calculating",
+    "personal" => "Personal",
+    "today_rebate" => "Today's Rebate",
+    "total_rebate" => "Total Rebate",
 ];

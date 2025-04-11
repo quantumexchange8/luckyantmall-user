@@ -138,6 +138,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [ReportController::class, 'trade_history'])->name('trade_history');
             Route::get('/getTradeHistoriesData', [ReportController::class, 'getTradeHistoriesData'])->name('trade_history.getTradeHistoriesData');
         });
+
+        /**
+         * ==============================
+         *         Rebate History
+         * ==============================
+         */
+        Route::prefix('rebate_history')->group(function () {
+            Route::get('/', [ReportController::class, 'rebate_history'])->name('rebate_history');
+            Route::get('/getRebateHistoriesData', [ReportController::class, 'getRebateHistoriesData'])->name('rebate_history.getRebateHistoriesData');
+        });
     });
 });
 

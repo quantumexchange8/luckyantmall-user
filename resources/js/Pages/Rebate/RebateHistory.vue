@@ -1,33 +1,29 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import TradeOverview from "@/Pages/Trade/TradeOverview.vue";
 import {ref, watch} from "vue";
-import TradeHistoryTable from "@/Pages/Trade/TradeHistoryTable.vue";
 import Tabs from 'primevue/tabs';
 import TabList from 'primevue/tablist';
 import Tab from 'primevue/tab';
+import RebateHistoryTable from "@/Pages/Rebate/RebateHistoryTable.vue";
+import RebateOverview from "@/Pages/Rebate/RebateOverview.vue";
 
-const todayProfit = ref(null);
-const tradeProfitTrend = ref(null);
-const totalProfit = ref(null);
+const todayRebate = ref(null);
+const tradeRebateTrend = ref(null);
+const totalRebate = ref(null);
 const totalTradeLot = ref(null);
 
 const tabs = ref([
     {
-        type: 'all_trades',
+        type: 'personal',
         value: '0',
     },
     {
-        type: 'buy',
+        type: 'referral',
         value: '1',
-    },
-    {
-        type: 'sell',
-        value: '2',
     },
 ]);
 
-const selectedType = ref('all_trades');
+const selectedType = ref('personal');
 const activeIndex = ref('0');
 
 // Watch for changes in selectedType and update the activeIndex accordingly
@@ -39,20 +35,20 @@ watch(activeIndex, (newIndex) => {
 });
 
 const handleUpdateTotals = (data) => {
-    todayProfit.value = data.todayProfit;
-    tradeProfitTrend.value = data.tradeProfitTrend;
-    totalProfit.value = data.totalProfit;
+    todayRebate.value = data.todayRebate;
+    tradeRebateTrend.value = data.tradeRebateTrend;
+    totalRebate.value = data.totalRebate;
     totalTradeLot.value = data.totalTradeLot;
 };
 </script>
 
 <template>
-    <AuthenticatedLayout :title="$t('public.trade_history')">
+    <AuthenticatedLayout :title="$t('public.rebate_history')">
         <div class="flex flex-col gap-5 items-center self-stretch">
-            <TradeOverview
-                :todayProfit="todayProfit"
-                :tradeProfitTrend="tradeProfitTrend"
-                :totalProfit="totalProfit"
+            <RebateOverview
+                :todayRebate="todayRebate"
+                :tradeRebateTrend="tradeRebateTrend"
+                :totalRebate="totalRebate"
                 :totalTradeLot="totalTradeLot"
             />
 
@@ -68,7 +64,7 @@ const handleUpdateTotals = (data) => {
                 </TabList>
             </Tabs>
 
-            <TradeHistoryTable
+            <RebateHistoryTable
                 :selectedType="selectedType"
                 @update-totals="handleUpdateTotals"
             />

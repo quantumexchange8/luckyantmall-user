@@ -8,21 +8,17 @@ import {usePage} from "@inertiajs/vue3";
 import Button from "primevue/button";
 import dayjs from "dayjs";
 import InputText from "primevue/inputtext";
-import Popover from "primevue/popover";
 import DatePicker from "primevue/datepicker"
 import debounce from "lodash/debounce.js";
 import {
-    IconAdjustments,
     IconCircleXFilled,
     IconSearch,
     IconXboxX,
     IconCloudDownload
 } from "@tabler/icons-vue";
-import Tag from "primevue/tag";
 import {generalFormat} from "@/Composables/format.js";
 import EmptyData from "@/Components/EmptyData.vue";
 import ProgressSpinner from "primevue/progressspinner";
-import MultiSelect from "primevue/multiselect";
 
 const props = defineProps({
     selectedType: String,
@@ -34,9 +30,9 @@ const histories = ref([]);
 const {formatAmount} = generalFormat();
 const totalRecords = ref(0);
 const first = ref(0);
-const todayProfit = ref();
-const tradeProfitTrend = ref();
-const totalProfit = ref();
+const todayRebate = ref();
+const tradeRebateTrend = ref();
+const totalRebate = ref();
 const totalTradeLot = ref();
 
 const filters = ref({
@@ -64,15 +60,15 @@ const loadLazyData = (event) => {
                 lazyEvent: JSON.stringify(lazyParams.value)
             };
 
-            const url = route('trade_history.getTradeHistoriesData', params);
+            const url = route('rebate_history.getRebateHistoriesData', params);
             const response = await fetch(url);
             const results = await response.json();
 
             histories.value = results?.data?.data;
             totalRecords.value = results?.data?.total;
-            todayProfit.value = results?.todayProfit;
-            tradeProfitTrend.value = results?.tradeProfitTrend;
-            totalProfit.value = results?.totalProfit;
+            todayRebate.value = results?.todayRebate;
+            tradeRebateTrend.value = results?.tradeRebateTrend;
+            totalRebate.value = results?.totalRebate;
             totalTradeLot.value = results?.totalTradeLot;
             isLoading.value = false;
         }, 100);
@@ -93,27 +89,6 @@ const onSort = (event) => {
 const onFilter = (event) => {
     lazyParams.value.filters = filters.value ;
     loadLazyData(event);
-};
-
-const op = ref();
-const toggle = (event) => {
-    op.value.toggle(event);
-    getTradeSymbols();
-}
-
-const symbols = ref();
-const loadingSymbols = ref(false);
-
-const getTradeSymbols = async () => {
-    loadingSymbols.value = true;
-    try {
-        const response = await axios.get('/getTradeSymbols');
-        symbols.value = response.data;
-    } catch (error) {
-        console.error('Error fetching symbols:', error);
-    } finally {
-        loadingSymbols.value = false;
-    }
 };
 
 const selectedDate = ref([]);
@@ -183,23 +158,13 @@ watchEffect(() => {
     }
 });
 
-const getSeverity = (status) => {
-    switch (status) {
-        case 'buy':
-            return 'info';
-
-        case 'sell':
-            return 'secondary';
-    }
-}
-
 const emit = defineEmits(['update-totals']);
 
-watch([todayProfit, tradeProfitTrend, totalProfit, totalTradeLot], () => {
+watch([todayRebate, tradeRebateTrend, totalRebate, totalTradeLot], () => {
     emit('update-totals', {
-        todayProfit: todayProfit.value,
-        tradeProfitTrend: tradeProfitTrend.value,
-        totalProfit: totalProfit.value,
+        todayRebate: todayRebate.value,
+        tradeRebateTrend: tradeRebateTrend.value,
+        totalRebate: totalRebate.value,
         totalTradeLot: totalTradeLot.value,
     });
 });
@@ -221,7 +186,7 @@ const exportReport = () => {
         exportStatus: true,
     };
 
-    const url = route('trade_history.getTradeHistoriesData', params);
+    const url = route('rebate_history.getRebateHistoriesData', params);
 
     try {
         window.location.href = url;
@@ -258,7 +223,7 @@ const exportReport = () => {
                     @page="onPage($event)"
                     @sort="onSort($event)"
                     @filter="onFilter($event)"
-                    :globalFilterFields="['meta_login', 'symbol', 'ticket']"
+                    :globalFilterFields="['meta_login', 'trader.username']"
                 >
                     <template #header>
                         <div class="flex flex-col md:flex-row gap-3 items-center self-stretch md:pb-5">
@@ -280,18 +245,22 @@ const exportReport = () => {
                                 </div>
                             </div>
                             <div class="flex justify-between items-center w-full gap-3">
-                                <Button
-                                    type="button"
-                                    severity="secondary"
-                                    outlined
-                                    class="flex gap-3 items-center justify-center w-full md:w-[130px]"
-                                    @click="toggle"
-                                >
-                                    <IconAdjustments size="16" stroke-width="1.5"/>
-                                    <div class="text-sm font-medium">
-                                        {{ $t('public.filter') }}
+                                <div class="relative w-60">
+                                    <DatePicker
+                                        v-model="selectedDate"
+                                        dateFormat="yy-mm-dd"
+                                        class="w-full"
+                                        selectionMode="range"
+                                        placeholder="YYYY-MM-DD - YYYY-MM-DD"
+                                    />
+                                    <div
+                                        v-if="selectedDate && selectedDate.length > 0"
+                                        class="absolute top-2/4 -mt-1.5 right-2 text-surface-400 select-none cursor-pointer bg-transparent"
+                                        @click="clearDate"
+                                    >
+                                        <IconXboxX size="12" stoke-width="1.5" />
                                     </div>
-                                </Button>
+                                </div>
                                 <Button
                                     type="button"
                                     severity="secondary"
@@ -323,6 +292,29 @@ const exportReport = () => {
                     </template>
                     <template v-if="histories?.length > 0">
                         <Column
+                            field="created_at"
+                            sortable
+                            class="table-cell min-w-32"
+                            :header="$t('public.date')"
+                        >
+                            <template #body="{data}">
+                                {{ dayjs(data.created_at).format('YYYY-MM-DD') }}
+                                <div class="text-xs text-surface-500">
+                                    {{ dayjs(data.created_at).format('HH:mm:ss') }}
+                                </div>
+                            </template>
+                        </Column>
+                        <Column
+                            v-if="selectedType === 'referral' && !isLoading"
+                            field="trader.username"
+                            class="table-cell"
+                            :header="$t('public.username')"
+                        >
+                            <template #body="slotProps">
+                                {{ slotProps.data.trader.username }}
+                            </template>
+                        </Column>
+                        <Column
                             field="meta_login"
                             class="table-cell"
                         >
@@ -334,97 +326,8 @@ const exportReport = () => {
                             </template>
                         </Column>
                         <Column
-                            field="symbol"
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.trade') }}</span>
-                            </template>
-                            <template #body="slotProps">
-                                <span class="font-bold">{{ slotProps.data.symbol }}</span>
-                            </template>
-                        </Column>
-                        <Column
-                            field="time_open"
-                            sortable
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.open') }}</span>
-                            </template>
-                            <template #body="{data}">
-                                {{ dayjs(data.time_open).format('YYYY-MM-DD') }}
-                                <div class="text-xs text-surface-500">
-                                    {{ dayjs(data.time_open).format('HH:mm:ss') }}
-                                </div>
-                            </template>
-                        </Column>
-                        <Column
-                            field="time_close"
-                            sortable
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.close') }}</span>
-                            </template>
-                            <template #body="{data}">
-                                {{ dayjs(data.time_close).format('YYYY-MM-DD') }}
-                                <div class="text-xs text-surface-500">
-                                    {{ dayjs(data.time_close).format('HH:mm:ss') }}
-                                </div>
-                            </template>
-                        </Column>
-                        <Column
-                            field="trade_type"
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.type') }}</span>
-                            </template>
-                            <template #body="{data}">
-                                <Tag
-                                    :severity="getSeverity(data.trade_type)"
-                                    :value="$t(`public.${data.trade_type}`)"
-                                />
-                            </template>
-                        </Column>
-                        <Column
-                            field="ticket"
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.ticket') }}</span>
-                            </template>
-                            <template #body="slotProps">
-                                {{ slotProps.data.ticket }}
-                            </template>
-                        </Column>
-                        <Column
-                            field="price_open"
-                            sortable
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.open') }}($)</span>
-                            </template>
-                            <template #body="slotProps">
-                                ${{ slotProps.data.price_open }}
-                            </template>
-                        </Column>
-                        <Column
-                            field="price_close"
-                            sortable
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.close') }}($)</span>
-                            </template>
-                            <template #body="slotProps">
-                                ${{ slotProps.data.price_close }}
-                            </template>
-                        </Column>
-                        <Column
                             field="volume"
+                            sortable
                             class="table-cell"
                         >
                             <template #header>
@@ -435,47 +338,17 @@ const exportReport = () => {
                             </template>
                         </Column>
                         <Column
-                            field="trade_profit"
+                            field="rebate"
                             sortable
                             class="table-cell"
                         >
                             <template #header>
-                                <span class="block">{{ $t('public.profit') }}</span>
+                                <span class="block">{{ $t('public.amount') }}</span>
                             </template>
-                            <template #body="{data}">
-                                <div
-                                    :class="[
-                                        'font-medium',
-                                        {
-                                            'text-success-500': data.trade_profit > 0,
-                                            'text-red-500': data.trade_profit < 0,
-                                        }
-                                    ]"
-                                >
-                                    ${{ formatAmount(data.trade_profit) }}
+                            <template #body="slotProps">
+                                <div class="font-medium">
+                                    ${{ formatAmount(slotProps.data.rebate) }} (¥{{ formatAmount(slotProps.data.converted_amount) }})
                                 </div>
-                            </template>
-                        </Column>
-                        <Column
-                            field="trade_swap"
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.swap') }}</span>
-                            </template>
-                            <template #body="slotProps">
-                                ${{ formatAmount(slotProps.data.trade_swap) }}
-                            </template>
-                        </Column>
-                        <Column
-                            field="trade_profit_pct"
-                            class="table-cell"
-                        >
-                            <template #header>
-                                <span class="block">{{ $t('public.change') }}</span>
-                            </template>
-                            <template #body="slotProps">
-                                {{ formatAmount(slotProps.data.trade_profit_pct) }}%
                             </template>
                         </Column>
                     </template>
@@ -483,55 +356,4 @@ const exportReport = () => {
             </div>
         </template>
     </Card>
-
-    <Popover ref="op">
-        <div class="flex flex-col gap-6 w-60">
-            <!-- Filter Date -->
-            <div class="flex flex-col gap-2 items-center self-stretch">
-                <div class="flex self-stretch text-xs text-gray-950 dark:text-white font-semibold">
-                    {{ $t('public.filter_by_date') }}
-                </div>
-                <div class="relative w-full">
-                    <DatePicker
-                        v-model="selectedDate"
-                        dateFormat="yy-mm-dd"
-                        class="w-full"
-                        selectionMode="range"
-                        placeholder="YYYY-MM-DD - YYYY-MM-DD"
-                    />
-                    <div
-                        v-if="selectedDate && selectedDate.length > 0"
-                        class="absolute top-2/4 -mt-1.5 right-2 text-surface-400 select-none cursor-pointer bg-transparent"
-                        @click="clearDate"
-                    >
-                        <IconXboxX size="12" stoke-width="1.5" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Filter Symbols -->
-            <div class="flex flex-col gap-2 items-center self-stretch">
-                <div class="flex self-stretch text-xs text-gray-950 dark:text-white font-semibold">
-                    {{ $t('public.filter_by_symbols') }}
-                </div>
-                <MultiSelect
-                    v-model="filters['symbols'].value"
-                    :options="symbols"
-                    :placeholder="$t('public.select_symbols')"
-                    :maxSelectedLabels="3"
-                    class="w-full"
-                />
-            </div>
-
-            <Button
-                type="button"
-                severity="info"
-                class="w-full"
-                size="small"
-                outlined
-                @click="clearAll"
-                :label="$t('public.clear_all')"
-            />
-        </div>
-    </Popover>
 </template>

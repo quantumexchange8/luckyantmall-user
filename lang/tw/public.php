@@ -199,4 +199,7 @@ return [
     "total_profit" => "總利潤",
     "trade_lot" => "交易手數",
     "calculating" => "計算中",
+    "personal" => "個人",
+    "today_rebate" => "今日獎勵",
+    "total_rebate" => "總獎勵",
 ];

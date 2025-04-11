@@ -2,15 +2,17 @@
 import Card from "primevue/card";
 import {
     IconClockDollar,
-    IconCurrencyDollar,
-    IconDatabaseDollar, IconTrendingDown, IconTrendingUp,
+    IconWorldDollar,
+    IconDatabaseDollar,
+    IconTrendingUp,
+    IconTrendingDown,
 } from "@tabler/icons-vue";
 import {generalFormat} from "@/Composables/format.js";
 
 defineProps({
-    todayProfit: Number,
-    tradeProfitTrend: Number,
-    totalProfit: Number,
+    todayRebate: Number,
+    tradeRebateTrend: Number,
+    totalRebate: Number,
     totalTradeLot: Number,
 })
 
@@ -23,43 +25,32 @@ const {formatAmount} = generalFormat();
             <template #content>
                 <div class="flex gap-3 items-center">
                     <div class="flex flex-col w-full">
-                        <span class="text-sm w-full text-surface-400 dark:text-surface-500">{{ $t('public.today_profit') }}</span>
+                        <span class="text-sm w-full text-surface-400 dark:text-surface-500">{{ $t('public.today_rebate') }}</span>
                         <div
-                            v-if="todayProfit !== null"
+                            v-if="todayRebate !== null"
                             class="flex gap-2 items-end"
                         >
+                            <span class="text-xl font-medium">${{ formatAmount(todayRebate) }}</span>
                             <div
-                                class="text-xl font-medium"
-                                :class="[
-                                'text-xl font-medium',
-                                {
-                                    'text-success-500': todayProfit > 0,
-                                    'text-red-500': todayProfit < 0,
-                                }
-                            ]"
-                            >
-                                ${{ formatAmount(todayProfit) }}
-                            </div>
-                            <div
-                                v-if="todayProfit !== 0"
+                                v-if="tradeRebateTrend !== 0"
                                 :class="[
                                     'flex gap-1 items-center',
                                     {
-                                        'text-success-600': tradeProfitTrend > 0,
-                                        'text-red-600': tradeProfitTrend < 0,
+                                        'text-success-500': tradeRebateTrend > 0,
+                                        'text-red-500': tradeRebateTrend < 0,
                                     }
                                 ]">
                                 <IconTrendingUp
-                                    v-if="tradeProfitTrend > 0"
+                                    v-if="tradeRebateTrend > 0"
                                     size="18"
                                     stroke-width="1.5"
                                 />
                                 <IconTrendingDown
-                                    v-else-if="tradeProfitTrend < 0"
+                                    v-else-if="tradeRebateTrend < 0"
                                     size="18"
                                     stroke-width="1.5"
                                 />
-                                {{ formatAmount(tradeProfitTrend) }}%
+                                {{ formatAmount(tradeRebateTrend) }}%
                             </div>
                         </div>
                         <div v-else class="text-xl">
@@ -76,19 +67,19 @@ const {formatAmount} = generalFormat();
             <template #content>
                 <div class="flex gap-3 items-center">
                     <div class="flex flex-col w-full">
-                        <span class="text-sm w-full text-surface-400 dark:text-surface-500">{{ $t('public.total_profit') }}</span>
+                        <span class="text-sm w-full text-surface-400 dark:text-surface-500">{{ $t('public.total_rebate') }}</span>
                         <div
-                            v-if="totalProfit !== null"
+                            v-if="totalRebate !== null"
                             class="text-xl font-medium"
                         >
-                            ${{ formatAmount(totalProfit) }}
+                            ${{ formatAmount(totalRebate) }}
                         </div>
                         <div v-else class="text-xl">
                             {{ $t('public.calculating') }}...
                         </div>
                     </div>
-                    <div class="bg-orange-100 dark:bg-orange-900/30 rounded-md text-orange-500 p-2">
-                        <IconCurrencyDollar size="28" stroke-width="1.5" />
+                    <div class="bg-violet-100 dark:bg-violet-900/30 rounded-md text-violet-500 p-2">
+                        <IconWorldDollar size="28" stroke-width="1.5" />
                     </div>
                 </div>
             </template>
