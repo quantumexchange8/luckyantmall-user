@@ -18,18 +18,17 @@ export default {
 
                 // Font
                 'leading-none',
+                'text-sm',
 
                 // Colors
-                'text-surface-600 dark:text-surface-200',
+                'text-surface-800 dark:text-surface-200',
                 'placeholder:text-surface-400 dark:placeholder:text-surface-500',
-                { 'bg-surface-0 dark:bg-surface-950': !props.disabled },
+                { 'bg-surface-0 dark:bg-surface-ground': !props.disabled },
                 'border',
-                { 'border-surface-300 dark:border-surface-600': !props.invalid },
+                { 'border-surface-300 dark:border-surface-700': !props.invalid },
 
                 // Invalid State
-                'invalid:focus:ring-red-200',
-                'invalid:hover:border-red-500',
-                { 'border-red-500 dark:border-red-400': props.invalid },
+                { 'border-red-500 dark:border-red-600 focus:border-red-500 focus:ring-0': props.invalid },
 
                 // Spacing
                 'm-0 py-2 px-3',
@@ -46,9 +45,9 @@ export default {
 
                 // States
                 {
-                    'hover:border-surface-400 dark:hover:border-surface-600': !props.disabled && !props.invalid,
-                    'focus:outline-none focus:outline-offset-0 focus:ring-1 focus:ring-primary-500 dark:focus:ring-primary-400 focus:z-10': !props.disabled,
-                    'bg-surface-200 dark:bg-surface-700 select-none pointer-events-none cursor-default': props.disabled
+                    'hover:border-surface-400 dark:hover:border-surface-600 focus:border-primary-500 dark:focus:border-primary-500 focus:ring-0 dark:focus:ring-0': !props.disabled && !props.invalid,
+                    'focus:outline-none focus:outline-offset-0 focus:z-10': !props.disabled,
+                    'bg-surface-200 dark:bg-surface-700 select-none pointer-events-none cursor-default dark:border-surface-500 disabled:text-surface-500 dark:disabled:text-surface-400': props.disabled
                 },
 
                 // Filled State *for FloatLabel
@@ -116,6 +115,7 @@ export default {
         class: [
             //Font
             'font-medium',
+            'text-sm',
 
             // Flexbox and Alignment
             'flex items-center justify-between',
@@ -138,7 +138,7 @@ export default {
         class: [
             // Text
             'leading-7',
-            'mx-auto my-0'
+            'mx-auto my-0',
         ]
     },
     selectMonth: {
@@ -146,6 +146,7 @@ export default {
             // Font
             'text-base leading-[normal]',
             'font-medium',
+            'text-sm',
 
             //shape
             'rounded-md',
@@ -173,6 +174,7 @@ export default {
             // Font
             'text-base leading-[normal]',
             'font-medium',
+            'text-sm',
 
             //shape
             'rounded-md',
@@ -211,7 +213,8 @@ export default {
         class: [
             // Spacing
             'p-1',
-            'font-medium'
+            'font-medium',
+            'text-sm',
         ]
     },
     weekHeader: {
@@ -231,7 +234,7 @@ export default {
         class: [
             // Spacing
             'p-1',
-            'text-sm'
+            'text-sm',
         ]
     },
     weekLabelContainer: {
@@ -276,7 +279,7 @@ export default {
                 'hover:bg-surface-50 dark:hover:bg-surface-500/10': !context.selected && !context.disabled
             },
             {
-                'opacity-60 cursor-default text-surface-400 dark:text-surface-600': context.disabled,
+                'opacity-60 cursor-default text-surface-500 dark:text-surface-400': context.disabled,
                 'cursor-pointer': !context.disabled
             }
         ]
@@ -284,7 +287,8 @@ export default {
     monthView: {
         class: [
             // Spacing
-            'mt-2'
+            'mt-2',
+            'text-sm',
         ]
     },
     month: ({ context }) => ({
@@ -302,7 +306,7 @@ export default {
             // Colors
             {
                 'text-surface-600 dark:text-white/70 bg-transparent': !context.selected && !context.disabled,
-                'bg-highlight': context.selected && !context.disabled
+                'dark:bg-highlight bg-primary-100': context.selected && !context.disabled
             },
 
             // States
@@ -318,7 +322,8 @@ export default {
     yearView: {
         class: [
             // Spacing
-            'mt-2'
+            'mt-2',
+            'text-sm',
         ]
     },
     year: ({ context }) => ({
@@ -336,7 +341,7 @@ export default {
             // Colors
             {
                 'text-surface-600 dark:text-white/70 bg-transparent': !context.selected && !context.disabled,
-                'bg-highlight': context.selected && !context.disabled
+                'dark:bg-highlight bg-primary-100': context.selected && !context.disabled
             },
 
             // States

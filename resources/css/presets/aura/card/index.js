@@ -6,11 +6,12 @@ export default {
 
             //Shape
             'rounded-[12px]',
-            'shadow-box',
+            'shadow-toast',
 
             //Color
-            'bg-surface-0 dark:bg-surface-900',
-            'text-surface-700 dark:text-surface-0'
+            'bg-white dark:bg-surface-900',
+            'text-surface-700 dark:text-surface-0',
+            'border dark:border-surface-600'
         ]
     },
     body: {

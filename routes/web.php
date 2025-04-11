@@ -116,7 +116,11 @@ Route::middleware('auth')->group(function () {
          *            Dashboard
          * ==============================
          */
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::prefix('dashboard')->group(function () {
+            Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+            Route::get('/get_total_profit_by_days', [DashboardController::class, 'getTotalProfitByDays'])->name('dashboard.getTotalProfitByDays');
+            Route::get('get_total_rebate_by_years', [DashboardController::class, 'getTotalRebateByYears'])->name('dashboard.getTotalRebateByYears');
+        });
 
         /**
          * ==============================
