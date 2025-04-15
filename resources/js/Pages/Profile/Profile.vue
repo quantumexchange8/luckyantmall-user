@@ -9,8 +9,8 @@ import Tag from "primevue/tag";
 import Button from "primevue/button";
 import {
     IconEdit,
-    IconProgressCheck
 } from "@tabler/icons-vue";
+import OrderStatus from "@/Pages/Profile/Orders/OrderStatus.vue";
 
 const props = defineProps({
     wallets: Object
@@ -67,26 +67,7 @@ const user = usePage().props.auth.user;
 
 
             <!-- Order Status -->
-            <div class="flex justify-evenly items-center self-stretch w-full">
-                <div class="flex flex-col items-center">
-                    <div class="flex justify-center items-center w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800 text-logo dark:text-white">
-                        <IconProgressCheck size="40" stroke-width="1.5" />
-                    </div>
-                    <span class="text-xs dark:text-white">Proccesing</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs dark:text-white">Shipping</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs dark:text-white">Completed</span>
-                </div>
-                <div class="flex flex-col items-center">
-                    <div class="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary-50 dark:bg-surface-800"></div>
-                    <span class="text-xs dark:text-white">Cancelled</span>
-                </div>
-            </div>
+            <OrderStatus />
 
             <div class="flex flex-col md:flex-row gap-3 md:gap-5 self-stretch w-full">
                 <!-- Referral -->

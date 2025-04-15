@@ -11,7 +11,7 @@ class SelectOptionController extends Controller
 {
     public function getCountries()
     {
-        $countries = Country::select('id', 'name', 'phone_code', 'iso2', 'emoji', 'translations')
+        $countries = Country::select('id', 'name', 'phone_code', 'iso2', 'emoji', 'translations', 'currency', 'currency_symbol')
             ->get();
 
         return response()->json($countries);

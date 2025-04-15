@@ -139,7 +139,7 @@ return [
     "delete_item_caption" => "您確定要刪除此商品嗎？",
     "setting" => "設定",
     "system_setting" => "系統設定",
-    "dark_mode" => "暗黑模式",
+    "dark_mode" => "黑暗模式",
     "language" => "語言",
     "dashboard" => "首頁",
     "market" => "市場",

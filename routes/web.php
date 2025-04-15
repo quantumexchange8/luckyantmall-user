@@ -104,6 +104,9 @@ Route::middleware('auth')->group(function () {
 
         // Payment Account
         Route::get('/payment_account', [SettingController::class, 'payment_account'])->name('setting.payment_account');
+        Route::get('/getPaymentAccounts', [SettingController::class, 'getPaymentAccounts'])->name('setting.getPaymentAccounts');
+
+        Route::post('addPaymentAccount', [SettingController::class, 'addPaymentAccount'])->name('setting.addPaymentAccount');
 
         // System
         Route::get('/system_setting', [SettingController::class, 'system_setting'])->name('setting.system_setting');
