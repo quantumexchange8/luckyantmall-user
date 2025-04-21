@@ -15,6 +15,7 @@ class SettingController extends Controller
     {
         return Inertia::render('Setting/DeliveryAddress/DeliveryAddress', [
             'addressCounts' => DeliveryAddress::count(),
+            'backRoute' => 'profile',
         ]);
     }
 
@@ -83,6 +84,7 @@ class SettingController extends Controller
     {
         return Inertia::render('Setting/PaymentAccount/PaymentAccount', [
             'accountsCount' => PaymentAccount::where('user_id', Auth::id())->count(),
+            'backRoute' => 'profile',
         ]);
     }
 
@@ -171,6 +173,67 @@ class SettingController extends Controller
 
         return redirect()->back()->with('toast', [
             'title' => trans('public.toast_payment_account_success'),
+            'type' => 'success'
+        ]);
+    }
+
+    public function updatePaymentAccount(Request $request)
+    {
+        $rules = [
+            'payment_account_name' => ['required'],
+            'payment_platform_name' => ['required'],
+            'account_no' => ['required'],
+        ];
+
+        if ($request->payment_method == 'bank') {
+            $rules['bank_region'] = ['required'];
+            $rules['bank_sub_branch'] = ['required'];
+            $rules['bank_swift_code'] = ['required'];
+            $rules['country_id'] = ['required'];
+            $rules['currency'] = ['required'];
+        }
+
+        $attributeNames = [
+            'payment_account_name' => $request->payment_method == 'crypto'
+                ? trans('public.wallet_name')
+                : trans('public.account_name'),
+            'payment_account_type' => trans('public.account_type'),
+            'payment_platform_name' => trans('public.bank'),
+            'account_no' => $request->payment_method == 'crypto'
+                ? trans('public.token_address')
+                : trans('public.account_number'),
+            'bank_region' => trans('public.bank_region'),
+            'bank_sub_branch' => trans('public.bank_branch'),
+            'bank_swift_code' => trans('public.swift_code'),
+            'country_id' => trans('public.country'),
+            'currency' => trans('public.currency'),
+        ];
+
+        Validator::make($request->all(), $rules)
+            ->setAttributeNames($attributeNames)
+            ->validate();
+
+        $payment_account = PaymentAccount::find($request->payment_account_id);
+
+        $payment_account->update([
+            'payment_account_name' => $request->payment_account_name,
+            'payment_platform_name' => $request->payment_platform_name,
+            'account_no' => $request->account_no,
+            'default_account' => $request->default_account,
+        ]);
+
+        if ($payment_account->payment_platform == 'bank') {
+            $payment_account->update([
+                'bank_region' => $request->bank_region,
+                'bank_sub_branch' => $request->bank_sub_branch,
+                'bank_swift_code' => $request->bank_swift_code,
+                'country_id' => $request->country_id,
+                'currency' => $request->currency,
+            ]);
+        }
+
+        return redirect()->back()->with('toast', [
+            'title' => trans('public.toast_update_payment_account_success'),
             'type' => 'success'
         ]);
     }

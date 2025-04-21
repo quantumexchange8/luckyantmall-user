@@ -112,6 +112,7 @@ const setActiveTab = (routeName) => {
 
                     <div v-else>
                         <OverlayBadge
+                            v-if="$page.props.auth.cartItemsCount > 0"
                             size="small"
                             :value="$page.props.auth.cartItemsCount"
                         >
@@ -128,6 +129,19 @@ const setActiveTab = (routeName) => {
                                 </template>
                             </Button>
                         </OverlayBadge>
+                        <Button
+                            v-else
+                            severity="secondary"
+                            outlined
+                            size="small"
+                            aria-label="Cart"
+                            as="a"
+                            :href="route('cart')"
+                        >
+                            <template #icon>
+                                <IconShoppingCart size="16" />
+                            </template>
+                        </Button>
                     </div>
                 </div>
 

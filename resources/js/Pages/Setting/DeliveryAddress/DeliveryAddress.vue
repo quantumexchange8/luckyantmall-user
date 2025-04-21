@@ -8,6 +8,7 @@ import {useLangObserver} from "@/Composables/localeObserver.js";
 
 defineProps({
     addressCounts: Number,
+    backRoute: String,
 })
 
 const addresses = ref([]);
@@ -31,7 +32,10 @@ getResults();
 </script>
 
 <template>
-    <ProductLayout :title="$t('public.delivery_address')">
+    <ProductLayout
+        :title="$t('public.delivery_address')"
+        :backRoute="backRoute"
+    >
         <div class="flex flex-col items-center gap-3 md:gap-5 self-stretch">
             <div class="flex justify-end w-full">
                 <div class="w-auto">

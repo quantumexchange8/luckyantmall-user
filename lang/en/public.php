@@ -245,5 +245,8 @@ return [
     "token_address" => "Token Address",
     "enter_token_address" => "Enter Token Address",
     "crypto_network" => "Crypto Network",
-    "toast_payment_account_success" => "You’ve successfully added a payment account!"
+    "toast_payment_account_success" => "You’ve successfully added a payment account!",
+    "edit" => "Edit",
+    "update" => "Update",
+    "toast_update_payment_account_success" => "You’ve successfully updated a payment account!",
 ];

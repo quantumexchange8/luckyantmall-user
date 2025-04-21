@@ -335,6 +335,7 @@ const closeDialog = () => {
                             id="payment_platform_name"
                             type="text"
                             class="block w-full"
+                            disabled
                             v-model="form.payment_platform_name"
                             :invalid="!!form.errors.payment_platform_name"
                         />

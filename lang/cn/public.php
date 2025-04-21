@@ -246,4 +246,7 @@ return [
     "enter_token_address" => "输入代币地址",
     "crypto_network" => "加密网络",
     "toast_payment_account_success" => "您已成功添加一个支付账户！",
+    "edit" => "编辑",
+    "update" => "更新",
+    "toast_update_payment_account_success" => "您已成功更新支付账户！",
 ];

@@ -6,7 +6,7 @@ export default {
 
             // Size
             'min-w-[12rem]',
-            'p-1',
+            'py-1',
 
             // Colors
             'bg-surface-0 dark:bg-surface-900',
@@ -27,14 +27,10 @@ export default {
     },
     itemContent: ({ context }) => ({
         class: [
-            //Shape
-            'rounded-[4px]',
-
             // Colors
             'text-surface-700 dark:text-white/80',
             {
                 'text-surface-500 dark:text-white/70': !context.focused && !context.active,
-                'text-surface-500 dark:text-white/70 bg-surface-200': context.focused && !context.active,
                 'bg-highlight': (context.focused && context.active) || context.active || (!context.focused && context.active)
             },
 
@@ -67,6 +63,9 @@ export default {
             // Color
             'text-surface-700 dark:text-white/80',
 
+            // Font
+            'text-sm',
+
             // Misc
             'no-underline',
             'overflow-hidden',
@@ -97,12 +96,15 @@ export default {
             // Spacing
             'flex flex-col',
             'm-0',
-            'p-1',
-            'list-none',
-            'min-w-[12.5rem]',
+            'outline-none',
+            'rounded-md',
+
+            // Size
+            'w-full',
+            'py-1',
 
             // Shape
-            'shadow-none sm:shadow-md',
+            'shadow-dropdown',
             'border border-surface-200 dark:border-surface-700',
 
             // Position
