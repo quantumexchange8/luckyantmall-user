@@ -80,14 +80,14 @@ export default {
 
             // Info Button
             {
-                'text-white': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
-                'bg-blue-500 dark:bg-blue-400': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
-                'border border-blue-500 dark:border-blue-400': props.severity === 'info' && !props.text && !props.outlined && !props.plain
+                'text-white dark:text-surface-950': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
+                'bg-cyan-500 dark:bg-cyan-400': props.severity === 'info' && !props.text && !props.outlined && !props.plain,
+                'border border-cyan-500 dark:border-cyan-400': props.severity === 'info' && !props.text && !props.outlined && !props.plain
             },
             // Info Text Button
-            { 'text-blue-500 dark:text-blue-400': props.text && props.severity === 'info' && !props.plain },
+            { 'text-cyan-500 dark:text-cyan-400': props.text && props.severity === 'info' && !props.plain },
             // Info Outlined Button
-            { 'text-blue-500 border border-blue-500 hover:bg-blue-300/10 ': props.outlined && props.severity === 'info' && !props.plain },
+            { 'text-cyan-500 border border-cyan-500 hover:bg-cyan-300/10 ': props.outlined && props.severity === 'info' && !props.plain },
 
             // Warning Button
             {
@@ -163,10 +163,10 @@ export default {
             { 'hover:bg-green-300/10': (props.text || props.outlined) && props.severity === 'success' && !props.plain },
 
             // Info
-            { 'hover:bg-blue-600 dark:hover:bg-blue-300 hover:border-blue-600 dark:hover:border-blue-300': props.severity === 'info' && !props.text && !props.outlined && !props.plain },
-            { 'focus:ring-blue-500 dark:focus:ring-blue-400': props.severity === 'info' },
+            { 'hover:bg-cyan-600 dark:hover:bg-cyan-300 hover:border-cyan-600 dark:hover:border-cyan-300': props.severity === 'info' && !props.text && !props.outlined && !props.plain },
+            { 'focus:ring-cyan-500 dark:focus:ring-cyan-400': props.severity === 'info' },
             // Text & Outlined Button
-            { 'hover:bg-blue-300/10': (props.text || props.outlined) && props.severity === 'info' && !props.plain },
+            { 'hover:bg-cyan-300/10': (props.text || props.outlined) && props.severity === 'info' && !props.plain },
 
             // Warning
             { 'hover:bg-orange-600 dark:hover:bg-orange-300 hover:border-orange-600 dark:hover:border-orange-300': props.severity === 'warn' && !props.text && !props.outlined && !props.plain },

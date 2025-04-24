@@ -9,15 +9,21 @@ import Button from "primevue/button";
 import WalletAction from "@/Pages/Profile/Wallets/WalletAction.vue";
 import {ref} from "vue";
 import WalletHistory from "@/Pages/Profile/Wallets/WalletHistory.vue";
+import {generalFormat} from "@/Composables/format.js";
 
 const props = defineProps({
     walletType: String,
     wallet: Object,
     transactionCounts: Number,
+    earningCounts: Number,
     allowedActions: Array,
+    types: {
+        type: [Array, Object]
+    },
 })
 
 const balanceVisibility = ref(props.wallet.balance_visibility);
+const {formatAmount} = generalFormat();
 
 const toggleVisibility = async () => {
     balanceVisibility.value = !balanceVisibility.value;
@@ -49,8 +55,8 @@ const toggleVisibility = async () => {
                         <div class="flex items-center justify-center gap-1 mb-1">
                             <div class="text-[32px] font-semibold">
                                 <div v-if="balanceVisibility">
-                                    <span v-if="wallet.currency_symbol !== 'point'">{{ wallet.currency_symbol }}{{ wallet.balance }}</span>
-                                    <span v-else>{{ wallet.balance }} {{ $t(`public.${wallet.currency_symbol}`) }}</span>
+                                    <span v-if="wallet.currency_symbol !== 'point'">{{ wallet.currency_symbol }}{{ formatAmount(wallet.balance) }}</span>
+                                    <span v-else>{{ formatAmount(wallet.balance) }} {{ $t(`public.${wallet.currency_symbol}`) }}</span>
                                 </div>
                                <div v-else class="h-12 pt-1">
                                    ****
@@ -83,6 +89,8 @@ const toggleVisibility = async () => {
         <WalletHistory
             :wallet="wallet"
             :transactionCounts="transactionCounts"
+            :earningCounts="earningCounts"
+            :types="types"
         />
     </ContentLayout>
 </template>

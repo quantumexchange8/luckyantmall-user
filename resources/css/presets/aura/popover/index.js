@@ -9,12 +9,12 @@ export default {
             'z-40 transform origin-center',
 
             // Color
-            'bg-white dark:bg-gray-900',
-            'text-gray-700 dark:text-white/80',
+            'bg-white dark:bg-surface-900',
+            'text-surface-700 dark:text-white/80',
         ]
     },
     content: {
-        class: ['p-5 items-center flex', 'rounded-lg', 'border border-gray-200 dark:border-gray-700']
+        class: ['p-5 items-center flex', 'rounded-lg', 'border border-surface-200 dark:border-surface-700']
     },
     transition: {
         enterFromClass: 'opacity-0 scale-y-[0.8]',

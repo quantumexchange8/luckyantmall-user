@@ -4,7 +4,8 @@ import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 import {
-    IconPlus
+    IconPlus,
+    IconArrowDown
 } from "@tabler/icons-vue";
 import {router} from "@inertiajs/vue3";
 
@@ -51,17 +52,19 @@ const redirectToWalletDeposit = (walletType) => {
             @click="redirectToWalletDeposit(wallet.type)"
         >
             <IconPlus size="16" />
-            <span>Deposit</span>
+            <span>{{ $t('public.deposit') }}</span>
         </Button>
         <Button
             v-if="allowedActions.includes('withdraw')"
             type="button"
             :severity="allowedActions.includes('deposit') ? 'secondary' : null"
             size="small"
-            aria-label="Withdraw"
-            class="w-full"
+            class="w-full flex gap-2"
+            as="a"
+            :href="route('profile.wallet_withdrawal', wallet.type)"
         >
-            Withdraw
+            <IconArrowDown size="16" />
+            {{ $t('public.withdrawal') }}
         </Button>
         <Button
             v-if="allowedActions.includes('transfer')"

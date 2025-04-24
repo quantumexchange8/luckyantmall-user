@@ -5,6 +5,7 @@ import {
     IconArrowLeft,
 } from "@tabler/icons-vue";
 import Button from "primevue/button";
+import ToastList from "@/Components/ToastList.vue";
 
 defineProps({
     title: String,
@@ -45,6 +46,8 @@ defineProps({
                         {{ title }}
                     </div>
                 </div>
+                <!-- Toast -->
+                <ToastList />
                 <slot />
             </div>
         </main>

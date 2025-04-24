@@ -83,10 +83,16 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile');
         Route::get('/getWalletData', [WalletController::class, 'getWalletData'])->name('profile.getWalletData');
         Route::get('/{wallet_type}', [WalletController::class, 'wallet_detail'])->name('profile.wallet_detail');
-        Route::get('/{wallet_type}/deposit', [WalletController::class, 'wallet_deposit'])->name('profile.wallet_deposit');
         Route::get('/{wallet_type}/getWalletHistory', [WalletController::class, 'getWalletHistory'])->name('profile.getWalletHistory');
 
+        // Deposit
+        Route::get('/{wallet_type}/deposit', [WalletController::class, 'wallet_deposit'])->name('profile.wallet_deposit');
         Route::post('submitDeposit', [WalletController::class, 'submitDeposit'])->name('profile.submitDeposit');
+
+        // Withdrawal
+        Route::get('/{wallet_type}/withdrawal', [WalletController::class, 'wallet_withdrawal'])->name('profile.wallet_withdrawal');
+        Route::post('submitWithdrawal', [WalletController::class, 'submitWithdrawal'])->name('profile.submitWithdrawal');
+
         Route::patch('updateBalanceVisibility', [WalletController::class, 'updateBalanceVisibility'])->name('profile.updateBalanceVisibility');
     });
 

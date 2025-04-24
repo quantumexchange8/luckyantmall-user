@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 class MainApiService
 {
-    private string $base_url = "http://luckyant-trading-user.test/api";
+    private string $base_url = "https://testmember.luckyantfxgroup.com/api";
     private string $token = "4e29cb4acbd81a9dd9c83e2a2a89eb2c";
 
     public function sync_user_account($user)

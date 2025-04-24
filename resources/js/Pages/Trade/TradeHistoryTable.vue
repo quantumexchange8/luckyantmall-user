@@ -488,7 +488,7 @@ const exportReport = () => {
         <div class="flex flex-col gap-6 w-60">
             <!-- Filter Date -->
             <div class="flex flex-col gap-2 items-center self-stretch">
-                <div class="flex self-stretch text-xs text-gray-950 dark:text-white font-semibold">
+                <div class="flex self-stretch text-xs text-surface-950 dark:text-white font-semibold">
                     {{ $t('public.filter_by_date') }}
                 </div>
                 <div class="relative w-full">
@@ -511,7 +511,7 @@ const exportReport = () => {
 
             <!-- Filter Symbols -->
             <div class="flex flex-col gap-2 items-center self-stretch">
-                <div class="flex self-stretch text-xs text-gray-950 dark:text-white font-semibold">
+                <div class="flex self-stretch text-xs text-surface-950 dark:text-white font-semibold">
                     {{ $t('public.filter_by_symbols') }}
                 </div>
                 <MultiSelect

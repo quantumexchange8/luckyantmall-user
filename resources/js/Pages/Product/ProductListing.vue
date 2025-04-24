@@ -86,22 +86,6 @@ const sortOptions = ref([
 ]);
 const selectedSort = ref(sortOptions.value[0]);
 
-const getSeverity = (product) => {
-    switch (product.inventoryStatus) {
-        case 'INSTOCK':
-            return 'success';
-
-        case 'LOWSTOCK':
-            return 'warn';
-
-        case 'OUTOFSTOCK':
-            return 'danger';
-
-        default:
-            return null;
-    }
-}
-
 const visible = ref(false);
 const openDrawer = () => {
     visible.value = true;
