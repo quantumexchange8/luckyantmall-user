@@ -27,6 +27,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(i18nVue, {
+                lang: 'cn',
                 resolve: async lang => {
                     const langs = import.meta.glob('../../lang/*.json');
                     if (typeof langs[`../../lang/${lang}.json`] == "undefined") return; //Temporary workaround
