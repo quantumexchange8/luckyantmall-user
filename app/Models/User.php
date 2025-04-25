@@ -42,6 +42,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'security_pin' => 'hashed',
         ];
     }
 
@@ -107,5 +108,10 @@ class User extends Authenticatable
     public function cart_items(): HasManyThrough
     {
         return $this->hasManyThrough(CartItem::class, Cart::class, 'user_id', 'cart_id');
+    }
+
+    public function payment_accounts(): HasMany
+    {
+        return $this->hasMany(PaymentAccount::class, 'user_id', 'id');
     }
 }

@@ -19,6 +19,11 @@ const settingOptions = ref([
         mobileOnly: false,
     },
     {
+        label: 'security_pin',
+        route: 'setting.security_pin',
+        mobileOnly: false,
+    },
+    {
         label: 'system_setting',
         route: 'setting.system_setting',
         mobileOnly: true // Custom flag for filtering

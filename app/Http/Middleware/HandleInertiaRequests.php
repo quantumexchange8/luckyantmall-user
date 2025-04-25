@@ -34,6 +34,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'cartItemsCount' => $request->user() ? $request->user()->cart_items()->count() : null,
+                'paymentAccounts' => $request->user() ? $request->user()->payment_accounts : null,
             ],
             'canLogin' => app('router')->has('login'),
             'canRegister' => app('router')->has('register'),

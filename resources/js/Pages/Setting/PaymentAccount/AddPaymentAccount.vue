@@ -36,7 +36,6 @@ const selectedPaymentMethod = ref('bank');
 
 const paymentMethods = ref([
     'bank',
-    'crypto'
 ]);
 
 const selectPaymentMethod = (type) => {

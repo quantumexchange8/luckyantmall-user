@@ -21,6 +21,7 @@ use App\Services\RunningNumberService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -141,11 +142,19 @@ class CartController extends Controller
             throw ValidationException::withMessages(['wallet_id' => trans('public.insufficient_balance')]);
         }
 
+        $user = Auth::user();
+
+        if (!is_null($user->security_pin) && !Hash::check($request->get('security_pin'), $user->security_pin)) {
+            throw ValidationException::withMessages([
+                'security_pin' => trans('public.security_pin_incorrect')
+            ]);
+        }
+
         $delivery_address = DeliveryAddress::find($request->delivery_address_id);
 
         // Create order
         $order = Order::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'order_number' => RunningNumberService::getID('order'),
             'sub_total' => $request->sub_total,
             'delivery_fee' => 0,
@@ -193,7 +202,7 @@ class CartController extends Controller
             $order->update(['completed_at' => now(), 'status' => 'completed']);
         }
 
-        $transaction = $this->recordTransaction(Auth::user(), $wallet, $total_price);
+        $transaction = $this->recordTransaction($user, $wallet, $total_price);
         $order->update(['transaction_id' => $transaction->id]);
 
         return Redirect::route('profile')->with('toast', [

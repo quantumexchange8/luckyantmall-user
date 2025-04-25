@@ -2,6 +2,7 @@
 import {Head} from '@inertiajs/vue3'
 import Navbar from "@/Components/Navbar.vue";
 import ConfirmationDialog from "@/Components/ConfirmationDialog.vue";
+import ToastList from "@/Components/ToastList.vue";
 
 defineProps({
     title: String
@@ -20,6 +21,7 @@ defineProps({
             <div class="w-full max-w-7xl">
                 <!-- Confirmation Dialog -->
                 <ConfirmationDialog />
+                <ToastList />
                 <slot />
             </div>
         </main>

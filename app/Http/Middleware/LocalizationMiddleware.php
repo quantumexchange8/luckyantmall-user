@@ -16,7 +16,7 @@ class LocalizationMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        App::setLocale(session("locale", 'en'));
+        App::setLocale(session("locale", 'cn'));
         return $next($request);
     }
 }

@@ -12,7 +12,7 @@ import {
     IconPlus,
     IconTrash
 } from "@tabler/icons-vue";
-import {useForm} from "@inertiajs/vue3";
+import {router, useForm, usePage} from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
 import Skeleton from "primevue/skeleton";
 import {trans} from "laravel-vue-i18n";
@@ -119,8 +119,14 @@ const toggleItemSelection = (item) => {
     }
 };
 
+const user = usePage().props.auth.user;
+
 const proceedCheckout = () => {
-    form.post(route('cart.proceedCheckout'));
+    if (user.security_pin === null) {
+        requireConfirmation('no_security_pin');
+    } else {
+        form.post(route('cart.proceedCheckout'));
+    }
 }
 
 const confirm = useConfirm();
@@ -135,6 +141,16 @@ const requireConfirmation = (action_type, itemId) => {
             acceptButton: trans('public.confirm'),
             action: () => {
                 deleteItem(itemId);
+            }
+        },
+        no_security_pin: {
+            group: 'headless-primary',
+            header: trans('public.no_security_pin'),
+            text: trans('public.no_security_pin_caption'),
+            cancelButton: trans('public.cancel'),
+            acceptButton: trans('public.proceed'),
+            action: () => {
+                router.get(route('setting.security_pin'))
             }
         },
     };

@@ -6,6 +6,7 @@ import {
 } from "@tabler/icons-vue";
 import Button from "primevue/button";
 import ToastList from "@/Components/ToastList.vue";
+import ConfirmationDialog from "@/Components/ConfirmationDialog.vue";
 
 defineProps({
     title: String,
@@ -48,6 +49,7 @@ defineProps({
                 </div>
                 <!-- Toast -->
                 <ToastList />
+                <ConfirmationDialog />
                 <slot />
             </div>
         </main>

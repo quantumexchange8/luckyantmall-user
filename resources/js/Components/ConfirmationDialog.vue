@@ -18,11 +18,11 @@ import {
                     </div>
                 </div>
                 <div class="flex flex-col gap-1 items-center self-stretch text-center">
-                    <span class="text-gray-950 dark:text-white text-sm md:text-base font-semibold">{{ message.header }}</span>
-                    <span class="text-gray-700 dark:text-gray-400 text-xs md:text-sm">{{ message.message }}</span>
-                    <div class="text-gray-700 dark:text-gray-400 text-xs md:text-sm">
+                    <span class="text-surface-950 dark:text-white text-sm md:text-base font-semibold">{{ message.header }}</span>
+                    <span class="text-surface-700 dark:text-surface-400 text-xs md:text-sm">{{ message.message }}</span>
+                    <div class="text-surface-700 dark:text-surface-400 text-xs md:text-sm">
                         {{ message.text }}
-                        <span class="text-gray-950 dark:text-white font-semibold">{{ message.dynamicText }}</span>
+                        <span class="text-surface-950 dark:text-white font-semibold">{{ message.dynamicText }}</span>
                         {{ message.suffix }}
                     </div>
                 </div>
@@ -32,6 +32,7 @@ import {
                         severity="secondary"
                         @click="rejectCallback"
                         class="w-full"
+                        size="small"
                     >
                         {{ message.cancelButton }}
                     </Button>
@@ -39,6 +40,7 @@ import {
                         type="button"
                         @click="acceptCallback"
                         class="w-full text-nowrap"
+                        size="small"
                     >
                         {{ message.acceptButton }}
                     </Button>
@@ -56,11 +58,11 @@ import {
                     </div>
                 </div>
                 <div class="flex flex-col gap-1 items-center self-stretch text-center">
-                    <span class="text-gray-950 dark:text-white text-sm md:text-base font-semibold">{{ message.header }}</span>
-                    <span class="text-gray-700 dark:text-gray-400 text-xs md:text-sm">{{ message.message }}</span>
-                    <div class="text-gray-700 dark:text-gray-400 text-xs md:text-sm">
+                    <span class="text-surface-950 dark:text-white text-sm md:text-base font-semibold">{{ message.header }}</span>
+                    <span class="text-surface-700 dark:text-surface-400 text-xs md:text-sm">{{ message.message }}</span>
+                    <div class="text-surface-700 dark:text-surface-400 text-xs md:text-sm">
                         {{ message.text }}
-                        <span class="text-gray-950 dark:text-white font-semibold">{{ message.dynamicText }}</span>
+                        <span class="text-surface-950 dark:text-white font-semibold">{{ message.dynamicText }}</span>
                         {{ message.suffix }}
                     </div>
                 </div>
@@ -70,6 +72,7 @@ import {
                         severity="secondary"
                         @click="rejectCallback"
                         class="w-full"
+                        size="small"
                     >
                         {{ message.cancelButton }}
                     </Button>
@@ -77,6 +80,7 @@ import {
                         type="button"
                         @click="acceptCallback"
                         class="w-full text-nowrap"
+                        size="small"
                     >
                         {{ message.acceptButton }}
                     </Button>
@@ -94,11 +98,11 @@ import {
                     </div>
                 </div>
                 <div class="flex flex-col gap-1 items-center self-stretch text-center">
-                    <span class="text-gray-950 dark:text-white text-sm md:text-base font-semibold">{{ message.header }}</span>
-                    <span class="text-gray-700 dark:text-gray-400 text-xs md:text-sm">{{ message.message }}</span>
-                    <div class="text-gray-700 dark:text-gray-400 text-xs md:text-sm">
+                    <span class="text-surface-950 dark:text-white text-sm md:text-base font-semibold">{{ message.header }}</span>
+                    <span class="text-surface-700 dark:text-surface-400 text-xs md:text-sm">{{ message.message }}</span>
+                    <div class="text-surface-700 dark:text-surface-400 text-xs md:text-sm">
                         {{ message.text }}
-                        <span class="text-gray-950 dark:text-white font-semibold">{{ message.dynamicText }}</span>
+                        <span class="text-surface-950 dark:text-white font-semibold">{{ message.dynamicText }}</span>
                         {{ message.suffix }}
                     </div>
                 </div>
@@ -108,6 +112,7 @@ import {
                         severity="secondary"
                         @click="rejectCallback"
                         class="w-full"
+                        size="small"
                     >
                         {{ message.cancelButton }}
                     </Button>
@@ -116,6 +121,7 @@ import {
                         severity="danger"
                         @click="acceptCallback"
                         class="w-full text-nowrap"
+                        size="small"
                     >
                         {{ message.acceptButton }}
                     </Button>

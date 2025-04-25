@@ -115,6 +115,13 @@ Route::middleware('auth')->group(function () {
         Route::post('addPaymentAccount', [SettingController::class, 'addPaymentAccount'])->name('setting.addPaymentAccount');
         Route::post('updatePaymentAccount', [SettingController::class, 'updatePaymentAccount'])->name('setting.updatePaymentAccount');
 
+        // Security Pin
+        Route::get('/security_pin', [SettingController::class, 'security_pin'])->name('setting.security_pin');
+
+        Route::post('updateSecurityPin', [SettingController::class, 'updateSecurityPin'])->name('setting.updateSecurityPin');
+        Route::post('requestOtp', [SettingController::class, 'requestOtp'])->name('setting.requestOtp');
+        Route::post('resetPin', [SettingController::class, 'resetPin'])->name('setting.resetPin');
+
         // System
         Route::get('/system_setting', [SettingController::class, 'system_setting'])->name('setting.system_setting');
     });

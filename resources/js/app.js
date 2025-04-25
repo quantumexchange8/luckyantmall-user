@@ -8,15 +8,13 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import PrimeVue from 'primevue/config';
-import { i18nVue } from 'laravel-vue-i18n';
+import { i18nVue, trans } from 'laravel-vue-i18n';
 import iosZoomFix from '../js/Composables/ios-zoom-fix.js';
 import VueScrollPicker from "vue-scroll-picker";
 import ConfirmationService from 'primevue/confirmationservice';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title} - ${trans('public.luckyant_mall')}`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.vue`,

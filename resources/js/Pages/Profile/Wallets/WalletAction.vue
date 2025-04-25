@@ -1,13 +1,13 @@
 <script setup>
-import Drawer from 'primevue/drawer';
-import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
-import {computed, onBeforeUnmount, onMounted, ref} from "vue";
+import {computed} from "vue";
 import {
     IconPlus,
     IconArrowDown
 } from "@tabler/icons-vue";
-import {router} from "@inertiajs/vue3";
+import {router, usePage} from "@inertiajs/vue3";
+import {useConfirm} from "primevue/useconfirm";
+import {trans} from "laravel-vue-i18n";
 
 const props = defineProps({
     wallet: Object,
@@ -17,27 +17,61 @@ const props = defineProps({
 const allowedActions = computed(() => props.allowedActions);
 const wallet = computed(() => props.wallet);
 
-// const visible = ref(false);
-// const isSmallScreen = ref(window.innerWidth < 640);
-//
-// const toggleVisibility = () => {
-//     visible.value = true;
-// };
-//
-// const handleResize = () => {
-//     isSmallScreen.value = window.innerWidth < 640;
-// };
-//
-// onMounted(() => {
-//     window.addEventListener('resize', handleResize);
-// });
-//
-// onBeforeUnmount(() => {
-//     window.removeEventListener('resize', handleResize);
-// });
-
 const redirectToWalletDeposit = (walletType) => {
     router.get(route('profile.wallet_deposit', walletType))
+}
+
+const confirm = useConfirm();
+
+const requireConfirmation = (action_type) => {
+    const messages = {
+        no_payment_accounts: {
+            group: 'headless-primary',
+            header: trans('public.no_payment_accounts'),
+            text: trans('public.no_payment_accounts_caption'),
+            cancelButton: trans('public.cancel'),
+            acceptButton: trans('public.proceed'),
+            action: () => {
+                router.get(route('setting.payment_account'))
+            }
+        },
+        no_security_pin: {
+            group: 'headless-primary',
+            header: trans('public.no_security_pin'),
+            text: trans('public.no_security_pin_caption'),
+            cancelButton: trans('public.cancel'),
+            acceptButton: trans('public.proceed'),
+            action: () => {
+                router.get(route('setting.security_pin'))
+            }
+        },
+    };
+
+    const { group, header, text, dynamicText, suffix, actionType, cancelButton, acceptButton, action } = messages[action_type];
+
+    confirm.require({
+        group,
+        header,
+        actionType,
+        text,
+        dynamicText,
+        suffix,
+        cancelButton,
+        acceptButton,
+        accept: action
+    });
+};
+
+const user = usePage().props.auth.user;
+
+const redirectToWalletWithdrawal = (walletType) => {
+    if (user.security_pin === null) {
+        requireConfirmation('no_security_pin');
+    } else if (usePage().props.auth.paymentAccounts.length === 0) {
+        requireConfirmation('no_payment_accounts');
+    } else {
+        router.get(route('profile.wallet_withdrawal', walletType))
+    }
 }
 </script>
 
@@ -60,8 +94,7 @@ const redirectToWalletDeposit = (walletType) => {
             :severity="allowedActions.includes('deposit') ? 'secondary' : null"
             size="small"
             class="w-full flex gap-2"
-            as="a"
-            :href="route('profile.wallet_withdrawal', wallet.type)"
+            @click="redirectToWalletWithdrawal(wallet.type)"
         >
             <IconArrowDown size="16" />
             {{ $t('public.withdrawal') }}

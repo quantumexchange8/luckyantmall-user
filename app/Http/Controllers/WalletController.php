@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -292,6 +293,14 @@ class WalletController extends Controller
             'security_pin' => trans('public.security_pin'),
         ])->validate();
 
+        $user = Auth::user();
+
+        if (!is_null($user->security_pin) && !Hash::check($request->get('security_pin'), $user->security_pin)) {
+            throw ValidationException::withMessages([
+                'security_pin' => trans('public.security_pin_incorrect')
+            ]);
+        }
+
         if ($total_wallet_balance < $total_withdraw_amount) {
             return back()->with('toast', [
                 'title' => trans("public.warning"),
@@ -320,7 +329,7 @@ class WalletController extends Controller
                     $partial_amount = $amount - $charge_per_wallet;
 
                     Transaction::create([
-                        'user_id' => Auth::id(),
+                        'user_id' => $user->id,
                         'category' => $wallet->type,
                         'transaction_type' => 'withdrawal',
                         'from_wallet_id' => $wallet->id,
@@ -351,7 +360,7 @@ class WalletController extends Controller
                     $final_amount = $amount - $transaction_charges;
 
                     Transaction::create([
-                        'user_id' => Auth::id(),
+                        'user_id' => $user->id,
                         'category' => $wallet->type,
                         'transaction_type' => 'withdrawal',
                         'from_wallet_id' => $wallet->id,

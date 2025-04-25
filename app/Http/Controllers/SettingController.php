@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\DeliveryAddress;
+use App\Models\OtpRequest;
 use App\Models\PaymentAccount;
+use App\Notifications\SendOtpNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
+use Random\RandomException;
 
 class SettingController extends Controller
 {
@@ -234,6 +241,105 @@ class SettingController extends Controller
 
         return redirect()->back()->with('toast', [
             'title' => trans('public.toast_update_payment_account_success'),
+            'type' => 'success'
+        ]);
+    }
+
+    public function security_pin()
+    {
+        return Inertia::render('Setting/SecurityPin/SecurityPin', [
+            'backRoute' => 'profile',
+        ]);
+    }
+
+    public function updateSecurityPin(Request $request)
+    {
+        $user = $request->user();
+        $current_pin = $request->current_pin;
+
+        if ($user->security_pin) {
+            Validator::make($request->all(), [
+                'current_pin' => ['required'],
+            ])->setAttributeNames([
+                'current_pin' => trans('public.current_pin_code'),
+            ])->validate();
+
+            if (!is_null($user->security_pin) && !Hash::check($current_pin, $user->security_pin)) {
+                throw ValidationException::withMessages(['current_pin' => trans('public.current_pin_invalid')]);
+            }
+        }
+
+        Validator::make($request->all(), [
+            'pin' => ['required', 'confirmed'],
+        ])->setAttributeNames([
+            'pin' => trans('public.pin_code'),
+        ])->validate();
+
+        $user->update([
+            'security_pin' => Hash::make($request->pin),
+        ]);
+
+        return to_route('profile')->with('toast', [
+            'title' => trans('public.toast_update_pin_success'),
+            'type' => 'success'
+        ]);
+    }
+
+    public function requestOtp()
+    {
+        $email = Auth::user()->email;
+
+        $otp = random_int(100000, 999999);
+
+        $otp_request = OtpRequest::updateOrCreate(
+            [
+                'email' => $email,
+                'type' => 'reset_pin',
+            ],
+            [
+                'type' => 'reset_pin',
+                'otp' => $otp,
+            ]
+        );
+
+        Notification::route('mail', $email)
+            ->notify(new SendOtpNotification($otp_request->otp));
+
+        return back();
+    }
+
+    public function resetPin(Request $request)
+    {
+        Validator::make($request->all(), [
+            'pin' => ['required', 'confirmed'],
+            'otp' => ['required'],
+        ])->setAttributeNames([
+            'pin' => trans('public.pin_code'),
+            'otp' => trans('public.otp_code'),
+        ])->validate();
+
+        $user = $request->user();
+        if ($request->otp) {
+            $existVerifyOtp = OtpRequest::where([
+                'email' => $user->email,
+                'type' => 'reset_pin',
+            ])->first();
+
+            $otpCreatedAt = Carbon::parse($existVerifyOtp->updated_at);
+            $currentTime = Carbon::now();
+            $differenceInSeconds = $currentTime->diffInSeconds($otpCreatedAt);
+
+            if ($existVerifyOtp->otp != $request->otp || $differenceInSeconds > 300) {
+                throw ValidationException::withMessages(['otp' => trans('public.invalid_otp')]);
+            }
+
+            $user->update([
+                'security_pin' => Hash::make($request->pin),
+            ]);
+        }
+
+        return to_route('profile')->with('toast', [
+            'title' => trans('public.toast_reset_pin_success'),
             'type' => 'success'
         ]);
     }
